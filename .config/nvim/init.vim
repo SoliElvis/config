@@ -44,9 +44,13 @@ Plug 'junegunn/limelight.vim'
 "tmux"
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
+Plug 'jpalardy/vim-slime'
 
 call plug#end()
-
+execute pathogen#infect()
+let g:slime_paste_file = "$HOME/.slime_paste"
+let g:slime_target="tmux"
+"
 "Forgot Why"
 let g:deoplete#enable_at_startup =1
 hi Normal ctermbg=none
@@ -112,3 +116,13 @@ function! <SID>StripTrailingWhitespaces()
     let @/=_s
     call cursor(l, c)
 endfunction
+function! VimuxSlime()
+  call VimuxSendText(@v)
+  call VimuxSendKeys("Enter")
+endfunction
+
+" If text is selected, save it in the v buffer and send that buffer it to tmux
+vmap <Leader>vs "vy :call VimuxSlime()<CR>
+
+" Select current paragraph and send it to tmux
+nmap <Leader>vs vip<LocalLeader>vs<CR>
