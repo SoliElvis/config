@@ -2,7 +2,6 @@
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'lervag/vimtex'
 Plug 'junegunn/vim-easy-align'
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
@@ -14,7 +13,24 @@ Plug 'honza/vim-snippets'
 Plug 'brooth/far.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'gmist/vim-palette'
+
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'amiorin/vim-project'
+Plug 'majutsushi/tagbar'
+Plug 'LucHermitte/lh-vim-lib'
+Plug 'LucHermitte/vim-build-tools-wrapper'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-commentary'
+Plug 'godlygeek/tabular'
+Plug 'mileszs/ack.vim'
+Plug 'roxma/vim-paste-easy'
+Plug 'yegappan/mru'
+Plug 'airblade/vim-rooter'
+Plug 'yuttie/comfortable-motion.vim'
+
+
+"Clang"
+Plug 'rhysd/vim-clang-format'
 
 "Colors"
 Plug 'gmist/vim-palette'
@@ -23,19 +39,17 @@ let g:jellybeans_overrides = {
 \}
 
 Plug 'kassio/neoterm'
+Plug 'Konfekt/FastFold'
 
+"Latex"
+Plug 'lervag/vimtex'
 "Julia"
 Plug 'JuliaEditorSupport/julia-vim'
-
 "Python"
 Plug 'vim-scripts/indentpython.vim'
 Plug 'nvie/vim-flake8'
 Plug 'vim-syntastic/syntastic'
 Plug 'davidhalter/jedi-vim'
-
-"Fold"
-Plug 'Konfekt/FastFold'
-"python fold"
 Plug 'tmhedberg/SimpylFold' 
 
 "prose writing"
