@@ -14,6 +14,7 @@ Plug 'honza/vim-snippets'
 Plug 'brooth/far.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'gmist/vim-palette'
+Plug 'ludovicchabant/vim-gutentags'
 
 "Colors"
 Plug 'gmist/vim-palette'
@@ -83,7 +84,7 @@ let g:VtrAppendNewline = 1
 let g:vimtex_compiler_progname='nvr'
 
 "Python"
-au BufNewFile,BufRead *.py,*.jl
+au BufNewFile,BufRead *.jl
     \ set tabstop=2|
     \ set softtabstop=2|
     \ set shiftwidth=2|
@@ -97,7 +98,16 @@ let python_highlight_all=1
 
 "Julia"
 au VimEnter,BufRead,BufNewFile *.jl set filetype=julia
-
+au BufNewFile,BufRead *.jl
+    \ set tabstop=2|
+    \ set softtabstop=2|
+    \ set shiftwidth=2|
+    \ set textwidth=90|
+    \ set expandtab|
+    \ set autoindent|
+    \ set foldmethod=indent|
+    \ set fileformat=unix|
+     colorscheme badwolf
 
 
 " Remove trailing whitespace
@@ -123,6 +133,5 @@ endfunction
 
 " If text is selected, save it in the v buffer and send that buffer it to tmux
 vmap <Leader>vs "vy :call VimuxSlime()<CR>
-
 " Select current paragraph and send it to tmux
 nmap <Leader>vs vip<LocalLeader>vs<CR>

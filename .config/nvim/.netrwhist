@@ -1,2 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =0
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/sole/apps/splash/src'
+let g:netrw_dirhist_2='/home/sole/apps/splash/src/core'
+let g:netrw_dirhist_3='/home/sole/apps/splash/src'
+let g:netrw_dirhist_4='/home/sole/apps/splash/src/core'
+let g:netrw_dirhist_5='/home/sole/apps/splash'
+let g:netrw_dirhist_6='/home/sole/apps/splash/src'
+let g:netrw_dirhist_7='/home/sole/apps/splash/src/core'
