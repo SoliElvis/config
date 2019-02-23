@@ -32,12 +32,6 @@ Plug 'yuttie/comfortable-motion.vim'
 "Clang"
 Plug 'rhysd/vim-clang-format'
 
-"Colors"
-Plug 'gmist/vim-palette'
-let g:jellybeans_overrides = {
-\    'background': { 'ctermbg': 'none', '256ctermbg': 'none' },
-\}
-
 Plug 'kassio/neoterm'
 Plug 'Konfekt/FastFold'
 
@@ -62,17 +56,10 @@ Plug 'christoomey/vim-tmux-runner'
 Plug 'jpalardy/vim-slime'
 
 call plug#end()
-execute pathogen#infect()
 let g:slime_paste_file = "$HOME/.slime_paste"
 let g:slime_target="tmux"
-"
-"Forgot Why"
-let g:deoplete#enable_at_startup =1
-hi Normal ctermbg=none
-highlight NonText ctermbg=none
 
 "general"
-
 set encoding=utf-8
 syntax on
 set nu
