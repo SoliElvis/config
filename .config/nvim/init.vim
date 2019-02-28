@@ -27,6 +27,7 @@ Plug 'roxma/vim-paste-easy'
 Plug 'yegappan/mru'
 Plug 'airblade/vim-rooter'
 Plug 'yuttie/comfortable-motion.vim'
+Plug 'tpope/vim-obsession'
 
 
 "Clang"
@@ -55,6 +56,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'jpalardy/vim-slime'
 
+
 call plug#end()
 let g:slime_paste_file = "$HOME/.slime_paste"
 let g:slime_target="tmux"
@@ -71,6 +73,7 @@ nmap OO O<Esc>j
 hi Normal ctermbg=none
 highlight NonText ctermbg=none
 hi Normal guibg=NONE ctermbg=NONE
+nnoremap <CR> :noh<CR><CR>
 
 "Tmux
 let g:VtrStripLeadingWhitespace = 0

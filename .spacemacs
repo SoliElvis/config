@@ -2,42 +2,32 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-(defun dotspacemacs/layers ()
-  (setq-default
-   dotspacemacs-distribution 'spacemacs-base
-   dotspacemacs-enable-lazy-Installation 'unused
-   dotspacemacs-ask-for-lazy-installation t
-   dotspacemacs-configuration-layer-path '()
+;;*
+(defun dotspacemacs/layers ()           ;
+  (setq-default dotspacemacs-distribution 'spacemacs-base dotspacemacs-enable-lazy-Installation
+                'unused dotspacemacs-ask-for-lazy-installation t
+                dotspacemacs-configuration-layer-path '()
 
-   ;; List of configuration layers to load.
-   dotspacemacs-configuration-layers
-   '(
-     ivy
-     git
-     ;google-calendar
-     auto-completion
-     themes-megapack
-     org
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
-     spell-checking
-     syntax-checking
-     version-control
-     ;languages
-     python
-     emacs-lisp
-     vimscript
-     markdown
-     racket
-     clojure
-     common-lisp
-     haskell)
-   dotspacemacs-additional-packages '(rainbow-delimiters drag-stuff
-                                      py-autopep8)
-   dotspacemacs-frozen-packages '()
-   dotspacemacs-excluded-packages '()
-   dotspacemacs-install-packages 'used-only))
+                ;; List of configuration layers to load.
+                dotspacemacs-configuration-layers
+                '(ivy
+                  git
+                  auto-completion themes-megapack org
+                  (shell
+                    :variables
+                    shell-default-height 
+                    30
+                    shell-default-position
+                    'bottom)
+                  spell-checking syntax-checking version-control
+                  ;languages
+                  python emacs-lisp vimscript markdown racket
+                  clojure common-lisp haskell)
+                dotspacemacs-additional-packages '(rainbow-delimiters drag-stuff py-autopep8
+                                                                      julia-mode julia-repl-mode)
+
+                dotspacemacs-frozen-packages '() dotspacemacs-excluded-packages '()
+                dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
   (setq-default
@@ -198,8 +188,7 @@
     (interactive)
     (let ((hippie-expand-try-functions-list '(try-complete-file-name-partially
                                               try-complete-file-name)))
-      (call-interactively 'hippie-expand)))
-)
+      (call-interactively 'hippie-expand))))
 
 
 
@@ -214,7 +203,7 @@
    [default bold shadow italic underline bold bold-italic bold])
  '(custom-safe-themes
    (quote
-    ("a22f40b63f9bc0a69ebc8ba4fbc6b452a4e3f84b80590ba0a92b4ff599e53ad0" "cd7ffd461946d2a644af8013d529870ea0761dccec33ac5c51a7aaeadec861c2" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "1dd7b369ab51f00e91b6a990634017916e7bdeb64002b4dda0d7a618785725ac" "801a567c87755fe65d0484cb2bded31a4c5bb24fd1fe0ed11e6c02254017acb2" "dbade2e946597b9cda3e61978b5fcc14fa3afa2d3c4391d477bdaeff8f5638c5" "fad9c3dbfd4a889499f6921f54f68de8857e6846a0398e89887dbe5f26b591c0" "fd1dd4d022ece05400c7bd1efc2ae5cca5cd64a53f3670da49d0c8f0ef41f4e3" "de9fa4b3614611bed2fe75e105bd0d37542924b977299736f158dd4d7343c666" "f11e219c9d043cbd5f4b2e01713c2c24a948a98bed48828dc670bd64ae771aa1" "834cbeacb6837f3ddca4a1a7b19b1af3834f36a701e8b15b628cad3d85c970ff" "4138944fbed88c047c9973f68908b36b4153646a045648a22083bd622d1e636d" "2f4f50d98073c01038b518066840638455657dc91dd1a225286d573926f36914" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "725a0ac226fc6a7372074c8924c18394448bb011916c05a87518ad4563738668" "c9b89349d269af4ac5d832759df2f142ae50b0bbbabcce9c0dd53f79008443c9" "ab98c7f7a58add58293ac67bec05ae163b5d3f35cddf18753b2b073c3fcd8841" "4b19d61c560a93ef90767abe513c11f236caec2864617d718aa366618133704c" "d057f0430ba54f813a5d60c1d18f28cf97d271fd35a36be478e20924ea9451bd" "2540689fd0bc5d74c4682764ff6c94057ba8061a98be5dd21116bf7bf301acfb" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "174502267725776b47bdd2d220f035cae2c00c818765b138fea376b2cdc15eb6" "b583823b9ee1573074e7cbfd63623fe844030d911e9279a7c8a5d16de7df0ed0" "585942bb24cab2d4b2f74977ac3ba6ddbd888e3776b9d2f993c5704aa8bb4739" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "1a094b79734450a146b0c43afb6c669045d7a8a5c28bc0210aba28d36f85d86f" default)))
+    ("11e57648ab04915568e558b77541d0e94e69d09c9c54c06075938b6abc0189d8" "a22f40b63f9bc0a69ebc8ba4fbc6b452a4e3f84b80590ba0a92b4ff599e53ad0" "cd7ffd461946d2a644af8013d529870ea0761dccec33ac5c51a7aaeadec861c2" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "1dd7b369ab51f00e91b6a990634017916e7bdeb64002b4dda0d7a618785725ac" "801a567c87755fe65d0484cb2bded31a4c5bb24fd1fe0ed11e6c02254017acb2" "dbade2e946597b9cda3e61978b5fcc14fa3afa2d3c4391d477bdaeff8f5638c5" "fad9c3dbfd4a889499f6921f54f68de8857e6846a0398e89887dbe5f26b591c0" "fd1dd4d022ece05400c7bd1efc2ae5cca5cd64a53f3670da49d0c8f0ef41f4e3" "de9fa4b3614611bed2fe75e105bd0d37542924b977299736f158dd4d7343c666" "f11e219c9d043cbd5f4b2e01713c2c24a948a98bed48828dc670bd64ae771aa1" "834cbeacb6837f3ddca4a1a7b19b1af3834f36a701e8b15b628cad3d85c970ff" "4138944fbed88c047c9973f68908b36b4153646a045648a22083bd622d1e636d" "2f4f50d98073c01038b518066840638455657dc91dd1a225286d573926f36914" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "725a0ac226fc6a7372074c8924c18394448bb011916c05a87518ad4563738668" "c9b89349d269af4ac5d832759df2f142ae50b0bbbabcce9c0dd53f79008443c9" "ab98c7f7a58add58293ac67bec05ae163b5d3f35cddf18753b2b073c3fcd8841" "4b19d61c560a93ef90767abe513c11f236caec2864617d718aa366618133704c" "d057f0430ba54f813a5d60c1d18f28cf97d271fd35a36be478e20924ea9451bd" "2540689fd0bc5d74c4682764ff6c94057ba8061a98be5dd21116bf7bf301acfb" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "174502267725776b47bdd2d220f035cae2c00c818765b138fea376b2cdc15eb6" "b583823b9ee1573074e7cbfd63623fe844030d911e9279a7c8a5d16de7df0ed0" "585942bb24cab2d4b2f74977ac3ba6ddbd888e3776b9d2f993c5704aa8bb4739" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "1a094b79734450a146b0c43afb6c669045d7a8a5c28bc0210aba28d36f85d86f" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(fill-column 75)
  '(line-number-mode nil)
@@ -225,7 +214,7 @@
      ("deleted" :foreground "#ff2c4b" :bold t))))
  '(package-selected-packages
    (quote
-    (origami 0blayout elisp-format py-autopep8 spark drag-stuff zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme gruvbox-dark-medium-theme-theme rainbow-mode evil-paredit smooth-scrolling gruvbox-theme auctex-latexmk auto-complete-auctex company-auctex fzf org-gcal request-deferred request deferred calfw helm-ag haskell-emacs intero hlint-refactor hindent haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode slime-company slime common-lisp-snippets sly clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu eval-sexp-fu cider sesman spinner queue clojure-mode color-theme color-theme-modern quelpa-use-package evil-ledger auctex rainbow-delimiters racket-mode faceup smooth-scroll simpleclip vimrc-mode dactyl-mode xterm-color smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-ivy flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit-popup magit transient git-commit with-editor lv eshell-z eshell-prompt-extras esh-help diff-hl auto-dictionary yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional cython-mode company-anaconda anaconda-mode pythonic f dash s fuzzy company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete which-key wgrep use-package smex pcre2el macrostep ivy-hydra hydra helm-make helm helm-core popup flx exec-path-from-shell evil-visualstar evil-escape evil goto-chg undo-tree elisp-slime-nav diminish counsel-projectile projectile pkg-info epl counsel swiper ivy bind-map bind-key auto-compile packed async ace-window avy))))
+    (julia-repl lispy julia-mode origami 0blayout elisp-format py-autopep8 spark drag-stuff zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme gruvbox-dark-medium-theme-theme rainbow-mode evil-paredit smooth-scrolling gruvbox-theme auctex-latexmk auto-complete-auctex company-auctex fzf org-gcal request-deferred request deferred calfw helm-ag haskell-emacs intero hlint-refactor hindent haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode slime-company slime common-lisp-snippets sly clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu eval-sexp-fu cider sesman spinner queue clojure-mode color-theme color-theme-modern quelpa-use-package evil-ledger auctex rainbow-delimiters racket-mode faceup smooth-scroll simpleclip vimrc-mode dactyl-mode xterm-color smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-ivy flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit-popup magit transient git-commit with-editor lv eshell-z eshell-prompt-extras esh-help diff-hl auto-dictionary yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional cython-mode company-anaconda anaconda-mode pythonic f dash s fuzzy company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete which-key wgrep use-package smex pcre2el macrostep ivy-hydra hydra helm-make helm helm-core popup flx exec-path-from-shell evil-visualstar evil-escape evil goto-chg undo-tree elisp-slime-nav diminish counsel-projectile projectile pkg-info epl counsel swiper ivy bind-map bind-key auto-compile packed async ace-window avy))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

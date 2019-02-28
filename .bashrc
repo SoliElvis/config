@@ -60,6 +60,9 @@ set -o vi
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+source /usr/bin/virtualenvwrapper.sh
 
 
 # Path to the bash it configuration
