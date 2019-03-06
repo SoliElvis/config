@@ -43,6 +43,7 @@ export SANE_DEFAULT_DEVICE="brother4:bus4;dev3"
 LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
 export PYSPARK_SUBMIT_ARGS="--master local[2] pyspark-shell"
 export JAVA_HOME="/usr/bin/java"
+export PROJECT_HOME="/home/sole/apps/"
 
 stty -ixon # disable XON/XOFF flow control (^s/^q)
 complete -cf sudo # Tab complete for sudo

@@ -4,30 +4,34 @@
 
 ;;*
 (defun dotspacemacs/layers ()           ;
-  (setq-default dotspacemacs-distribution 'spacemacs-base dotspacemacs-enable-lazy-Installation
-                'unused dotspacemacs-ask-for-lazy-installation t
-                dotspacemacs-configuration-layer-path '()
+  (setq-default dotspacemacs-distribution
+    'spacemacs-base dotspacemacs-enable-lazy-Installation
+    'unused dotspacemacs-ask-for-lazy-installation t
+     dotspacemacs-configuration-layer-path '()
 
-                ;; List of configuration layers to load.
-                dotspacemacs-configuration-layers
-                '(ivy
-                  git
-                  auto-completion themes-megapack org
-                  (shell
-                    :variables
-                    shell-default-height
-                    30
-                    shell-default-position
-                    'bottom)
-                  spell-checking syntax-checking version-control
-                  ;languages
-                  python emacs-lisp vimscript markdown racket
-                  clojure common-lisp haskell)
-                dotspacemacs-additional-packages '(rainbow-delimiters drag-stuff py-autopep8
-                                                   smooth-scroll julia-mode zoom-window)
+    ;; List of configuration layers to load.
+    dotspacemacs-configuration-layers
+      '(ivy
+        git
+        auto-completion themes-megapack org
+        python
+        emacs-lisp
+        vimscript
+        markdown
+        racket
+        clojure
+        common-lisp
+        haskell
+        spell-checking syntax-checking version-control
+        (shell :variables shell-default-height 30 shell-default-position 'bottom))
 
-                dotspacemacs-frozen-packages '() dotspacemacs-excluded-packages '()
-                dotspacemacs-install-packages 'used-only))
+      dotspacemacs-additional-packages
+        '(rainbow-delimiters
+          smooth-scrolling
+          drag-stuff py-autopep8 smooth-scroll julia-mode zoom-window)
+
+      dotspacemacs-frozen-packages '() dotspacemacs-excluded-packages '()
+      dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
   (setq-default
@@ -172,28 +176,39 @@
   (bind-key* "C-c =" 'text-scale-increase)
   (bind-key* "C-c -" 'text-scale-decrease)
   (bind-key* "C-c y" 'clipboard-yank)
+
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 1)
+
   (setq-default tab-width 2)
   (setq-default python-indent-offset 2)
   (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
   (custom-set-variables '(zoom-window-mode-line-color "DarkGreen"))
+
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   (load-theme 'gruvbox-dark-medium)
 
+  (set-frame-parameter (selected-frame) 'alpha '(85 .60))
+  (add-to-list 'default-frame-alist '(alpha . (85 . 60)))
   (drag-stuff-global-mode 1)
   (drag-stuff-define-keys)
-
   (global-set-key (kbd "C-M-/") 'my-expand-file-name-at-point)
+
   (defun my-expand-file-name-at-point ()
     "Use hippie-expand to expand the filename"
     (interactive)
     (let ((hippie-expand-try-functions-list '(try-complete-file-name-partially
                                               try-complete-file-name)))
-      (call-interactively 'hippie-expand))))
+      (call-interactively 'hippie-expand)))
 
+
+
+  (set-frame-font "Inconsolata 12" nil t)
+  (set-frame-font "Iosevka 12" nil t)
+
+  )
 
 
 
