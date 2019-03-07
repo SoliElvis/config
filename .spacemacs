@@ -28,7 +28,9 @@
       dotspacemacs-additional-packages
         '(rainbow-delimiters
           smooth-scrolling
-          drag-stuff py-autopep8 smooth-scroll julia-mode zoom-window)
+          drag-stuff py-autopep8 smooth-scroll julia-mode
+          zoom-window
+          lispy)
 
       dotspacemacs-frozen-packages '() dotspacemacs-excluded-packages '()
       dotspacemacs-install-packages 'used-only))
@@ -190,7 +192,7 @@
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   (load-theme 'gruvbox-dark-medium)
 
-  (set-frame-parameter (selected-frame) 'alpha '(85 .60))
+  (set-frame-parameter (selected-frame) 'alpha '(90 .60))
   (add-to-list 'default-frame-alist '(alpha . (85 . 60)))
   (drag-stuff-global-mode 1)
   (drag-stuff-define-keys)
@@ -199,17 +201,42 @@
   (defun my-expand-file-name-at-point ()
     "Use hippie-expand to expand the filename"
     (interactive)
-    (let ((hippie-expand-try-functions-list '(try-complete-file-name-partially
+    (let ((hippie-expand-try-functions-list
+                                            '(try-complete-file-name-partially
                                               try-complete-file-name)))
-      (call-interactively 'hippie-expand)))
+          (call-interactively 'hippie-expand)))
 
-
-
-  (set-frame-font "Inconsolata 12" nil t)
   (set-frame-font "Iosevka 12" nil t)
+  (set-frame-font "Inconsolata 12" nil t)
 
-  )
+  ;; Org Mode
+  (org-startup-indented t)
+  (defun org-get-keyword (key)
+    (org-element-map (org-element-parse-buffer 'element) 'keyword
+      (lambda (k)
+        (when (string= key (org-element-property :key k))
+          (org-element-property :value k))))))
 
+  (let* ((variable-tuple
+          (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
+                ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
+                ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
+                ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
+                (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+        (base-font-color (face-foreground 'default nil 'default))
+        (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
+
+    (custom-theme-set-faces
+      'user
+        `(org-level-8        ((t (,@headline ,@variable-tuple))))
+        `(org-level-7        ((t (,@headline ,@variable-tuple))))
+        `(org-level-6        ((t (,@headline ,@variable-tuple))))
+        `(org-level-5        ((t (,@headline ,@variable-tuple))))
+        `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
+        `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
+        `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
+        `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.75))))
+        `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
 
 
 ;; auto-generate custom variable definitions.
@@ -233,7 +260,8 @@
      ("deleted" :foreground "#ff2c4b" :bold t))))
  '(package-selected-packages
    (quote
-    (zoom-window julia-repl lispy julia-mode origami 0blayout elisp-format py-autopep8 spark drag-stuff zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme gruvbox-dark-medium-theme-theme rainbow-mode evil-paredit smooth-scrolling gruvbox-theme auctex-latexmk auto-complete-auctex company-auctex fzf org-gcal request-deferred request deferred calfw helm-ag haskell-emacs intero hlint-refactor hindent haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode slime-company slime common-lisp-snippets sly clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu eval-sexp-fu cider sesman spinner queue clojure-mode color-theme color-theme-modern quelpa-use-package evil-ledger auctex rainbow-delimiters racket-mode faceup smooth-scroll simpleclip vimrc-mode dactyl-mode xterm-color smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-ivy flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit-popup magit transient git-commit with-editor lv eshell-z eshell-prompt-extras esh-help diff-hl auto-dictionary yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional cython-mode company-anaconda anaconda-mode pythonic f dash s fuzzy company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete which-key wgrep use-package smex pcre2el macrostep ivy-hydra hydra helm-make helm helm-core popup flx exec-path-from-shell evil-visualstar evil-escape evil goto-chg undo-tree elisp-slime-nav diminish counsel-projectile projectile pkg-info epl counsel swiper ivy bind-map bind-key auto-compile packed async ace-window avy))))
+    (org-plus-contrib orgtbl-aggregate zoom-window julia-repl lispy julia-mode origami 0blayout elisp-format py-autopep8 spark drag-stuff zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme gruvbox-dark-medium-theme-theme rainbow-mode evil-paredit smooth-scrolling gruvbox-theme auctex-latexmk auto-complete-auctex company-auctex fzf org-gcal request-deferred request deferred calfw helm-ag haskell-emacs intero hlint-refactor hindent haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode slime-company slime common-lisp-snippets sly clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu eval-sexp-fu cider sesman spinner queue clojure-mode color-theme color-theme-modern quelpa-use-package evil-ledger auctex rainbow-delimiters racket-mode faceup smooth-scroll simpleclip vimrc-mode dactyl-mode xterm-color smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-ivy flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit-popup magit transient git-commit with-editor lv eshell-z eshell-prompt-extras esh-help diff-hl auto-dictionary yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional cython-mode company-anaconda anaconda-mode pythonic f dash s fuzzy company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete which-key wgrep use-package smex pcre2el macrostep ivy-hydra hydra helm-make helm helm-core popup flx exec-path-from-shell evil-visualstar evil-escape evil goto-chg undo-tree elisp-slime-nav diminish counsel-projectile projectile pkg-info epl counsel swiper ivy bind-map bind-key auto-compile packed async ace-window avy)))
+ '(zoom-window-mode-line-color "DarkGreen"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
