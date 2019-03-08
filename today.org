@@ -1,4 +1,3 @@
-
 * Priorities
 ** Structured Prediction
 ** Corrections, fabian etc
@@ -10,12 +9,12 @@
 
 * Today
   
-1. Planifier ski de fond maman
-2. email durrand
+** TODO cadeau maman 
 
 * Achats
 
 #+Name: achats
+|---+--------------+------+-----------|
 |   | achat        | Prix | Important |
 |---+--------------+------+-----------|
 |   | Epicerie     |  100 |         1 |
@@ -26,6 +25,8 @@
 |   | funnyhats    |   20 |           |
 |   | bed shaker   |   50 |           |
 |   | vape shatter |   70 |           |
+|   | gloves       |      |           |
+|   |              |      |           |
 |---+--------------+------+-----------|
 
 
@@ -33,12 +34,14 @@
 
 ** School
 
-*** TODO [#A] NLP
+
+*** TODO [#A] mr simon
+
+    - catch up notes
+
+*** TODO [#B] NLP
    1) solutionnaire
    2) devoir 2
-
-*** TODO mr simon
-    - catch up notes
 
 *** TODO Idees pour projet:
     - methodes de second ordre en deep learnin
@@ -49,11 +52,9 @@
 *** Misc
     - Economie?
     - alternative advisors?
-  
 
 
 ** House
-
 *** TODO laver fridge
    
 ** Life
@@ -96,17 +97,22 @@
 
 
 * Projects
+
+    - protonmail bridge
+    - backup and cleanup keypass
+    - orgmode:
+      + tables
+      + calendar
+      + agenda
     - workspaces gnome
     - web scraping
     - nvim sessions
     - tor
     - test kits
     - Movie recommandation
-    - org mode
     - vim - emacs tricks
     - linux bible
     - 500 lines of code
-
 
 * contacts 
 Salut mon Fredo, je vais envoyer un courriel a Christine Decarie cette fin
