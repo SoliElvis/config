@@ -33,9 +33,9 @@
           lispy
           org-bullets
           visual-line-mode
-          variable-pitch-mode
           persp-mode
-          ibuffer)
+          ibuffer
+          org-agenda-property)
 
 
       dotspacemacs-frozen-packages '() dotspacemacs-excluded-packages '()
@@ -181,8 +181,8 @@
 (defun dotspacemacs/user-init ())
 
 (defun dotspacemacs/user-config ()
-  (bind-key* "C-c =" 'text-scale-increase)
-  (bind-key* "C-c -" 'text-scale-decrease)
+  (bind-key* "C-x =" 'text-scale-increase)
+  (bind-key* "C-x -" 'text-scale-decrease)
   (bind-key* "C-c y" 'clipboard-yank)
 
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -222,7 +222,7 @@
     (org-element-map (org-element-parse-buffer 'element) 'keyword
       (lambda (k)
         (when (string= key (org-element-property :key k))
-          (org-element-property :value k))))))
+          (org-element-property :value k)))))
 
   (setq org-hide-emphasis-markers t)
   (font-lock-add-keywords 'org-mode
@@ -240,7 +240,7 @@
                 (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
         (base-font-color (face-foreground 'default nil 'default))
         (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
-
+    
     (custom-theme-set-faces
       'user
         `(org-level-8        ((t (,@headline ,@variable-tuple))))
@@ -258,17 +258,42 @@
     '(variable-pitch ((t (:family "Source Sans Pro" :height 180 :weight light))))
     '(fixed-pitch ((t ( :family "Inconsolata" :slant normal :weight normal :height 1.0 :width normal)))))
 
-  (add-hook 'org-mode-hook 'variable-pitch-mode)
-  (add-hook 'org-mode-hook 'visual-line-mode)
   (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
-;;(variable-pitch ((t (:family "Source Sans Pro" :height 160 :weight light))))
-;;(org-startup-indented t)
-;;(variable-pitch ((t (:family "Avenir Next" :height 160 :weight light))))
-;;(fixed-pitch ((t (:family "Inconsolata"))))
-;;(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
-;; auto-generate custom variable definitions.
+(define-key mode-specific-map [?a] 'org-agenda)
+
+(eval-after-load "org"
+  '(progn
+     (define-prefix-command 'org-todo-state-map)
+
+     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+
+     (define-key org-todo-state-map "x"
+       #'(lambda nil (interactive) (org-todo "CANCELLED")))
+     (define-key org-todo-state-map "d"
+       #'(lambda nil (interactive) (org-todo "DONE")))
+     (define-key org-todo-state-map "f"
+       #'(lambda nil (interactive) (org-todo "DEFERRED")))
+     (define-key org-todo-state-map "l"
+       #'(lambda nil (interactive) (org-todo "DELEGATED")))
+     (define-key org-todo-state-map "s"
+       #'(lambda nil (interactive) (org-todo "STARTED")))
+     (define-key org-todo-state-map "w"
+       #'(lambda nil (interactive) (org-todo "WAITING")))
+     ;; (define-key org-agenda-mode-map "\C-n" 'next-line)
+     ;; (define-key org-agenda-keymap "\C-n" 'next-line)
+     ;; (define-key org-agenda-mode-map "\C-p" 'previous-line)
+     ;; (define-key org-agenda-keymap "\C-p" 'previous-line))
+    )))
+
+(require 'remember)
+
+(add-hook 'remember-mode-hook 'org-remember-apply-template)
+
+(define-key global-map [(control meta ?r)] 'remember)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -277,24 +302,16 @@
  '(custom-safe-themes
    (quote
     ("8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default)))
- '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (counsel flycheck swiper ivy magit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request popwin paradox open-junk-file neotree move-text lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zoom-window zenburn-theme zen-and-art-theme yapfify xterm-color white-sand-theme which-key wgrep vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company shell-pop seti-theme reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode pyvenv pytest pyenv-mode py-isort py-autopep8 purple-haze-theme professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme live-py-mode lispy light-soap-theme julia-mode jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode htmlize hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme counsel-projectile company-statistics company-ghci company-ghc company-cabal company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
- '(zoom-window-mode-line-color "DarkGreen"))
+    (smooth-scrolling ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request popwin paradox open-junk-file neotree move-text lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zoom-window zenburn-theme zen-and-art-theme yapfify xterm-color white-sand-theme which-key wgrep vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company shell-pop seti-theme reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode pyvenv pytest pyenv-mode py-isort py-autopep8 purple-haze-theme professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-agenda-property omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme live-py-mode lispy light-soap-theme julia-mode jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode htmlize hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme counsel-projectile company-statistics company-ghci company-ghc company-cabal company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell))))
+
+
+;; auto-generate custom variable definitions.
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fixed-pitch ((t (:family "Inconsolata" :slant normal :weight normal :height 1.0 :width normal))))
- '(org-document-title ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 2.0 :underline nil))))
- '(org-level-1 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 1.7))))
- '(org-level-2 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 1.5))))
- '(org-level-3 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 1.25))))
- '(org-level-4 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 1.1))))
- '(org-level-5 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif"))))
- '(org-level-6 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif"))))
- '(org-level-7 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif"))))
- '(org-level-8 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif"))))
- '(variable-pitch ((t (:family "Source Sans Pro" :height 180 :weight light)))))
+ )
