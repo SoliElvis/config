@@ -228,8 +228,16 @@
   (openwith-mode t)
   (setq openwith-associations '(("\\.pdf\\'" "evince" (file))))
 
+  (defun my-expand-file-name-at-point ()
+    "Use hippie-expand to expand the filename"
+    (interactive)
+    (let ((hippie-expand-try-functions-list
+                                            '(try-complete-file-name-partially
+                                              try-complete-file-name)))
+          (call-interactively 'hippie-expand)))
 
-
+  ;; Org Mode
+  (setq org-books-file "~/orga/my-list.org")
   ;; Activate org-zotxt-mode in org-mode buffers
   (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
   (define-key org-mode-map
@@ -241,17 +249,6 @@
     "http://localhost:23119/zotxt")
   (eval-after-load "zotxt"
     '(setq zotxt-default-bibliography-style "mkbehr-short"))
-
-  (defun my-expand-file-name-at-point ()
-    "Use hippie-expand to expand the filename"
-    (interactive)
-    (let ((hippie-expand-try-functions-list
-                                            '(try-complete-file-name-partially
-                                              try-complete-file-name)))
-          (call-interactively 'hippie-expand)))
-
-
-  ;; Org Mode
   (defun org-get-keyword (key)
     (org-element-map (org-element-parse-buffer 'element) 'keyword
       (lambda (k)
@@ -293,78 +290,55 @@
   ;;\orgpretty
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-
 (define-key mode-specific-map [?a] 'org-agenda)
 
-(eval-after-load "org"
-  '(progn
-     (define-prefix-command 'org-todo-state-map)
-     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
-     (define-key org-todo-state-map "x"
-       #'(lambda nil (interactive) (org-todo "CANCELLED")))
-     (define-key org-todo-state-map "d"
-       #'(lambda nil (interactive) (org-todo "DONE")))
-     (define-key org-todo-state-map "f"
-       #'(lambda nil (interactive) (org-todo "DEFERRED"))
+;;(eval-after-load "org"
+;;  '(progn
+;;     (define-prefix-command 'org-todo-state-map)
+;;     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+;;     (define-key org-todo-state-map "x"
+;;       #'(lambda nil (interactive) (org-todo "CANCELLED")))
+;;     (define-key org-todo-state-map "d"
+;;       #'(lambda nil (interactive) (org-todo "DONE")))
+;;     (define-key org-todo-state-map "f"
+;;       #'(lambda nil (interactive) (org-todo "DEFERRED"))
+;;)
+;;     (define-key org-todo-state-map "l"
+;;       #'(lambda nil (interactive) (org-todo "DELEGATED")))
+;;     (define-key org-todo-state-map "s"
+;;       #'(lambda nil (interactive) (org-todo "STARTED")))
+;;     (define-key org-todo-state-map "w"
+;;       #'(lambda nil (interactive) (org-todo "WAITING")))
+;;     ;; (define-key org-agenda-mode-map "\C-n" 'next-line)
+;;     ;; (define-key org-agenda-keymap "\C-n" 'next-line)
+;;     ;; (define-key org-agenda-mode-map "\C-p" 'previous-line)
+;;     ;; (define-key org-agenda-keymap "\C-p" 'previous-line))
+;;    )))
+
+;;(require 'remember)
+;;(add-hook 'remember-mode-hook 'org-remember-apply-template)
+;;(setq reftex-default-bibliography '("~/bibliography/references.bib"))
+;;
+;;;; see org-ref for use of these variables
+;;(setq org-ref-bibliography-notes "~/bibliography/notes.org"
+;;      org-ref-default-bibliography '("~/bibliography/references.bib")
+;;      org-ref-pdf-directory "~/bibliography/bibtex-pdfs/")
+;;
+;;(setq bibtex-completion-bibliography "~/bibliography/references.bib"
+;;      bibtex-completion-library-path "~/bibliography/bibtex-pdfs"
+;;      bibtex-completion-notes-path "~/bibliography/helm-bibtex-notes")
+;;
+;;;; open pdf with system pdf viewer (works on mac)
+;;(setq bibtex-completion-pdf-open-function
+;;      (lambda (fpath)
+;;        (start-process "open" "*open*" "open" fpath)))
+;;
+;;(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+;;
+;;(server-start)
+;;(add-to-list 'load-path "~/path/to/org/protocol/")
+;;(require 'org-protocol)
 )
-     (define-key org-todo-state-map "l"
-       #'(lambda nil (interactive) (org-todo "DELEGATED")))
-     (define-key org-todo-state-map "s"
-       #'(lambda nil (interactive) (org-todo "STARTED")))
-     (define-key org-todo-state-map "w"
-       #'(lambda nil (interactive) (org-todo "WAITING")))
-     ;; (define-key org-agenda-mode-map "\C-n" 'next-line)
-     ;; (define-key org-agenda-keymap "\C-n" 'next-line)
-     ;; (define-key org-agenda-mode-map "\C-p" 'previous-line)
-     ;; (define-key org-agenda-keymap "\C-p" 'previous-line))
-    )))
-
-(require 'remember)
-
-(add-hook 'remember-mode-hook 'org-remember-apply-template)
-
-
-
-(setq org-books-file "~/orga/my-list.org")
-
-
-(setq reftex-default-bibliography '("~/bibliography/references.bib"))
-
-;; see org-ref for use of these variables
-(setq org-ref-bibliography-notes "~/bibliography/notes.org"
-      org-ref-default-bibliography '("~/bibliography/references.bib")
-      org-ref-pdf-directory "~/bibliography/bibtex-pdfs/")
-
-(setq bibtex-completion-bibliography "~/bibliography/references.bib"
-      bibtex-completion-library-path "~/bibliography/bibtex-pdfs"
-      bibtex-completion-notes-path "~/bibliography/helm-bibtex-notes")
-
-;; open pdf with system pdf viewer (works on mac)
-(setq bibtex-completion-pdf-open-function
-      (lambda (fpath)
-        (start-process "open" "*open*" "open" fpath)))
-
-(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-
-(server-start)
-(add-to-list 'load-path "~/path/to/org/protocol/")
-(require 'org-protocol)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-(define-key global-map [(control meta ?r)] 'remember)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
