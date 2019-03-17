@@ -11,7 +11,9 @@
 
     ;; List of configuration layers to load.
     dotspacemacs-configuration-layers
-      '(ivy
+    '(
+      html
+      ivy
         git
         auto-completion themes-megapack org
         python
@@ -29,7 +31,12 @@
       dotspacemacs-additional-packages
       '((org-books :location (recipe :fetcher github :repo "lepisma/org-books"))
         rainbow-delimiters
+        engine-mode
+        org-noter
         org-ref
+        org-download
+        org-pdfview
+        pdf-tools
           smooth-scrolling
           drag-stuff py-autopep8 smooth-scroll julia-mode
           zoom-window
@@ -187,6 +194,11 @@
 (defun dotspacemacs/user-init ())
 
 (defun dotspacemacs/user-config ()
+  (engine-mode t)
+  (setq-default pdf-view-display-size 'fit-page)
+  ;; automatically annotate highlights
+  (setq pdf-annot-activate-created-annotations t)
+  ;; use normal isearch
   (load-theme 'gruvbox-dark-medium)
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   (bind-key* "C-x =" 'text-scale-increase)
@@ -200,8 +212,8 @@
 
   (setq-default tab-width 2)
 
-  (setq org-books-file "~/orga/mylist.org")
-  (setq org-agenda-files '("~/orga/"))
+  (setq org-books-file "~/org/mylist.org")
+  (setq org-agenda-files '("~/org"))
   (setq-default dotspacemacs-lines-numbers '(:relative t
                                              :size-limit-kb 1000))
 
@@ -212,7 +224,9 @@
 
 
   (autoload 'ibuffer "ibuffer" "List buffers." t)
-  (add-to-list 'default-frame-alist '(alpha . (85 . 60)))
+  ;;(add-to-list 'default-frame-alist '(alpha . (85 . 60)))
+  (set-frame-parameter (selected-frame) 'alpha '(100 . 90))
+
   (drag-stuff-global-mode 1)
   (drag-stuff-define-keys)
 
@@ -222,11 +236,16 @@
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (set-frame-font "Iosevka 12" nil t)
   (set-frame-font "Inconsolata 12" nil t)
-  (set-frame-parameter (selected-frame) 'alpha '(90 .60))
+  (defun er-switch-to-previous-buffer ()
+    "Switch to previously open buffer.
+      Repeated invocations toggle between the two most recently open buffers."
+    (interactive)
+    (switch-to-buffer (other-buffer (current-buffer) 1)))
+  (global-set-key (kbd "C-c b") #'er-switch-to-previous-buffer)
 
-  (require 'openwith)
-  (openwith-mode t)
-  (setq openwith-associations '(("\\.pdf\\'" "evince" (file))))
+  ;;(require 'openwith)
+  ;;(openwith-mode t)
+  ;;(setq openwith-associations '(("\\.pdf\\'" "evince" (file))))
 
   (defun my-expand-file-name-at-point ()
     "Use hippie-expand to expand the filename"
@@ -236,8 +255,70 @@
                                               try-complete-file-name)))
           (call-interactively 'hippie-expand)))
 
+;;-------------------------------------------------------------------------------------
+(defengine amazon
+  "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s")
+
+(defengine libgen
+  "http://libgen.io/search.php?req=%s&lg_topic=libgen&open=0&view=simple&res=25&phrase=1&column=def"
+  :keybinding "l")
+
+(defengine duckduckgo
+  "https://duckduckgo.com/?q=%s")
+
+(defengine github
+  "https://github.com/search?ref=simplesearch&q=%s"
+  :keybinding "c")
+
+(defengine google
+  "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+  :keybinding "g")
+
+(defengine google-images
+  "http://www.google.com/images?hl=en&source=hp&biw=1440&bih=795&gbv=2&aq=f&aqi=&aql=&oq=&q=%s"
+  :keybinding "i")
+
+(defengine google-maps
+  "http://maps.google.com/maps?q=%s"
+  :keybinding "m"
+  :docstring "Mappin' it up.")
+
+(defengine project-gutenberg
+  "http://www.gutenberg.org/ebooks/search/?query=%s")
+
+(defengine rfcs
+  "http://pretty-rfc.herokuapp.com/search?q=%s")
+
+(defengine stack-overflow
+  "https://stackoverflow.com/search?q=%s"
+  :keybinding "s")
+
+(defengine twitter
+  "https://twitter.com/search?q=%s")
+
+(defengine wikipedia
+  "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+  :keybinding "w"
+  :docstring "Searchin' the wikis.")
+
+(defengine wiktionary
+  "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
+
+(defengine wolfram-alpha
+  "http://www.wolframalpha.com/input/?i=%s")
+
+(defengine youtube
+  "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+  :keybinding "y")
+;;-------------------------------------------------------------------------------
   ;; Org Mode
-  (setq org-books-file "~/orga/my-list.org")
+  (setq org-books-file "~/org/my-list.org")
+
+  ;;(eval-after-load 'org '(require 'org-pdfview))
+  ;;(add-to-list 'org-file-apps
+  ;;             '("\\.pdf\\'" . (lambda (file link)
+  ;;                               (org-pdfview-open link))))
+
   ;; Activate org-zotxt-mode in org-mode buffers
   (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
   (define-key org-mode-map
@@ -249,6 +330,7 @@
     "http://localhost:23119/zotxt")
   (eval-after-load "zotxt"
     '(setq zotxt-default-bibliography-style "mkbehr-short"))
+
   (defun org-get-keyword (key)
     (org-element-map (org-element-parse-buffer 'element) 'keyword
       (lambda (k)
@@ -315,20 +397,13 @@
 ;;     ;; (define-key org-agenda-keymap "\C-p" 'previous-line))
 ;;    )))
 
-;;(require 'remember)
-;;(add-hook 'remember-mode-hook 'org-remember-apply-template)
-;;(setq reftex-default-bibliography '("~/bibliography/references.bib"))
-;;
-;;;; see org-ref for use of these variables
-;;(setq org-ref-bibliography-notes "~/bibliography/notes.org"
-;;      org-ref-default-bibliography '("~/bibliography/references.bib")
-;;      org-ref-pdf-directory "~/bibliography/bibtex-pdfs/")
-;;
-;;(setq bibtex-completion-bibliography "~/bibliography/references.bib"
-;;      bibtex-completion-library-path "~/bibliography/bibtex-pdfs"
-;;      bibtex-completion-notes-path "~/bibliography/helm-bibtex-notes")
-;;
-;;;; open pdf with system pdf viewer (works on mac)
+(setq org-ref-bibliography-notes "~/org/ref/notes.org"
+      org-ref-default-bibliography '("~/org/ref/master.bib")
+      org-ref-pdf-directory "~/org/ref/pdfs/")
+
+(setq bibtex-completion-bibliography "~/org/ref/master.bib"
+      bibtex-completion-library-path "~/org/ref/pdfs"
+      bibtex-completion-notes-path "~/org/ref/notes.org"))
 ;;(setq bibtex-completion-pdf-open-function
 ;;      (lambda (fpath)
 ;;        (start-process "open" "*open*" "open" fpath)))
@@ -338,7 +413,7 @@
 ;;(server-start)
 ;;(add-to-list 'load-path "~/path/to/org/protocol/")
 ;;(require 'org-protocol)
-)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -373,14 +448,13 @@
            "
       ]+>")))
        (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
-;; '(org-agenda-files (quote ("~/orga/")))
  '(org-agenda-ndays 7)
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-scheduled-if-done t)
  '(org-agenda-start-on-weekday nil)
  '(org-deadline-warning-days 14)
- '(org-default-notes-file "~/orga/notes.org")
+ '(org-default-notes-file "~/org/notes.org")
  '(org-fast-tag-selection-single-key (quote expert))
  '(org-remember-store-without-prompt t)
  '(org-remember-templates
@@ -391,7 +465,7 @@
  '(org-reverse-note-order t)
  '(package-selected-packages
    (quote
-    (company openwith interleave org-protocol-jekyll zotxt request-deferred deferred org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-books enlive counsel clojure-mode flycheck helm org-plus-contrib magit slime remember-last-theme origami smart-mode-line smart-mode-line-powerline-theme powerline-evil smooth-scrolling ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request popwin paradox open-junk-file neotree move-text lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zoom-window zenburn-theme zen-and-art-theme yapfify xterm-color white-sand-theme which-key wgrep vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company shell-pop seti-theme reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode pyvenv pytest pyenv-mode py-isort py-autopep8 purple-haze-theme professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-agenda-property omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme live-py-mode lispy light-soap-theme julia-mode jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode htmlize hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme counsel-projectile company-statistics company-ghci company-ghc company-cabal company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
+    (engine-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode haml-mode emmet-mode company-web web-completion-data flyspell-correct-popup org-pdfview org-noter company openwith interleave org-protocol-jekyll zotxt request-deferred deferred org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-books enlive counsel clojure-mode flycheck helm org-plus-contrib magit slime remember-last-theme origami smart-mode-line smart-mode-line-powerline-theme powerline-evil smooth-scrolling ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request popwin paradox open-junk-file neotree move-text lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zoom-window zenburn-theme zen-and-art-theme yapfify xterm-color white-sand-theme which-key wgrep vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company shell-pop seti-theme reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode pyvenv pytest pyenv-mode py-isort py-autopep8 purple-haze-theme professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-agenda-property omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme live-py-mode lispy light-soap-theme julia-mode jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode htmlize hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme counsel-projectile company-statistics company-ghci company-ghc company-cabal company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
  '(remember-annotation-functions (quote (org-remember-annotation)))
  '(remember-handler-functions (quote (org-remember-handler)))
  '(smooth-scrolling-mode t)
