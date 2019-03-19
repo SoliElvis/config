@@ -313,6 +313,7 @@
 ;;-------------------------------------------------------------------------------
   ;; Org Mode
   (setq org-books-file "~/org/my-list.org")
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
   ;;(eval-after-load 'org '(require 'org-pdfview))
   ;;(add-to-list 'org-file-apps
@@ -448,6 +449,9 @@
            "
       ]+>")))
        (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
+ '(org-agenda-files
+   (quote
+    ("~/UdeM/mrSimon/mrSimonNotes.org" "/home/sole/org/Aca.org" "/home/sole/org/aprt.org" "/home/sole/org/basic.org" "/home/sole/org/my-list.org" "/home/sole/org/mylist.org" "/home/sole/org/notes.org" "/home/sole/org/recettes.org" "/home/sole/org/template_today.org" "/home/sole/org/todo.org")))
  '(org-agenda-ndays 7)
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
