@@ -312,13 +312,24 @@
   :keybinding "y")
 ;;-------------------------------------------------------------------------------
   ;; Org Mode
+  (defun org-toggle-link-display ()
+    "Toggle the literal or descriptive display of links."
+    (interactive)
+    (if org-descriptive-links
+        (progn (org-remove-from-invisibility-spec '(org-link))
+              (org-restart-font-lock)
+              (setq org-descriptive-links nil))
+      (progn (add-to-invisibility-spec '(org-link))
+            (org-restart-font-lock)
+            (setq org-descriptive-links t))))
+
   (setq org-books-file "~/org/my-list.org")
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
-  ;;(eval-after-load 'org '(require 'org-pdfview))
-  ;;(add-to-list 'org-file-apps
-  ;;             '("\\.pdf\\'" . (lambda (file link)
-  ;;                               (org-pdfview-open link))))
+  (eval-after-load 'org '(require 'org-pdfview))
+  (add-to-list 'org-file-apps
+               '("\\.pdf\\'" . (lambda (file link)
+                                 (org-pdfview-open link))))
 
   ;; Activate org-zotxt-mode in org-mode buffers
   (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
