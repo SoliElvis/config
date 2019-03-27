@@ -33,6 +33,7 @@
       dotspacemacs-additional-packages
       '((org-books :location (recipe :fetcher github :repo "lepisma/org-books"))
         rainbow-delimiters
+        linum-relative
         engine-mode
         org-noter
         org-ref
@@ -195,6 +196,8 @@
 
 (defun dotspacemacs/user-config ()
   (engine-mode t)
+  (setq linum-relative-backend 'display-line-numbers-mode)
+  (bind-keys "C-x t" 'linum-relative-toggle)
   (setq-default pdf-view-display-size 'fit-page)
   ;; automatically annotate highlights
   (setq pdf-annot-activate-created-annotations t)
