@@ -95,7 +95,7 @@
    dotspacemacs-ex-substitute-global nil
    dotspacemacs-default-layout-name "Default"
    dotspacemacs-display-default-layout nil
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-resume-layouts t
    dotspacemacs-large-file-size 1
    dotspacemacs-auto-save-file-location 'cache
    dotspacemacs-max-rollback-slots 5
@@ -197,7 +197,6 @@
 (defun dotspacemacs/user-config ()
   (engine-mode t)
   (setq linum-relative-backend 'display-line-numbers-mode)
-  (bind-keys "C-x t" 'linum-relative-toggle)
   (setq-default pdf-view-display-size 'fit-page)
   ;; automatically annotate highlights
   (setq pdf-annot-activate-created-annotations t)
@@ -219,7 +218,6 @@
   (setq org-agenda-files '("~/org"))
   (setq-default dotspacemacs-lines-numbers '(:relative t
                                              :size-limit-kb 1000))
-
   (setq org-hide-emphasis-markers t)
   (font-lock-add-keywords 'org-mode
                           '(("^ *\\([-]\\) "
@@ -325,6 +323,14 @@
   :keybinding "y")
 ;;-------------------------------------------------------------------------------
   ;; Org Mode
+(defun org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-archive-subtree)
+     (setq org-map-continue-from (outline-previous-heading)))
+   "/DONE" 'agenda))
+
   (defun org-toggle-link-display ()
     "Toggle the literal or descriptive display of links."
     (interactive)
@@ -448,6 +454,8 @@
    (quote
     ("8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default)))
  '(evil-want-Y-yank-to-eol nil)
+ '(line-number-mode t)
+ '(linum-relative-global-mode t)
  '(org-agenda-custom-commands
    (quote
     (("d" todo "DELEGATED" nil)
@@ -475,7 +483,7 @@
        (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
  '(org-agenda-files
    (quote
-    ("~/UdeM/mrSimon/mrSimonNotes.org" "/home/sole/org/Aca.org" "/home/sole/org/aprt.org" "/home/sole/org/basic.org" "/home/sole/org/my-list.org" "/home/sole/org/mylist.org" "/home/sole/org/notes.org" "/home/sole/org/recettes.org" "/home/sole/org/template_today.org" "/home/sole/org/todo.org")))
+    ("~/UdeM/mrSimon/mrSimonNotes.org" "/home/sole/org/my-list.org" "/home/sole/org/recettes.org" "/home/sole/org/template_today.org")))
  '(org-agenda-ndays 7)
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
