@@ -50,7 +50,8 @@
         origami
         zotxt
         openwith
-        org-agenda-property)
+        org-agenda-property
+        org-download)
 
 
       dotspacemacs-frozen-packages '() dotspacemacs-excluded-packages '()
@@ -211,11 +212,12 @@
   (setq TeX-source-correlate-mode t)
   (setq TeX-electric-math (cons "$" "$") )
   (engine-mode t)
-  (setq linum-relative-backend 'display-line-numbers-mode)
-  (setq-default pdf-view-display-size 'fit-page)
+  ;;(setq linum-relative-backend 'display-line-numbers-mode)
+  ;;(setq-default pdf-view-display-size 'fit-page)
   ;; automatically annotate highlights
   (setq pdf-annot-activate-created-annotations t)
-  ;; use normal isearch
+
+
   (load-theme 'gruvbox-dark-medium)
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   (bind-key* "C-x =" 'text-scale-increase)
@@ -258,6 +260,13 @@
     (interactive)
     (switch-to-buffer (other-buffer (current-buffer) 1)))
   (global-set-key (kbd "C-c b") #'er-switch-to-previous-buffer)
+  (defun toggle-maximize-buffer () "Maximize buffer"
+         (interactive)
+         (if (= 1 (length (window-list)))
+             (jump-to-register '_) 
+           (progn
+             (window-configuration-to-register '_)
+             (delete-other-windows))))
 
   ;;(require 'openwith)
   ;;(openwith-mode t)
