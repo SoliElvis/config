@@ -39,6 +39,7 @@
         org-noter
         org-ref
         org-download
+        pdf-tools
         smooth-scrolling
         drag-stuff py-autopep8 smooth-scroll julia-mode
         zoom-window
@@ -197,6 +198,12 @@
 (defun dotspacemacs/user-init ())
 
 (defun dotspacemacs/user-config ()
+  (custom-set-variables
+   '(python-guess-indent nil)
+   '(python-indent-offset 2))
+  (setq preview-gs-options '("-q" "-dNOSAFER"
+  "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4"
+  "-dGraphicsAlphaBits=4"))
   (global-set-key
    [f3]
    (lambda ()
@@ -369,10 +376,10 @@
   (setq org-books-file "~/org/my-list.org")
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
-  (eval-after-load 'org '(require 'org-pdfview))
-  (add-to-list 'org-file-apps
-               '("\\.pdf\\'" . (lambda (file link)
-                                 (org-pdfview-open link))))
+  ;; (eval-after-load 'org '(require 'org-pdfview))
+  ;; (add-to-list 'org-file-apps
+  ;;              '("\\.pdf\\'" . (lambda (file link)
+  ;;                                (org-pdfview-open link)))) ;
 
   ;; Activate org-zotxt-mode in org-mode buffers
   (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
@@ -474,12 +481,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
-    ("8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default)))
+    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(line-number-mode t)
- '(linum-relative-global-mode t)
+ '(linum-relative-global-mode nil)
  '(org-agenda-custom-commands
    (quote
     (("d" todo "DELEGATED" nil)
@@ -507,7 +515,7 @@
        (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
  '(org-agenda-files
    (quote
-    ("~/UdeM/mrSimon/mrSimonNotes.org" "/home/sole/org/my-list.org" "/home/sole/org/recettes.org" "/home/sole/org/template_today.org")))
+    ("~/UdeM/mrSimon/mrSimonNotes.org" "/home/sole/org/my-list.org" "/home/sole/org/recettes.org" "/home/sole/org/template_today.org")) t)
  '(org-agenda-ndays 7)
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
@@ -525,7 +533,8 @@
  '(org-reverse-note-order t)
  '(package-selected-packages
    (quote
-    (elpy find-file-in-project company-auctex auctex-latexmk auctex engine-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode haml-mode emmet-mode company-web web-completion-data flyspell-correct-popup org-pdfview org-noter company openwith interleave org-protocol-jekyll zotxt request-deferred deferred org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-books enlive counsel clojure-mode flycheck helm org-plus-contrib magit slime remember-last-theme origami smart-mode-line smart-mode-line-powerline-theme powerline-evil smooth-scrolling ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request popwin paradox open-junk-file neotree move-text lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zoom-window zenburn-theme zen-and-art-theme yapfify xterm-color white-sand-theme which-key wgrep vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company shell-pop seti-theme reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode pyvenv pytest pyenv-mode py-isort py-autopep8 purple-haze-theme professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-agenda-property omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme live-py-mode lispy light-soap-theme julia-mode jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode htmlize hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme counsel-projectile company-statistics company-ghci company-ghc company-cabal company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
+    (nlinum nlinum-relative elpy find-file-in-project company-auctex auctex-latexmk auctex engine-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode haml-mode emmet-mode company-web web-completion-data flyspell-correct-popup org-pdfview org-noter company openwith interleave org-protocol-jekyll zotxt request-deferred deferred org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-books enlive counsel clojure-mode flycheck helm org-plus-contrib magit slime remember-last-theme origami smart-mode-line smart-mode-line-powerline-theme powerline-evil smooth-scrolling ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request popwin paradox open-junk-file neotree move-text lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zoom-window zenburn-theme zen-and-art-theme yapfify xterm-color white-sand-theme which-key wgrep vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company shell-pop seti-theme reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode pyvenv pytest pyenv-mode py-isort py-autopep8 purple-haze-theme professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-agenda-property omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme live-py-mode lispy light-soap-theme julia-mode jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode htmlize hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme counsel-projectile company-statistics company-ghci company-ghc company-cabal company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
+ '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#282828")))
  '(remember-annotation-functions (quote (org-remember-annotation)))
  '(remember-handler-functions (quote (org-remember-handler)))
  '(smooth-scrolling-mode t)
