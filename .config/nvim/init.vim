@@ -29,6 +29,7 @@ Plug 'roxma/vim-paste-easy'
 Plug 'yegappan/mru'
 Plug 'airblade/vim-rooter'
 Plug 'yuttie/comfortable-motion.vim'
+Plug 'bfredl/nvim-ipy'
 
 
 "Clang"
