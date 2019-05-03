@@ -1,0 +1,168 @@
+;;org
+(eval-after-load "org"
+ '(progn
+    (define-prefix-command 'org-todo-state-map)
+    (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+    (define-key org-todo-state-map "x"
+      #'(lambda nil (interactive) (org-todo "CANCELLED")))
+    (define-key org-todo-state-map "d"
+      #'(lambda nil (interactive) (org-todo "DONE")))
+    (define-key org-todo-state-map "f"
+      #'(lambda nil (interactive) (org-todo "DEFERRED"))
+)
+    (define-key org-todo-state-map "l"
+      #'(lambda nil (interactive) (org-todo "DELEGATED")))
+    (define-key org-todo-state-map "s"
+      #'(lambda nil (interactive) (org-todo "STARTED")))
+    (define-key org-todo-state-map "w"
+      #'(lambda nil (interactive) (org-todo "WAITING")))
+    (define-key org-agenda-mode-map "\C-n" 'next-line)
+    (define-key org-agenda-keymap "\C-n" 'next-line)
+    (define-key org-agenda-mode-map "\C-p" 'previous-line)
+    (define-key org-agenda-keymap "\C-p" 'previous-line))
+   )
+(eval-after-load 'org '(require 'org-pdfview))
+(add-to-list 'org-file-apps
+             '("\\.pdf\\'" . (lambda (file link)
+                               (org-pdfview-open link)))) ;
+
+(defun org-get-keyword (key)
+  (org-element-map (org-element-parse-buffer 'element) 'keyword
+    (lambda (k)
+      (when (string= key (org-element-property :key k))
+        (org-element-property :value k)))))
+;;tex
+(setq bibtex-completion-pdf-open-function
+     (lambda (fpath)
+       (start-process "open" "*open*" "open" fpath)))
+
+(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+
+(server-start)
+(add-to-list 'load-path "~/path/to/org/protocol/")
+(require 'org-protocol)
+
+;;-------------------------------------------------------------------------------------
+;; (defengine amazon
+;;   "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s")
+
+;; (defengine libgen
+;;   "http://libgen.io/search.php?req=%s&lg_topic=libgen&open=0&view=simple&res=25&phrase=1&column=def"
+;;   :keybinding "l")
+
+;; (defengine duckduckgo
+;;   "https://duckduckgo.com/?q=%s")
+
+;; (defengine github
+;;   "https://github.com/search?ref=simplesearch&q=%s"
+;;   :keybinding "c")
+
+;; (defengine google
+;;   "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+;;   :keybinding "g")
+
+;; (defengine google-images
+;;   "http://www.google.com/images?hl=en&source=hp&biw=1440&bih=795&gbv=2&aq=f&aqi=&aql=&oq=&q=%s"
+;;   :keybinding "i")
+
+;; (defengine google-maps
+;;   "http://maps.google.com/maps?q=%s"
+;;   :keybinding "m"
+;;   :docstring "Mappin' it up.")
+
+;; (defengine project-gutenberg
+;;   "http://www.gutenberg.org/ebooks/search/?query=%s")
+
+;; (defengine rfcs
+;;   "http://pretty-rfc.herokuapp.com/search?q=%s")
+
+;; (defengine stack-overflow
+;;   "https://stackoverflow.com/search?q=%s"
+;;   :keybinding "s")
+
+;; (defengine twitter
+;;   "https://twitter.com/search?q=%s")
+
+;; (defengine wikipedia
+;;   "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+;;   :keybinding "w"
+;;   :docstring "Searchin' the wikis.")
+
+;; (defengine wiktionary
+;;   "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
+
+;; (defengine wolfram-alpha
+;;   "http://www.wolframalpha.com/input/?i=%s")
+
+;; (defengine youtube
+;;   "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+;;   :keybinding "y")
+
+;;---------pdf---
+(require 'openwith)
+(openwith-mode t)
+(setq openwith-associations '(("\\.pdf\\'" "evince" (file))))
+;; (setq preview-gs-options '("-q" "-dNOSAFER"
+;; "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4"
+;; "-dGraphicsAlphaBits=4"))
+;;--misc
+(defun er-switch-to-previous-buffer ()
+  "Switch to previously open buffer.
+      Repeated invocations toggle between the two most recently open buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
+(global-set-key (kbd "C-c b") #'er-switch-to-previous-buffer)
+(defun toggle-maximize-buffer () "Maximize buffer"
+       (interactive)
+       (if (= 1 (length (window-list)))
+           (jump-to-register '_)
+         (progn
+           (window-configuration-to-register '_)
+           (delete-other-windows))))
+
+(setq linum-relative-backend 'display-line-numbers-mode)
+(setq-default pdf-view-display-size 'fit-page)
+
+(bind-key* "C-x =" 'text-scale-increase)
+(bind-key* "C-x -" 'text-scale-decrease)
+
+(global-set-key
+[f3]
+(lambda ()
+  (interactive)
+  (ispell-change-dictionary "francais")))
+(global-set-key
+ [f4]
+ (lambda ()
+   (interactive)
+   (ispell-change-dictionary "english")))
+
+(add-to-list 'default-frame-alist '(alpha . (85 . 60)))
+(global-set-key (kbd "C-i") 'evil-jump-forward)
+
+;;\orgpretty
+(let* ((variable-tuple
+        (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
+              ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
+              ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
+              ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
+              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+      (base-font-color (face-foreground 'default nil 'default))
+      (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
+
+  (custom-theme-set-faces
+    'user
+      `(org-level-8        ((t (,@headline ,@variable-tuple))))
+      `(org-level-7        ((t (,@headline ,@variable-tuple))))
+      `(org-level-6        ((t (,@headline ,@variable-tuple))))
+      `(org-level-5        ((t (,@headline ,@variable-tuple))))
+      `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
+      `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
+      `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
+      `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.70))))
+      `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+
+(custom-theme-set-faces
+  'user
+  '(variable-pitch ((t (:family "Source Sans Pro" :height 180 :weight light))))
+  '(fixed-pitch ((t ( :family "Inconsolata" :slant normal :weight normal :height 1.0 :width normal)))))
