@@ -57,7 +57,6 @@ shopt -s dotglob # files beginning with . to be returned in the results of path-
 # set options
 set -o noclobber # prevent overwriting files with cat
 set -o ignoreeof # stops ctrl+d from logging me out
-set -o vi
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'

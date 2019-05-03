@@ -35,18 +35,18 @@
 
       dotspacemacs-additional-packages
       '((org-books :location (recipe :fetcher github :repo "lepisma/org-books"))
-        rainbow-delimiters
+        helm-bibtex
+        rainbow-delimiterS
         creamsody-theme
         spaceline
         powerline
         nlinum
         elpy
         linum-relative
-        engine-mode
+        ;; engine-mode
         org-noter
         org-ref
         org-download
-        pdf-tools
         smooth-scrolling
         drag-stuff py-autopep8 smooth-scroll julia-mode
         zoom-window
@@ -81,11 +81,11 @@
    dotspacemacs-themes '(spacemacs-dark
                          spacemacs-light)
    dotspacemacs-colorize-cursor-according-to-state t
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
-                               :weight bold
-                               :width normal
-                               :powerline-scale 1.1)
+   ;; dotspacemacs-default-font '("Source Code Pro"
+   ;;                             :size 13
+   ;;                             :weight bold
+   ;;                             :width normal
+   ;;                             :powerline-scale 1.1)
 
    dotspacemacs-leader-key "SPC"
    dotspacemacs-emacs-command-key "SPC"
@@ -206,13 +206,12 @@
 
 (defun dotspacemacs/user-config ()
 
-  ;(set-frame-font "Iosevka 12" :weight bold nil t)
-  ;(set-frame-font "Source Code Pro 12" :weight bold nil t)
-  ;(global-set-key (kbd "C-i") 'evil-jump-forward)
-  (set-frame-font "Inconsolata 12")
-
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 2)
+  (set-frame-font "Iosevka 12" :weight bold nil t)
+  (set-frame-font "Source Code Pro 12" :weight bold nil t)
+  (set-frame-font "Inconsolata 12" :weight bold nil t)
   (autoload 'ibuffer "ibuffer" "List buffers." t)
-  ;;(add-to-list 'default-frame-alist '(alpha . (85 . 60)))
   (set-frame-parameter (selected-frame) 'alpha '(100 . 90))
 
   (drag-stuff-global-mode 1)
@@ -222,12 +221,9 @@
   (custom-set-variables '(zoom-window-mode-line-color "DarkGreen"))
   (global-set-key (kbd "C-M-/") 'my-expand-file-name-at-point)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
-  ;; (setq winum-auto-setup-mode-line nil)
-  ;; (winum-mode)
-  (setq-default indent-tabs-mode nil)
-  (setq-default tab-width 2)
 
   ;;python
+  (elpy-enable)
   (add-hook 'python-mode-hook
   (lambda ()
     (setq indent-tabs-mode nil)
@@ -242,7 +238,7 @@
             (function (lambda ()
                         (setq evil-shift-width python-indent))))
 
-
+  (setq preview-gs-command "/usr/bin/gs")
   (setq-default indent-tabs-mode nil)
   (custom-set-variables
    '(python-guess-indent nil)
@@ -263,33 +259,10 @@
               (setq python-indent-offset 2)
               (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 
-  (setq preview-gs-options '("-q" "-dNOSAFER"
-  "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4"
-  "-dGraphicsAlphaBits=4"))
-  (global-set-key
-   [f3]
-   (lambda ()
-     (interactive)
-     (ispell-change-dictionary "francais")))
-  (global-set-key
-   [f4]
-   (lambda ()
-     (interactive)
-     (ispell-change-dictionary "english")))
-  (setq TeX-source-correlate-mode t)
-  (setq TeX-save-query nil)
-  (setq TeX-source-correlate-mode t)
-  (setq TeX-electric-math (cons "$" "$") )
-  (engine-mode t)
-  ;;(setq linum-relative-backend 'display-line-numbers-mode)
-  ;;(setq-default pdf-view-display-size 'fit-page)
+  ;; tex
   ;; automatically annotate highlights
   (setq pdf-annot-activate-created-annotations t)
-
-
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-  (bind-key* "C-x =" 'text-scale-increase)
-  (bind-key* "C-x -" 'text-scale-decrease)
   (bind-key* "C-c y" 'clipboard-yank)
 
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -298,35 +271,9 @@
   (setq scroll-step 1)
 
   (setq-default tab-width 2)
-
-  (setq org-books-file "~/org/mylist.org")
-  (setq org-agenda-files '("~/org"))
   (setq-default dotspacemacs-lines-numbers '(:relative t
                                              :size-limit-kb 1000))
-  (setq org-hide-emphasis-markers t)
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-
-
-  (defun er-switch-to-previous-buffer ()
-    "Switch to previously open buffer.
-      Repeated invocations toggle between the two most recently open buffers."
-    (interactive)
-    (switch-to-buffer (other-buffer (current-buffer) 1)))
-  (global-set-key (kbd "C-c b") #'er-switch-to-previous-buffer)
-  (defun toggle-maximize-buffer () "Maximize buffer"
-         (interactive)
-         (if (= 1 (length (window-list)))
-             (jump-to-register '_)
-           (progn
-             (window-configuration-to-register '_)
-             (delete-other-windows))))
-
-  ;;(require 'openwith)
-  ;;(openwith-mode t)
-  ;;(setq openwith-associations '(("\\.pdf\\'" "evince" (file))))
 
   (defun my-expand-file-name-at-point ()
     "Use hippie-expand to expand the filename"
@@ -337,72 +284,33 @@
           (call-interactively 'hippie-expand)))
 
 
-;; Auctex
+;; tex
 ;;------------------------------------------------------------------------------------
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+(setq TeX-source-correlate-mode t)
+(setq TeX-save-query nil)
+(setq TeX-source-correlate-mode t)
+(setq TeX-electric-math (cons "$" "$") )
+(setq-default TeX-master nil)
+(autoload 'ivy-bibtex "ivy-bibtex" "" t)
+;; ivy-bibtex requires ivy's `ivy--regex-ignore-order` regex builder, which
+;; ignores the order of regexp tokens when searching for matching candidates.
+;; Add something like this to your init file:
+(setq ivy-re-builders-alist
+      '((ivy-bibtex . ivy--regex-ignore-order)
+        (t . ivy--regex-plus)))
 
-
-
-;;-------------------------------------------------------------------------------------
-(defengine amazon
-  "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s")
-
-(defengine libgen
-  "http://libgen.io/search.php?req=%s&lg_topic=libgen&open=0&view=simple&res=25&phrase=1&column=def"
-  :keybinding "l")
-
-(defengine duckduckgo
-  "https://duckduckgo.com/?q=%s")
-
-(defengine github
-  "https://github.com/search?ref=simplesearch&q=%s"
-  :keybinding "c")
-
-(defengine google
-  "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
-  :keybinding "g")
-
-(defengine google-images
-  "http://www.google.com/images?hl=en&source=hp&biw=1440&bih=795&gbv=2&aq=f&aqi=&aql=&oq=&q=%s"
-  :keybinding "i")
-
-(defengine google-maps
-  "http://maps.google.com/maps?q=%s"
-  :keybinding "m"
-  :docstring "Mappin' it up.")
-
-(defengine project-gutenberg
-  "http://www.gutenberg.org/ebooks/search/?query=%s")
-
-(defengine rfcs
-  "http://pretty-rfc.herokuapp.com/search?q=%s")
-
-(defengine stack-overflow
-  "https://stackoverflow.com/search?q=%s"
-  :keybinding "s")
-
-(defengine twitter
-  "https://twitter.com/search?q=%s")
-
-(defengine wikipedia
-  "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
-  :keybinding "w"
-  :docstring "Searchin' the wikis.")
-
-(defengine wiktionary
-  "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
-
-(defengine wolfram-alpha
-  "http://www.wolframalpha.com/input/?i=%s")
-
-(defengine youtube
-  "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
-  :keybinding "y")
 ;;-------------------------------------------------------------------------------
   ;; Org Mode
+(setq org-books-file "~/org/mylist.org")
+(setq org-agenda-files '("~/org"))
+(setq org-hide-emphasis-markers t)
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
 (defun org-archive-done-tasks ()
   (interactive)
   (org-map-entries
@@ -425,28 +333,17 @@
   (setq org-books-file "~/org/my-list.org")
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
-  ;; (eval-after-load 'org '(require 'org-pdfview))
-  ;; (add-to-list 'org-file-apps
-  ;;              '("\\.pdf\\'" . (lambda (file link)
-  ;;                                (org-pdfview-open link)))) ;
-
   ;; Activate org-zotxt-mode in org-mode buffers
   (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
   (define-key org-mode-map
     (kbd "C-c \" \"") (lambda () (interactive)
                         (org-zotxt-insert-reference-link '(4))))
-  ;; Change citation format to be less cumbersome in files.
-  ;; You'll need to install mkbehr-short into your style manager first.
   (defconst zotxt-url-base
     "http://localhost:23119/zotxt")
   (eval-after-load "zotxt"
     '(setq zotxt-default-bibliography-style "mkbehr-short"))
 
-  (defun org-get-keyword (key)
-    (org-element-map (org-element-parse-buffer 'element) 'keyword
-      (lambda (k)
-        (when (string= key (org-element-property :key k))
-          (org-element-property :value k)))))
+
 ;;org pretty
 
   (use-package org-bullets
@@ -485,124 +382,28 @@
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (define-key mode-specific-map [?a] 'org-agenda)
 
-;;(eval-after-load "org"
-;;  '(progn
-;;     (define-prefix-command 'org-todo-state-map)
-;;     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
-;;     (define-key org-todo-state-map "x"
-;;       #'(lambda nil (interactive) (org-todo "CANCELLED")))
-;;     (define-key org-todo-state-map "d"
-;;       #'(lambda nil (interactive) (org-todo "DONE")))
-;;     (define-key org-todo-state-map "f"
-;;       #'(lambda nil (interactive) (org-todo "DEFERRED"))
-;;)
-;;     (define-key org-todo-state-map "l"
-;;       #'(lambda nil (interactive) (org-todo "DELEGATED")))
-;;     (define-key org-todo-state-map "s"
-;;       #'(lambda nil (interactive) (org-todo "STARTED")))
-;;     (define-key org-todo-state-map "w"
-;;       #'(lambda nil (interactive) (org-todo "WAITING")))
-;;     ;; (define-key org-agenda-mode-map "\C-n" 'next-line)
-;;     ;; (define-key org-agenda-keymap "\C-n" 'next-line)
-;;     ;; (define-key org-agenda-mode-map "\C-p" 'previous-line)
-;;     ;; (define-key org-agenda-keymap "\C-p" 'previous-line))
-;;    )))
-
 (setq org-ref-bibliography-notes "~/org/ref/notes.org"
       org-ref-default-bibliography '("~/org/ref/master.bib")
       org-ref-pdf-directory "~/org/ref/pdfs/")
 
 (setq bibtex-completion-bibliography "~/org/ref/master.bib"
       bibtex-completion-library-path "~/org/ref/pdfs"
-      bibtex-completion-notes-path "~/org/ref/notes.org"))
-;;(setq bibtex-completion-pdf-open-function
-;;      (lambda (fpath)
-;;        (start-process "open" "*open*" "open" fpath)))
-;;
-;;(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-;;
-;;(server-start)
-;;(add-to-list 'load-path "~/path/to/org/protocol/")
-;;(require 'org-protocol)
+      bibtex-completion-notes-path "~/org/ref/notes.org")
+)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(company-quickhelp-color-background "#4F4F4F")
- '(company-quickhelp-color-foreground "#DCDCCC")
- '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
-    ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "73c69e346ec1cb3d1508c2447f6518a6e582851792a8c0e57a22d6b9948071b4" "d057f0430ba54f813a5d60c1d18f28cf97d271fd35a36be478e20924ea9451bd" "4138944fbed88c047c9973f68908b36b4153646a045648a22083bd622d1e636d" "9b59e147dbbde5e638ea1cde5ec0a358d5f269d27bd2b893a0947c4a867e14c1" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "89f545ddc104836b27167696db89b371f23893d5b2f038d43383d877ee678d3d" "174502267725776b47bdd2d220f035cae2c00c818765b138fea376b2cdc15eb6" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default)))
- '(evil-want-Y-yank-to-eol nil)
- '(line-number-mode t)
- '(linum-format " %5i ")
- '(linum-relative-global-mode nil)
- '(notmuch-search-line-faces
-   (quote
-    (("unread" :foreground "#aeee00")
-     ("flagged" :foreground "#0a9dff")
-     ("deleted" :foreground "#ff2c4b" :bold t))))
- '(nrepl-message-colors
-   (quote
-    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
- '(org-agenda-custom-commands
-   (quote
-    (("d" todo "DELEGATED" nil)
-     ("c" todo "DONE|DEFERRED|CANCELLED" nil)
-     ("w" todo "WAITING" nil)
-     ("W" agenda ""
-      ((org-agenda-ndays 21)))
-     ("A" agenda ""
-      ((org-agenda-skip-function
-        (lambda nil
-          (org-agenda-skip-entry-if
-           (quote notregexp)
-           "\\=.*\\[#A\\]")))
-       (org-agenda-ndays 1)
-       (org-agenda-overriding-header "Today's Priority #A tasks: ")))
-     ("u" alltodo ""
-      ((org-agenda-skip-function
-        (lambda nil
-          (org-agenda-skip-entry-if
-           (quote scheduled)
-           (quote deadline)
-           (quote regexp)
-           "
-      ]+>")))
-       (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
- '(org-agenda-files
-   (quote
-    ("~/UdeM/mrSimon/mrSimonNotes.org" "/home/sole/org/my-list.org" "/home/sole/org/recettes.org" "/home/sole/org/template_today.org")))
- '(org-agenda-ndays 7)
- '(org-agenda-show-all-dates t)
- '(org-agenda-skip-deadline-if-done t)
- '(org-agenda-skip-scheduled-if-done t)
- '(org-agenda-start-on-weekday nil)
- '(org-deadline-warning-days 14)
- '(org-default-notes-file "~/org/notes.org")
- '(org-fast-tag-selection-single-key (quote expert))
- '(org-remember-store-without-prompt t)
- '(org-remember-templates
-   (quote
-    ((116 "* TODO %?
-  %u" "~/todo.org" "Tasks")
-     (110 "* %u %?" "~/notes.org" "Notes"))))
- '(org-reverse-note-order t)
+    ("89f545ddc104836b27167696db89b371f23893d5b2f038d43383d877ee678d3d" default)))
  '(package-selected-packages
    (quote
-    (web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern tern coffee-mode yaml-mode iedit swiper hydra multiple-cursors lv cider sesman parseedn parseclj a ace-window avy ivy flyspell-correct yasnippet haskell-mode transient git-commit helm-core projectile dash csv-mode doom-themes creamsody-theme nlinum nlinum-relative elpy find-file-in-project company-auctex auctex-latexmk auctex engine-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode haml-mode emmet-mode company-web web-completion-data flyspell-correct-popup org-pdfview org-noter company openwith interleave org-protocol-jekyll zotxt request-deferred deferred org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-books enlive counsel clojure-mode flycheck helm org-plus-contrib magit slime remember-last-theme origami smart-mode-line smart-mode-line-powerline-theme powerline-evil smooth-scrolling ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request popwin paradox open-junk-file neotree move-text lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zoom-window zenburn-theme zen-and-art-theme yapfify xterm-color white-sand-theme which-key wgrep vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company shell-pop seti-theme reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode pyvenv pytest pyenv-mode py-isort py-autopep8 purple-haze-theme professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-agenda-property omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme live-py-mode lispy light-soap-theme julia-mode jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode htmlize hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme counsel-projectile company-statistics company-ghci company-ghc company-cabal company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
- '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#282828")))
- '(pos-tip-background-color "#1A3734")
- '(pos-tip-foreground-color "#FFFFC8")
- '(python-guess-indent nil)
+    (ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org restart-emacs rainbow-delimiters popwin paradox open-junk-file neotree move-text lorem-ipsum link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zotxt zoom-window zenburn-theme zen-and-art-theme yapfify yaml-mode xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme railscasts-theme racket-mode pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-download org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
  '(python-indent-guess-indent-offset nil)
  '(python-indent-offset 2)
- '(remember-annotation-functions (quote (org-remember-annotation)))
- '(remember-handler-functions (quote (org-remember-handler)))
- '(smooth-scrolling-mode t)
  '(zoom-window-mode-line-color "DarkGreen"))
 
 
@@ -620,13 +421,13 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(fixed-pitch ((t (:family "Inconsolata" :slant normal :weight normal :height 1.0 :width normal))))
- '(org-document-title ((t (:inherit default :weight bold :foreground "#fdf4c1" :family "Sans Serif" :height 2.0 :underline nil))))
- '(org-level-1 ((t (:inherit default :weight bold :foreground "#fdf4c1" :family "Sans Serif" :height 1.7))))
- '(org-level-2 ((t (:inherit default :weight bold :foreground "#fdf4c1" :family "Sans Serif" :height 1.5))))
- '(org-level-3 ((t (:inherit default :weight bold :foreground "#fdf4c1" :family "Sans Serif" :height 1.25))))
- '(org-level-4 ((t (:inherit default :weight bold :foreground "#fdf4c1" :family "Sans Serif" :height 1.1))))
- '(org-level-5 ((t (:inherit default :weight bold :foreground "#fdf4c1" :family "Sans Serif"))))
- '(org-level-6 ((t (:inherit default :weight bold :foreground "#fdf4c1" :family "Sans Serif"))))
- '(org-level-7 ((t (:inherit default :weight bold :foreground "#fdf4c1" :family "Sans Serif"))))
- '(org-level-8 ((t (:inherit default :weight bold :foreground "#fdf4c1" :family "Sans Serif"))))
+ '(org-document-title ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 2.0 :underline nil))))
+ '(org-level-1 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 1.7))))
+ '(org-level-2 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 1.5))))
+ '(org-level-3 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 1.25))))
+ '(org-level-4 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif" :height 1.1))))
+ '(org-level-5 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif"))))
+ '(org-level-6 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif"))))
+ '(org-level-7 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif"))))
+ '(org-level-8 ((t (:inherit default :weight bold :foreground "#b2b2b2" :family "Sans Serif"))))
  '(variable-pitch ((t (:family "Source Sans Pro" :height 180 :weight light)))))
