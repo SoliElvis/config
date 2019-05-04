@@ -4,7 +4,7 @@
 (setq org-hide-emphasis-markers t)
 (define-key mode-specific-map [?a] 'org-agenda)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 ;; Activate org-zotxt-mode in org-mode buffers
 (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
