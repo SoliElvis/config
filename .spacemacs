@@ -46,7 +46,7 @@
         nlinum
         elpy
         linum-relative
-        ;; engine-mode
+        engine-mode
         org-noter
         org-ref
         org-download
@@ -81,7 +81,7 @@
                                 (projects . 7))
    dotspacemacs-startup-buffer-responsive t
    dotspacemacs-scratch-mode 'text-mode
-   dotspacemacs-themes '(creamsody
+   dotspacemacs-themes '(creamsody-theme
                          spacemacs-dark
                          spacemacs-light)
    dotspacemacs-colorize-cursor-according-to-state t
@@ -210,159 +210,70 @@
 
 (defun dotspacemacs/user-config ()
 
+
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 2)
   (setq c-basic-indent 2)
-  ;; (set-frame-font "Iosevka 12" :weight bold nil t)
-  ;; (set-frame-font "Source Code Pro 12" :weight bold nil t)
-  ;; (set-frame-font "Inconsolata 12" :weight bold nil t)
+  (set-frame-font "Inconsolata 12"  nil t)
+  (set-frame-font "Iosevka 12" nil t)
+  (set-frame-font "Source Code Pro 12" nil t)
   (autoload 'ibuffer "ibuffer" "List buffers." t)
   (set-frame-parameter (selected-frame) 'alpha '(100 . 90))
-
   (drag-stuff-global-mode 1)
   (drag-stuff-define-keys)
-
   (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
   (custom-set-variables '(zoom-window-mode-line-color "DarkGreen"))
   (global-set-key (kbd "C-M-/") 'my-expand-file-name-at-point)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
-
-  ;;python
-  (elpy-enable)
-  (add-hook 'python-mode-hook
-  (lambda ()
-    (setq indent-tabs-mode nil)
-    (setq tab-width 2)
-    (setq python-shift-right 2)
-    (setq python-shift-left 2)
-    (setq python-indent 2)))
-  (defun endless/python-mode-hook ()
-    (setq indent-tabs-mode nil))
-  (add-hook 'python-mode-hook #'endless/python-mode-hook)
-  (add-hook 'python-mode-hook
-            (function (lambda ()
-                        (setq evil-shift-width python-indent))))
-
-  (setq preview-gs-command "/usr/bin/gs")
-  (setq-default indent-tabs-mode nil)
-  (custom-set-variables
-   '(python-guess-indent nil)
-   '(python-indent-offset 2))
-
-  (add-hook 'python-mode-hook
-    (lambda ()
-      (setq indent-tabs-mode nil)
-      (setq tab-width 2)
-      (setq py-indent-tabs-mode 2)
-      (setq python-indent-offset 2)
-      (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
-  (add-hook 'elpy-mode-hook
-            (lambda ()
-              (setq indent-tabs-mode nil)
-              (setq tab-width 2)
-              (setq py-indent-tabs-mode 2)
-              (setq python-indent-offset 2)
-              (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
-
-  ;; tex
-  ;; automatically annotate highlights
-  (setq pdf-annot-activate-created-annotations t)
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   (bind-key* "C-c y" 'clipboard-yank)
-
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 1)
-
   (setq-default tab-width 2)
   (setq-default dotspacemacs-lines-numbers '(:relative t
-                                             :size-limit-kb 1000))
+                                                       :size-limit-kb 1000))
+  ;; (add-to-list 'load-path "~/.emacs.d/private/")
+  ;; automatically annotate highlights
+  (setq pdf-annot-activate-created-annotations t)
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+  ;;my-engine
+  (load-file "~/.emacs.d/private/my-engine.el")
+  ;;python
+  (load-file "~/.emacs.d/private/my-python.el")
+  ;;tex
+  (load-file ".emacs.d/private/my-tex.el")
+  ;; Org Mode
+  (load-file ".emacs.d/private/my-org.el")
 
+  ;;private interactive functions
+  (defun toggle-maximize-buffer () "Maximize buffer"
+         (interactive)
+         (if (= 1 (length (window-list)))
+             (jump-to-register '_)
+           (progn
+             (window-configuration-to-register '_)
+             (delete-other-windows))))
 
   (defun my-expand-file-name-at-point ()
     "Use hippie-expand to expand the filename"
     (interactive)
     (let ((hippie-expand-try-functions-list
-                                            '(try-complete-file-name-partially
-                                              try-complete-file-name)))
-          (call-interactively 'hippie-expand)))
-
-
-;; tex
-;;------------------------------------------------------------------------------------
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
-(setq TeX-source-correlate-mode t)
-(setq TeX-save-query nil)
-(setq TeX-source-correlate-mode t)
-(setq TeX-electric-math (cons "$" "$") )
-(setq-default TeX-master nil)
-(autoload 'ivy-bibtex "ivy-bibtex" "" t)
-;; ivy-bibtex requires ivy's `ivy--regex-ignore-order` regex builder, which
-;; ignores the order of regexp tokens when searching for matching candidates.
-;; Add something like this to your init file:
-(setq ivy-re-builders-alist
-      '((ivy-bibtex . ivy--regex-ignore-order)
-        (t . ivy--regex-plus)))
-
-;;-------------------------------------------------------------------------------
-  ;; Org Mode
-(setq org-books-file "~/org/mylist.org")
-(setq org-agenda-files '("~/org"))
-(setq org-hide-emphasis-markers t)
-(font-lock-add-keywords 'org-mode
-                        '(("^ *\\([-]\\) "
-                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-(defun org-archive-done-tasks ()
-  (interactive)
-  (org-map-entries
-   (lambda ()
-     (org-archive-subtree)
-     (setq org-map-continue-from (outline-previous-heading)))
-   "/DONE" 'agenda))
+           '(try-complete-file-name-partially
+             try-complete-file-name)))
+      (call-interactively 'hippie-expand)))
 
   (defun org-toggle-link-display ()
     "Toggle the literal or descriptive display of links."
     (interactive)
     (if org-descriptive-links
         (progn (org-remove-from-invisibility-spec '(org-link))
-              (org-restart-font-lock)
-              (setq org-descriptive-links nil))
+               (org-restart-font-lock)
+               (setq org-descriptive-links nil))
       (progn (add-to-invisibility-spec '(org-link))
-            (org-restart-font-lock)
-            (setq org-descriptive-links t))))
+             (org-restart-font-lock)
+             (setq org-descriptive-links t))))
 
-  (setq org-books-file "~/org/my-list.org")
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
-
-  ;; Activate org-zotxt-mode in org-mode buffers
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-  (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
-  (define-key org-mode-map
-    (kbd "C-c \" \"") (lambda () (interactive)
-                        (org-zotxt-insert-reference-link '(4))))
-  (defconst zotxt-url-base
-    "http://localhost:23119/zotxt")
-  (eval-after-load "zotxt"
-    '(setq zotxt-default-bibliography-style "mkbehr-short"))
-
-
-;;org pretty
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
-  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-  (define-key mode-specific-map [?a] 'org-agenda)
-
-  (setq org-ref-bibliography-notes "~/org/ref/notes.org"
-        org-ref-default-bibliography '("~/org/ref/master.bib")
-        org-ref-pdf-directory "~/org/ref/pdfs/")
-
-  (setq bibtex-completion-bibliography "~/org/ref/master.bib"
-        bibtex-completion-library-path "~/org/ref/pdfs"
-        bibtex-completion-notes-path "~/org/ref/notes.org")
 )
 
 (custom-set-variables
@@ -376,7 +287,7 @@
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (fzf smooth-scrolling origami flycheck yasnippet async ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org restart-emacs rainbow-delimiters popwin paradox open-junk-file neotree move-text lorem-ipsum link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zotxt zoom-window zenburn-theme zen-and-art-theme yapfify yaml-mode xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme railscasts-theme racket-mode pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-download org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
+    (engine-mode fzf smooth-scrolling origami flycheck yasnippet async ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org restart-emacs rainbow-delimiters popwin paradox open-junk-file neotree move-text lorem-ipsum link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zotxt zoom-window zenburn-theme zen-and-art-theme yapfify yaml-mode xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme railscasts-theme racket-mode pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-download org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
  '(python-indent-guess-indent-offset nil)
  '(python-indent-offset 2)
  '(zoom-window-mode-line-color "DarkGreen"))
