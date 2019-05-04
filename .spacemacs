@@ -209,37 +209,42 @@
 (defun dotspacemacs/user-init ())
 
 (defun dotspacemacs/user-config ()
-  (load-theme 'creamsody)
-
-
+  ;;basic formating
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 2)
   (setq c-basic-indent 2)
-  (set-frame-font "Inconsolata 12"  nil t)
-  (set-frame-font "Iosevka 12" nil t)
+  (setq-default tab-width 2)
+  (setq-default dotspacemacs-lines-numbers '(:relative t
+                                                       :size-limit-kb 1000))
+  ;;pretty
+  (load-theme 'creamsody)
+  ;; (set-frame-font "Inconsolata 12"  nil t)
+  ;; (set-frame-font "Iosevka 12" nil t)
   (set-frame-font "Source Code Pro 12" nil t)
-  (autoload 'ibuffer "ibuffer" "List buffers." t)
   (set-frame-parameter (selected-frame) 'alpha '(100 . 90))
-  (drag-stuff-global-mode 1)
-  (drag-stuff-define-keys)
-  (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
-  (custom-set-variables '(zoom-window-mode-line-color "DarkGreen"))
-  (global-set-key (kbd "C-M-/") 'my-expand-file-name-at-point)
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (bind-key* "C-c y" 'clipboard-yank)
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 1)
-  (setq-default tab-width 2)
-  (setq-default dotspacemacs-lines-numbers '(:relative t
-                                                       :size-limit-kb 1000))
-  ;; flyspell
 
-  ;; (add-to-list 'load-path "~/.emacs.d/private/")
+  ;; basic config and bindings
+  (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
+  (global-set-key (kbd "C-M-/") 'my-expand-file-name-at-point)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (bind-key* "C-c y" 'clipboard-yank)
+  (autoload 'ibuffer "ibuffer" "List buffers." t)
+  (custom-set-variables '(zoom-window-mode-line-color "DarkGreen"))
   ;; automatically annotate highlights
   (setq pdf-annot-activate-created-annotations t)
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+  ;;drag stuff
+  (drag-stuff-global-mode 1)
+  (drag-stuff-define-keys)
+
+  ;; flyspell
+
+  ;; loading private "layers"
   ;;my-engine
   (load-file "~/.emacs.d/private/my-engine.el")
   ;;python
@@ -250,6 +255,7 @@
   (load-file ".emacs.d/private/my-org.el")
 
   ;;private interactive functions
+  ;;-----------------------------
   (defun toggle-maximize-buffer () "Maximize buffer"
          (interactive)
          (if (= 1 (length (window-list)))
