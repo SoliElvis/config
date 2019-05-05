@@ -17,7 +17,6 @@
   '(setq zotxt-default-bibliography-style "mkbehr-short"))
 
 
-
 (setq org-ref-bibliography-notes "~/org/ref/notes.org"
       org-ref-default-bibliography '("~/org/ref/master.bib")
       org-ref-pdf-directory "~/org/ref/pdfs/")

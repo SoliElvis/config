@@ -261,7 +261,12 @@
   (drag-stuff-global-mode 1)
   (drag-stuff-define-keys)
 
-  ;; flyspell
+  ;; flys
+  (dolist (hook '(text-mode-hook))
+    (add-hook hook (lambda () (flyspell-mode 1))))
+  (dolist (hook '(change-log-mode-hook log-edit-mode-hook
+                  org-mode))
+    (add-hook hook (lambda () (flyspell-mode -1))))
 
   ;; loading private "layers"
   ;;my-engine
