@@ -39,11 +39,6 @@
       (setq org-map-continue-from (outline-previous-heading)))
     "/DONE" 'agenda))
 
-;; (require 'org-gcal)
-;; (setq org-gcal-client-id "fred.boileau@gmail.com"
-;;       org-gcal-client-secret "https://calendar.google.com/calendar/ical/fred.boileau%40gmail.com/\
-;;         private-bd2a7815d818600f905476a0a77d6467/basic.ics"
-;;       org-gcal-file-alist '(("fred.boileau@gmail.com" .  "~/org/tasks.org")))
 
 (use-package org-caldav
   :init
@@ -68,12 +63,13 @@
 	   (* 1 secs) nil 'org-caldav-sync)))
 
   ;; Actual calendar configuration edit this to meet your specific needs
-  (setq org-caldav-url "https://us.hostiso.cloud/remote.php/dav/calendars/\
-                        frederic.boileau@protonmail.com@us.hostiso.cloud")
+  (setq org-caldav-url
+  "https://us.hostiso.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
   (setq org-caldav-calendars
-    '((:calendar-id "desk-org"
-	    	:files ("~/tasks.org"))))
-  ;; (setq org-caldav-backup-file "~/org-caldav/org-caldav-backup.org")
+    '((:calendar-id "org-test" :files ("~/org/tasks.org")
+       :inbox "~/org/calendars/org-caldav-inbox.org")))
+
+  (setq org-caldav-backup-file "~/org/org-caldav-backup.org")
   (setq org-caldav-save-directory "~/org/org-caldav/")
 
   :config
