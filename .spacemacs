@@ -214,16 +214,12 @@
 (defun dotspacemacs/user-init ())
 
 (defun dotspacemacs/user-config ()
-
-
-
   ;;basic formating
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 2)
   (setq c-basic-indent 2)
   (setq-default tab-width 2)
-  (setq-default dotspacemacs-lines-numbers '(:relative t
-                                                       :size-limit-kb 1000))
+  (setq-default dotspacemacs-lines-numbers '(:relative t :size-limit-kb 1000))
   ;;pretty
   ;; (load-theme 'creamsody)
   ;; (set-frame-font "Inconsolata 12"  nil t)
@@ -246,7 +242,6 @@
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)
-
   ;; basic config and bindings
   (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -256,30 +251,24 @@
   ;; automatically annotate highlights
   (setq pdf-annot-activate-created-annotations t)
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-
   ;;drag stuff
   (drag-stuff-global-mode 1)
   (drag-stuff-define-keys)
-
   ;; flys
   (dolist (hook '(text-mode-hook))
     (add-hook hook (lambda () (flyspell-mode 1))))
   (dolist (hook '(change-log-mode-hook log-edit-mode-hook
-                  org-mode))
+                  org-mode prog-mode))
     (add-hook hook (lambda () (flyspell-mode -1))))
 
+;;------------------------------------------------
   ;; loading private "layers"
-  ;;my-engine
   (load-file "~/.emacs.d/private/my-engine.el")
-  ;;python
   (load-file "~/.emacs.d/private/my-python.el")
-  ;;tex
   (load-file ".emacs.d/private/my-tex.el")
-  ;; Org Mode
   (load-file ".emacs.d/private/my-org.el")
-
-  ;;private interactive functions
-  ;;-----------------------------
+;;------------------------------------------------
+  ;; private interactive functions
   (defun toggle-maximize-buffer () "Maximize buffer"
          (interactive)
          (if (= 1 (length (window-list)))
@@ -309,7 +298,7 @@
              (org-restart-font-lock)
              (setq org-descriptive-links t))))
 
-)
+);;end config
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
