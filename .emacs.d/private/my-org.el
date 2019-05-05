@@ -1,4 +1,5 @@
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
 (use-package org
   :ensure t        ; But it comes with Emacs now!?
   :init
@@ -23,8 +24,6 @@
         bibtex-completion-library-path '("~/org/ref/pdfs")
         bibtex-completion-notes-path '("~/org/ref/notes.org"))
 
-  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
-  (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))   ;; Journal entries
   (add-hook 'org-mode-hook 'yas-minor-mode-on)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   (define-key mode-specific-map [?a] 'org-agenda)
@@ -120,8 +119,7 @@
   ;; Add the close emacs hook
   ;; (add-hook 'kill-emacs-hook 'org-caldav-sync-at-close)
   )
-(use-package org-drill :ensure org-plus-contrib)
-(use-package org-mime :ensure t)
+;; (use-package org-mime :ensure t)
 
 
 

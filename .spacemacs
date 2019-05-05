@@ -20,7 +20,6 @@
         common-lisp
         csv
         emacs-lisp
-        fzf
         git
         haskell
         ivy
@@ -40,7 +39,9 @@
       '(
         (org-books :location (recipe :fetcher github :repo "lepisma/org-books"))
         avy
+        auth-source-pass
         creamsody-theme
+        epa
         doom-themes
         drag-stuff py-autopep8 smooth-scroll julia-mode
         elpy
@@ -54,7 +55,6 @@
         org-agenda-property
         org-bullets
         org-download
-        org-drill
         org-gcal
         org-caldav
         org-noter
@@ -220,7 +220,9 @@
                                                     hybrid-mode-enable-evilified-state t
                                                     hybrid-mode-enable-hjkl-bindings t
                                                     hybrid-mode-default-state 'normal))
-  ;;basic formatting
+  (setq auth-sources '((:source "~/authinfo.gpg")))
+  ;;basic formattin
+  ;;g
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 2)
   (setq c-basic-indent 2)
@@ -230,24 +232,21 @@
   ;; (load-theme 'creamsody)
   ;; (set-frame-font "Inconsolata 12"  nil t)
   ;; (set-frame-font "Iosevka 12" nil t)
-  (set-frame-font "Source Code Pro 12" nil t)
+  ;; (set-frame-font "Source Code Pro 12" nil t)
   (set-frame-parameter (selected-frame) 'alpha '(100 . 90))
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 1)
   (require 'doom-themes)
-  ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'doom-one t) ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
   (doom-themes-neotree-config)
-  ;; or for treemacs users
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
-  ;; (doom-themes-org-config)
+  ; (doom-themes-org-config)
   ;; basic config and bindings
   (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -260,9 +259,9 @@
   (drag-stuff-global-mode 1)
   (drag-stuff-define-keys)
 
-  (add-hook 'prog-mode 'flyspell-prog-mode) ;; Requires Ispell
-  (add-hook 'prog-mode 'rainbow-delimiters-mode)
-  (add-hook 'prog-mode 'hs-minor-mode)
+  (add-hook 'emacs-lisp-mode-hook 'flyspell-prog-mode) ;; Requires Ispell
+  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
   (add-hook 'emacs-lisp-mode-hook
                 (lambda ()
                   (setq indent-tabs-mode nil)
@@ -322,7 +321,7 @@
  '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
-    ("c7f10959cb1bc7a36ee355c765a1768d48929ec55dde137da51077ac7f899521" "4b19d61c560a93ef90767abe513c11f236caec2864617d718aa366618133704c" "4138944fbed88c047c9973f68908b36b4153646a045648a22083bd622d1e636d" "174502267725776b47bdd2d220f035cae2c00c818765b138fea376b2cdc15eb6" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bd7b7c5df1174796deefce5debc2d976b264585d51852c962362be83932873d9" "89f545ddc104836b27167696db89b371f23893d5b2f038d43383d877ee678d3d" default)))
+    ("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" "c7f10959cb1bc7a36ee355c765a1768d48929ec55dde137da51077ac7f899521" "4b19d61c560a93ef90767abe513c11f236caec2864617d718aa366618133704c" "4138944fbed88c047c9973f68908b36b4153646a045648a22083bd622d1e636d" "174502267725776b47bdd2d220f035cae2c00c818765b138fea376b2cdc15eb6" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bd7b7c5df1174796deefce5debc2d976b264585d51852c962362be83932873d9" "89f545ddc104836b27167696db89b371f23893d5b2f038d43383d877ee678d3d" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(fci-rule-color "#3C3D37")
  '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
@@ -336,7 +335,11 @@
      ("#A75B00" . 70)
      ("#F309DF" . 85)
      ("#3C3D37" . 100))))
+ '(jdee-db-active-breakpoint-face-colors (cons "#1B2229" "#51afef"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(magit-diff-use-overlays nil)
+ '(objed-cursor-color "#ff6c6b")
  '(package-selected-packages
    (quote
     (helm magit transient org-journal helm-pydoc helm-hoogle helm-gitignore helm-css-scss helm-company helm-c-yasnippet flyspell-correct-helm counsel flyspell-correct-popup doom-themes all-the-icons memoize org-caldav org-gcal creamsody-theme-theme engine-mode fzf smooth-scrolling origami flycheck yasnippet async ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org restart-emacs rainbow-delimiters popwin paradox open-junk-file neotree move-text lorem-ipsum link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zotxt zoom-window zenburn-theme zen-and-art-theme yapfify yaml-mode xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme railscasts-theme racket-mode pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-download org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
