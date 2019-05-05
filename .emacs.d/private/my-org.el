@@ -13,15 +13,15 @@
 
         org-agenda-files '("~/org")
         org-books-file "~/org/my-list.org"
-        org-hide-emphasis-markers t)
+        org-hide-emphasis-markers t
 
-        org-ref-bibliography-notes "~/org/ref/notes.org"
+        org-ref-bibliography-notes '("~/org/ref/notes.org")
         org-ref-default-bibliography '("~/org/ref/master.bib")
-        org-ref-pdf-directory "~/org/ref/pdfs/"
+        org-ref-pdf-directory '("~/org/ref/pdfs")
 
-        bibtex-completion-bibliography "~/org/ref/master.bib"
-        bibtex-completion-library-path "~/org/ref/pdfs"
-        bibtex-completion-notes-path "~/org/ref/notes.org"
+        bibtex-completion-bibliography '("~/org/ref/master.bib")
+        bibtex-completion-library-path '("~/org/ref/pdfs")
+        bibtex-completion-notes-path '("~/org/ref/notes.org"))
 
   (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
   (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))   ;; Journal entries
@@ -38,50 +38,38 @@
      (lambda ()
        (org-archive-subtree)
        (setq org-map-continue-from (outline-previous-heading)))
-     "/DONE" 'agenda))
+     "/DONE" 'agenda)))
 
-  ;; Activate org-zotxt-mode in org-mode buffers
-  (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
-  (define-key org-mode-map
-    (kbd "C-c \" \"") (lambda () (interactive)
-                        (org-zotxt-insert-reference-link '(4))))
-  (defconst zotxt-url-base
-    "http://localhost:23119/zotxt")
-  (eval-after-load "zotxt"
-    '(setq zotxt-default-bibliography-style "mkbehr-short"))
+;; Activate org-zotxt-mode in org-mode buffers
+(add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
+(define-key org-mode-map
+  (kbd "C-c \" \"") (lambda () (interactive)
+                      (org-zotxt-insert-reference-link '(4))))
+(defconst zotxt-url-base
+  "http://localhost:23119/zotxt")
+(eval-after-load "zotxt"
+  '(setq zotxt-default-bibliography-style "mkbehr-short"))
 
-  )
-
-(use-package org-journal
-  :ensure t
-  :init
-  (setq org-journal-dir "~/org/journal/")
-  (setq org-journal-date-format "#+TITLE: Journal Entry- %e %b %Y (%A)")
-  (setq org-journal-time-format ""))
-
-(defun get-journal-file-today ()
-  "Return filename for today's journal entry."
-  (let ((daily-name (format-time-string "%Y%m%d")))
-    (expand-file-name (concat org-journal-dir daily-name))))
-
-(defun journal-file-today ()
-  "Create and load a journal file based on today's date."
+(defun meeting-notes ()
+  "Call this after creating an org-mode heading for where the notes for the
+  meeting should be. After calling this function, call 'meeting-done' to reset the
+  environment."
   (interactive)
-  (find-file (get-journal-file-today)))
+  (outline-mark-subtree)                              ;; Select org-mode section
+  (narrow-to-region (region-beginning) (region-end))  ;; Only show that region
+  (deactivate-mark)
+  (delete-other-windows)                              ;; Get rid of other windows
+  (text-scale-set 2)                                  ;; Text is now readable by others
+  (fringe-mode 0)
+  (message "When finished taking your notes, run meeting-done."))
 
-(global-set-key (kbd "C-c f j") 'journal-file-today)
-(defun get-journal-file-yesterday ()
-  "Return filename for yesterday's journal entry."
-  (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
-         (daily-name (format-time-string "%Y%m%d" yesterday)))
-    (expand-file-name (concat org-journal-dir daily-name))))
-
-(defun journal-file-yesterday ()
-  "Creates and load a file based on yesterday's date."
+(defun meeting-done ()
+  "Attempt to 'undo' the effects of taking meeting notes."
   (interactive)
-  (find-file (get-journal-file-yesterday)))
-
-(global-set-key (kbd "C-c f y") 'journal-file-yesterday)
+  (widen)                                       ;; Opposite of narrow-to-region
+  (text-scale-set 0)                            ;; Reset the font size increase
+  (fringe-mode 1)
+  (winner-undo))
 
 
 (use-package org-caldav
@@ -130,32 +118,10 @@
 	      (when (eq major-mode 'org-mode)
 		(org-caldav-sync-with-delay 300))))
   ;; Add the close emacs hook
-  (add-hook 'kill-emacs-hook 'org-caldav-sync-at-close))
-
+  ;; (add-hook 'kill-emacs-hook 'org-caldav-sync-at-close)
+  )
 (use-package org-drill :ensure org-plus-contrib)
 (use-package org-mime :ensure t)
 
-;; (defun org-text-bold () "Wraps the region with asterisks."
-;;        (interactive)
-;;        (surround-text "*"))
-;; (defun org-text-italics () "Wraps the region with slashes."
-;;        (interactive)
-;;        (surround-text "/"))
-;; (defun org-text-code () "Wraps the region with equal signs."
-;;        (interactive)
-;;        (surround-text "="))
 
-;; (use-package org
-;;   :config
-;;   (bind-keys :map org-mode-map
-;;              ("A-b" . (surround-text-with "+"))
-;;              ("s-b" . (surround-text-with "*"))
-;;              ("A-i" . (surround-text-with "/"))
-;;              ("s-i" . (surround-text-with "/"))
-;;              ("A-=" . (surround-text-with "="))
-;;              ("s-=" . (surround-text-with "="))
-;;              ("A-`" . (surround-text-with "~"))
-;;              ("s-`" . (surround-text-with "~"))
 
-;;              ("C-s-f" . forward-sentence)
-;;              ("C-s-b" . backward-sentence)))
