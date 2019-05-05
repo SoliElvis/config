@@ -1,0 +1,1 @@
+ls | grep -P "regex" | xargs -d"\n" rm
