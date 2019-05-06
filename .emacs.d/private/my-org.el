@@ -94,10 +94,10 @@
 	   (* 1 secs) nil 'org-caldav-sync)))
 
   ;; Actual calendar configuration edit this to meet your specific needs
-  (setq org-caldav-url
-  "https://us.hostiso.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
+  (setq org-caldav-url "https://free01.thegood.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
   (setq org-caldav-calendars
-    '((:calendar-id "org-test" :files ("~/org/tasks.org")
+        '((:calendar-id "org-test" :files ("~/org/tasks.org" "~/org/school.org" "~/org/life.org"
+                                           "~/org/geek.org")
        :inbox "~/org/calendars/org-caldav-inbox.org")))
 
   (setq org-caldav-backup-file "~/org/org-caldav-backup.org")
