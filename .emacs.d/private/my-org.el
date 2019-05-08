@@ -111,12 +111,15 @@
   (setq org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due))
   ;; This ensures "scheduled" org items show up, and show up as start times
   (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
+
+  ;;sync triggers scanning home TODO
+
   ;; Add the delayed save hook with a five minute idle timer
-  (add-hook 'after-save-hook
-	    (lambda ()
-	      (when (eq major-mode 'org-mode)
-		(org-caldav-sync-with-delay 300))))
-  ;; Add the close emacs hook
+  ;; (add-hook 'after-save-hook
+	;;     (lambda ()
+	;;       (when (eq major-mode 'org-mode)
+	;; 	(org-caldav-sync-with-delay 300))))
+  ;; ;; Add the close emacs hook
   ;; (add-hook 'kill-emacs-hook 'org-caldav-sync-at-close)
   )
 ;; (use-package org-mime :ensure t)
