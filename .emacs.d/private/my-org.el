@@ -12,8 +12,8 @@
         org-src-tab-acts-natively t
         org-confirm-babel-evaluate nil
 
-        org-agenda-files '("~/Nextcloud/org")
-        org-books-file "~/Nextcloud/org/my-list.org"
+        org-agenda-files '("~/org")
+        org-books-file "~/org/my-list.org"
         org-hide-emphasis-markers t
 
         org-ref-bibliography-notes '("~/org/ref/notes.org")
