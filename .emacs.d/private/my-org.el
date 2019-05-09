@@ -12,8 +12,8 @@
         org-src-tab-acts-natively t
         org-confirm-babel-evaluate nil
 
-        org-agenda-files '("~/org")
-        org-books-file "~/org/my-list.org"
+        org-agenda-files '("~/Nextcloud/org")
+        org-books-file "~/Nextcloud/org/my-list.org"
         org-hide-emphasis-markers t
 
         org-ref-bibliography-notes '("~/org/ref/notes.org")
@@ -96,7 +96,9 @@
   ;; Actual calendar configuration edit this to meet your specific needs
   (setq org-caldav-url "https://free01.thegood.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
   (setq org-caldav-calendars
-        '((:calendar-id "org-test" :files ("~/org/tasks.org" "~/org/school.org" "~/org/life.org"
+        '((:calendar-id "org-test" :files ("~/org/tasks.org"
+                                           "~/org/school.org"
+                                           "~/org/life.org"
                                            "~/org/geek.org")
        :inbox "~/org/calendars/org-caldav-inbox.org")))
 
