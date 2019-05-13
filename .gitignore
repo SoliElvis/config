@@ -1,0 +1,7 @@
+*
+!.spacemacs
+!.bashrc
+!.bash_profile
+!.emacs.d/private/*
+!.gitignore
+!.tmux.conf
