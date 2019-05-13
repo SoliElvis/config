@@ -16,9 +16,9 @@
         org-books-file "~/org/my-list.org"
         org-hide-emphasis-markers t
 
-        org-ref-bibliography-notes '("~/org/ref/notes.org")
-        org-ref-default-bibliography '("~/org/ref/master.bib")
-        org-ref-pdf-directory '("~/org/ref/pdfs")
+        org-ref-bibliography-notes '("~/Nextcloud/org/ref/notes.org")
+        org-ref-default-bibliography '("~/Nextcloud/org/ref/master-ocr.bib")
+        org-ref-pdf-directory '("~/Nextcloud/org/ref/pdfs")
 
         bibtex-completion-bibliography '("~/org/ref/master.bib")
         bibtex-completion-library-path '("~/org/ref/pdfs")
@@ -96,11 +96,9 @@
   ;; Actual calendar configuration edit this to meet your specific needs
   (setq org-caldav-url "https://free01.thegood.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
   (setq org-caldav-calendars
-        '((:calendar-id "versa" :files ("~/org/tasks.org"
-                                           "~/org/school.org"
-                                           "~/org/life.org"
+        '((:calendar-id "org-test" :files ("~/org/tasks.org" "~/org/school.org" "~/org/life.org"
                                            "~/org/geek.org")
-       :inbox "/home/sole/org/calendars/org-caldav-inbox.org")))
+       :inbox "~/org/calendars/org-caldav-inbox.org")))
 
   (setq org-caldav-backup-file "~/org/org-caldav-backup.org")
   (setq org-caldav-save-directory "~/org/org-caldav/")
