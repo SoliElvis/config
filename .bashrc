@@ -66,20 +66,17 @@ set -o ignoreeof # stops ctrl+d from logging me out
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-#export WORKON_HOME=$HOME/.virtualenvs
-#export PROJECT_HOME=$HOME/Devel
-#source /usr/bin/virtualenvwrapper.sh
 
 
 # Path to the bash it configuration
 export BASH_IT="/home/fredoboileau/.bash_it" # Lock and Load a custom theme file.
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
-source /usr/bin/virtualenvwrapper.sh
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
 
 # Path to the bash it configuration
-export BASH_IT="/home/sole/.bash_it"
+export BASH_IT="/home/fredoboileau/.bash_it"
 # Lock and Load a custom theme file.
 # Leave empty to disable theming.
 # location /.bash_it/themes/
