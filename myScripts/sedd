@@ -1,0 +1,116 @@
+You can also use this as a quick way to print a subset of lines in a data stream:
+$ sed -n ‘2,3p’ data6.txt
+This is line number 2.
+This is line number 3.
+$
+
+You can also use the print command when you need to see a line before it gets altered,
+such as with the substitution or change command. You can create a script that displays
+the line before it’s changed:
+$ sed -n ‘/3/{
+> p
+> s/line/test/p
+> }’ data6.txt
+This is line number 3.
+This is test number 3.
+$
+
+The sed editor prints the line number before the actual line of text. The equal sign
+command comes in handy if you’re searching for a specific text pattern in the data stream:
+$ sed -n ‘/number 4/{
+> =
+> p
+> }’ data6.txt
+4
+This is line number 4.
+$
+
+
+The list command ( l ) allows you to print both the text and nonprintable characters in a
+data stream. Any nonprintable characters are shown using either their octal values,
+preceded by a backslash or the standard C-style nomenclature for common nonprintable
+characters, such as ∖t for tab characters:
+$ cat data9.txt
+This
+line
+contains
+$
+$ sed -n ‘l’ data9.txt
+This\tline\tcontains\ttabs.$
+$
+
+$ sed -n ‘/Browncoat/w Browncoats.txt’ data11.txt
+$
+$ cat Browncoats.txt
+Blum, R
+Browncoat
+Bresnahan, C Browncoat
+$
+The sed editor writes to a destination file only the data lines that contain the text pattern.
+
+Here’s the format of the read command:
+[address]r filename
+The filename parameter specifies either an absolute or relative pathname for the file that
+contains the data. You can’t use a range of addresses for the read command. You can only
+specify a single line number or text pattern address. The sed editor inserts the text from
+the file after the address.
+$ cat data12.txt
+This is an added line.
+This is the second added line.
+$
+$ sed ‘3r data12.txt’ data6.txt
+This is line number 1.
+This is line number 2.
+This is line number 3.
+This is an added line.
+This is the second added line.
+This is line number 4.
+$
+The sed editor inserts into the data stream all the text lines in the data file. The same
+technique works when using a text pattern address:
+$ sed ‘/number 2/r data12.txt’ data6.txt
+This is line number 1.
+This is line number 2.
+This is an added line.
+This is the second added line.
+This is line number 3.
+This is line number 4.
+$
+
+If you want to add text to the end of a data stream, just use the dollar sign
+address symbol: 
+$ sed ‘$r data12.txt’ data6.txt
+This is line number 1.
+This is line number 2.
+This is line number 3.
+This is line number 4.
+This is an added line.
+This is the second added line.
+$
+
+A cool application of the read command is to use it in conjunction with a delete
+command to replace a placeholder in a file with data from another file. For example,
+suppose that you had a form stored in a text file that looked like this:
+$ cat notice.std
+Would the following people:
+LIST
+please report to the ship’s captain.
+$
+The form letter uses the generic placeholder LIST in place of a list of people. To insert the
+list of people after the placeholder, you just use the read command. However, this still
+leaves the placeholder text in the output. To remove that, just use the delete command.
+The result looks like this:
+$ sed ‘/LIST/{
+> r data11.txt
+> d
+> }’ notice.std
+Would the following people:
+Blum, R
+Browncoat
+McGuiness, A Alliance
+Bresnahan, C Browncoat
+Harken, C
+Alliance
+please report to the ship’s captain.
+$
+Now the placeholder text is replaced with the list of names from the data file.

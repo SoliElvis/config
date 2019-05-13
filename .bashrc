@@ -33,6 +33,7 @@ export OOO_FORCE_DESKTOP=gnome soffice
 export BROWSER='chromium'
 export PAGER=less
 export EDITOR=vim
+export PATH=$PATH:$HOME/bin:/usr/local/bin:/home/sole/.emacs.d/bin:$HOME/myScripts
 export LESS='-R'
 export HISTCONTROL=ignoredups
 export HISTSIZE=5000
@@ -51,7 +52,6 @@ alias j="jobs"
 alias e="emacs &"
 alias ftg="git status"
 
-stty -ixon # disable XON/XOFF flow control (^s/^q)
 complete -cf sudo # Tab complete for sudo
 
 # shopt options
@@ -73,6 +73,14 @@ alias grep='grep --color=auto'
 
 # Path to the bash it configuration
 export BASH_IT="/home/fredoboileau/.bash_it" # Lock and Load a custom theme file.
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+source /usr/bin/virtualenvwrapper.sh
+
+
+# Path to the bash it configuration
+export BASH_IT="/home/sole/.bash_it"
+# Lock and Load a custom theme file.
 # Leave empty to disable theming.
 # location /.bash_it/themes/
 export BASH_IT_THEME='powerline-multiline'
