@@ -7,9 +7,10 @@ alias o="xdg-open"
 alias r="ranger"
 alias j="jobs"
 alias s="source"
-alias e="emacs &"
+alias e='emacsclient -c -a "" $*'
 alias v="vim"
 alias n="nvim"
+
 
 alias tma="tmux attach-session -t"
 alias tmn="tmux new-session -s"

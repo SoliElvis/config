@@ -1,7 +1,6 @@
 
 call plug#begin('~/.vim/plugged')
 
-" let Vundle manage Vundle, required
 Plug 'VundleVim/Vundle.vim'
 Plug 'lervag/vimtex'
 Plug 'tpope/vim-fugitive'
