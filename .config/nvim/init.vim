@@ -1,1 +1,1 @@
-__env/init.vim
+/home/sole/__env/.vimrc
