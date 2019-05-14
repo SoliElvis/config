@@ -42,7 +42,7 @@ set -o ignoreeof # stops ctrl+d from logging me out
 
 source /usr/bin/virtualenvwrapper.sh
 
-export BASH_IT="/home/sole/.bash_it"
+export BASH_IT="~/.bash_it"
 export GIT_HOSTING='git@git.domain.com'
 unset MAILCHECK
 export IRC_CLIENT='irssi'
