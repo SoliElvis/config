@@ -9,6 +9,7 @@ alias c="clear"
 alias r="ranger"
 alias rr="source ~/.bashrc"
 alias j="jobs"
+alias p='gitPush'
 alias s="source"
 alias e='emacsclient -c -a "" $* &'
 alias v="vim"
