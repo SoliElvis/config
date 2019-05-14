@@ -7,6 +7,8 @@ Plug 'vim-syntastic/syntastic'
 Plug 'davidhalter/jedi-vim'
 Plug 'tmhedberg/SimpylFold' 
 Plug 'christoomey/vim-tmux-navigator'
+
+Plug 'flazz/vim-colorschemes'   
 call plug#end()
 let g:slime_paste_file = "$HOME/.slime_paste"
 let g:slime_target="tmux"
