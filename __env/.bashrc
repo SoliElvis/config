@@ -24,7 +24,6 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 
-
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 export BASH_IT_THEME='clean'
 stty -ixon # disable XON/XOFF flow control (^s/^q)
@@ -42,7 +41,7 @@ set -o ignoreeof # stops ctrl+d from logging me out
 
 source /usr/bin/virtualenvwrapper.sh
 
-export BASH_IT="~/.bash_it"
+export BASH_IT=$HOME/.bash_it
 export GIT_HOSTING='git@git.domain.com'
 unset MAILCHECK
 export IRC_CLIENT='irssi'

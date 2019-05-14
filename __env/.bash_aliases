@@ -5,6 +5,7 @@ alias grep='grep --color=auto'
 
 alias g="git status"
 alias o="xdg-open"
+alias c="clear"
 alias r="ranger"
 alias rr="source ~/.bashrc"
 alias j="jobs"
