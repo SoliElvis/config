@@ -116,7 +116,7 @@
    dotspacemacs-ex-substitute-global nil
    dotspacemacs-default-layout-name "Default"
    dotspacemacs-display-default-layout nil
-   dotspacemacs-auto-resume-layouts t
+   dotspacemacs-auto-resume-layouts nil
    dotspacemacs-large-file-size 1
    dotspacemacs-auto-save-file-location 'cache
    dotspacemacs-max-rollback-slots 5
@@ -124,94 +124,28 @@
    dotspacemacs-helm-no-header nil
    dotspacemacs-helm-position 'bottom
    dotspacemacs-helm-use-fuzzy 'always
-   ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
-   ;; several times cycle between the kill ring content. (default nil)
    dotspacemacs-enable-paste-transient-state nil
-   ;; Which-key delay in seconds. The which-key buffer is the popup listing
-   ;; the commands bound to the current keystroke sequence. (default 0.4)
-   dotspacemacs-which-key-delay 0.4
-   ;; Which-key frame position. Possible values are `right', `bottom' and
-   ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
-   ;; right; if there is insufficient space it displays it at the bottom.
-   ;; (default 'bottom)
+   dotspacemacs-which-key-delay 0.2
    dotspacemacs-which-key-position 'bottom
-   ;; If non nil a progress bar is displayed when spacemacs is loading. This
-   ;; may increase the boot time on some systems and emacs builds, set it to
-   ;; nil to boost the loading time. (default t)
    dotspacemacs-loading-progress-bar t
-   ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
-   ;; (Emacs 24.4+ only)
    dotspacemacs-fullscreen-at-startup nil
-   ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
-   ;; Use to disable fullscreen animations in OSX. (default nil)
    dotspacemacs-fullscreen-use-non-native nil
-   ;; If non nil the frame is maximized when Emacs starts up.
-   ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
-   ;; (default nil) (Emacs 24.4+ only)
    dotspacemacs-maximized-at-startup nil
-   ;; A value from the range (0..100), in increasing opacity, which describes
-   ;; the transparency level of a frame when it's active or selected.
-   ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-active-transparency 90
-   ;; A value from the range (0..100), in increasing opacity, which describes
-   ;; the transparency level of a frame when it's inactive or deselected.
-   ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-inactive-transparency 90
-   ;; If non nil show the titles of transient states. (default t)
+   dotspacemacs-inactive-transparency 70
    dotspacemacs-show-transient-state-title t
-   ;; If non nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
-   ;; If non nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
-   ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
-   ;; scrolling overrides the default behavior of Emacs which recenters point
-   ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
-   ;; Control line numbers activation.
-   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
-   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
-   ;; This variable can also be set to a property list for finer control:
-   ;; '(:relative nil
-   ;;   :disabled-for-modes dired-mode
-   ;;                       doc-view-mode
-   ;;                       markdown-mode
-   ;;                       org-mode
-   ;;                       pdf-view-mode
-   ;;                       text-mode
-   ;;   :size-limit-kb 1000)
-   ;; (default nil)
    dotspacemacs-line-numbers nil
-   ;; Code folding method. Possible values are `evil' and `origami'.
-   ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
-   ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
-   ;; (default nil)
+   dotspacemacs-folding-method 'origami
    dotspacemacs-smartparens-strict-mode nil
-   ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
-   ;; over any automatically added closing parenthesis, bracket, quote, etc…
-   ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
    dotspacemacs-smart-closing-parenthesis nil
-   ;; Select a scope to highlight delimiters. Possible values are `any',
-   ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
-   ;; emphasis the current one). (default 'all)
    dotspacemacs-highlight-delimiters 'all
-   ;; If non nil, advise quit functions to keep server open when quitting.
-   ;; (default nil)
    dotspacemacs-persistent-server nil
-   ;; List of search tool executable names. Spacemacs uses the first installed
-   ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
-   ;; (default '("ag" "pt" "ack" "grep"))
    dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
-   ;; The default package repository used if no explicit repository has been
-   ;; specified with an installed package.
-   ;; Not used for now. (default nil)
    dotspacemacs-default-package-repository nil
-   ;; Delete whitespace while saving buffer. Possible values are `all'
-   ;; to aggressively delete empty line and long sequences of whitespace,
-   ;; `trailing' to delete only the whitespace at end of lines, `changed'to
-   ;; delete only whitespace for changed lines or `nil' to disable cleanup.
-   ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil))
+   dotspacemacs-whitespace-cleanup t))
 
 (defun dotspacemacs/user-init ())
 
@@ -226,33 +160,22 @@
                                                     hybrid-mode-enable-evilified-state t
                                                     hybrid-mode-enable-hjkl-bindings t
                                                     hybrid-mode-default-state 'normal))
-  ;; (setq auth-sources '((:source "~/authinfo.gpg")))
-  ;;basic formattin
-  ;;g
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 2)
   (setq c-basic-indent 2)
   (setq-default tab-width 2)
   (setq-default dotspacemacs-lines-numbers '(:relative t :size-limit-kb 1000))
-  ;;pretty
-  ;; (load-theme 'creamsody)
-  ;; (set-frame-font "Inconsolata 12"  nil t)
-  ;; (set-frame-font "Iosevka 12" nil t)
-  ;; (set-frame-font "Source Code Pro 12" nil t)
   (set-frame-parameter (selected-frame) 'alpha '(100 . 90))
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 1)
-  (require 'doom-themes)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t) ;; Enable flashing mode-line on errors
+
   (doom-themes-visual-bell-config)
   (doom-themes-neotree-config)
   (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  ; (doom-themes-org-config)
+  (doom-themes-org-config)
+
   ;; basic config and bindings
   (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -260,9 +183,6 @@
   (autoload 'ibuffer "ibuffer" "List buffers." t)
   (custom-set-variables '(zoom-window-mode-line-color "DarkGreen"))
   (setq pdf-annot-activate-created-annotations t)
-  ;;drag stuff
-  ;; (drag-stuff-global-mode 1)
-  ;; (drag-stuff-define-keys)
   (add-hook 'emacs-lisp-mode-hook 'flyspell-prog-mode) ;; Requires Ispell
   (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
@@ -280,6 +200,7 @@
   (load-file "~/.emacs.d/private/my-tex.el")
   (load-file "~/.emacs.d/private/my-org.el")
   (load-file "~/.emacs.d/private/my-engine.el")
+
 
 ;;------------------------------------------------
   ;; private interactive functions
@@ -310,7 +231,17 @@
                (setq org-descriptive-links nil))
       (progn (add-to-invisibility-spec '(org-link))
              (org-restart-font-lock)
-             (setq org-descriptive-links t)))));;end config
+             (setq org-descriptive-links t))))
+
+  (require 'doom-themes)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'spacegray t)
+  (set-frame-font "Source Code Pro 12"  nil t)
+  (set-face-attribute 'default nil
+                      :family "Source Code Pro"
+                      :weight 'normal
+                      :width 'normal));;end config
 
 
 (custom-set-variables
@@ -371,16 +302,6 @@
    (quote
     (unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
  '(zoom-window-mode-line-color "DarkGreen"))
-
-
-
-
-;;
-
-
-
-;; auto-generate custom variable definitions.
-
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
