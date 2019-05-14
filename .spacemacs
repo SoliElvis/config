@@ -316,9 +316,7 @@
                (setq org-descriptive-links nil))
       (progn (add-to-invisibility-spec '(org-link))
              (org-restart-font-lock)
-             (setq org-descriptive-links t))))
-
-);;end config
+             (setq org-descriptive-links t)))));;end config
 
 
 (custom-set-variables
@@ -326,7 +324,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(compilation-message-face (quote default))
+ '(compilation-mess ge-face (quote default))
  '(custom-safe-themes
    (quote
     ("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" "c7f10959cb1bc7a36ee355c765a1768d48929ec55dde137da51077ac7f899521" "4b19d61c560a93ef90767abe513c11f236caec2864617d718aa366618133704c" "4138944fbed88c047c9973f68908b36b4153646a045648a22083bd622d1e636d" "174502267725776b47bdd2d220f035cae2c00c818765b138fea376b2cdc15eb6" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bd7b7c5df1174796deefce5debc2d976b264585d51852c962362be83932873d9" "89f545ddc104836b27167696db89b371f23893d5b2f038d43383d877ee678d3d" default)))

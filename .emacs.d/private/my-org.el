@@ -1,7 +1,6 @@
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 (use-package org
-  :ensure t        ; But it comes with Emacs now!?
   :init
   (setq org-use-speed-commands t
         org-return-follows-link t
@@ -22,7 +21,7 @@
         bibtex-completion-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
         bibtex-completion-library-path '("~/Nextcloud2/zotf_ile")
 
-  (add-hook 'org-mode-hook 'yas-minor-mode-on)
+  ;; (add-hook 'org-mode-hook 'yas-minor-mode-on)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   (define-key mode-specific-map [?a] 'org-agenda)
 
