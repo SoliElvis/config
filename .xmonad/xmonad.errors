@@ -13,14 +13,14 @@ xmonad.hs:63:30: error:
 63 |         focusedBorderColor = myFocusedBorderColor,
    |                              ^^^^^^^^^^^^^^^^^^^^
 
-xmonad.hs:166:53: error:
+xmonad.hs:164:53: error:
     Variable not in scope: minimizeWindow :: Window -> X ()
     |
-166 |     , ((modm,               xK_m     ), withFocused minimizeWindow)
+164 |     , ((modm,               xK_m     ), withFocused minimizeWindow)
     |                                                     ^^^^^^^^^^^^^^
 
-xmonad.hs:169:53: error:
+xmonad.hs:167:53: error:
     Data constructor not in scope: RestoreNextMinimizedWin
     |
-169 |     , ((modm .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
+167 |     , ((modm .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
     |                                                     ^^^^^^^^^^^^^^^^^^^^^^^
