@@ -16,13 +16,11 @@
         org-books-file "~/org/my-list.org"
         org-hide-emphasis-markers t
 
-        org-ref-bibliography-notes '("~/org/ref/notes.org")
-        org-ref-default-bibliography '("~/org/ref/master.bib")
-        org-ref-pdf-directory '("~/org/ref/pdfs")
+        org-ref-default-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
+        org-ref-pdf-directory '("~/Nextcloud2/zotf_ile")
 
-        bibtex-completion-bibliography '("~/org/ref/master.bib")
-        bibtex-completion-library-path '("~/org/ref/pdfs")
-        bibtex-completion-notes-path '("~/org/ref/notes.org"))
+        bibtex-completion-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
+        bibtex-completion-library-path '("~/Nextcloud2/zotf_ile")
 
   (add-hook 'org-mode-hook 'yas-minor-mode-on)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
@@ -37,7 +35,7 @@
      (lambda ()
        (org-archive-subtree)
        (setq org-map-continue-from (outline-previous-heading)))
-     "/DONE" 'agenda)))
+     "/DONE" 'agenda))))
 
 ;; Activate org-zotxt-mode in org-mode buffers
 (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
