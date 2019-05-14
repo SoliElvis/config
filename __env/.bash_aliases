@@ -9,7 +9,7 @@ alias j="jobs"
 alias s="source"
 alias e="emacs &"
 alias v="vim"
-alias n="n"
+alias n="nvim"
 
 alias tma="tmux attach-session -t"
 alias tmn="tmux new-session -s"
