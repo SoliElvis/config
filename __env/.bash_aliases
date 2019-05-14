@@ -10,14 +10,12 @@ alias r="ranger"
 alias rr="source ~/.bashrc"
 alias j="jobs"
 alias s="source"
-alias e='emacsclient -c -a "" $*'
+alias e='emacsclient -c -a "" $* &'
 alias v="vim"
 alias n="nvim"
 
-
 alias tma="tmux attach-session -t"
 alias tmn="tmux new-session -s"
-alias vimt="vim --servername vim"
 alias lt='ls -Alhtr'
 
 alias ftg='git status'
@@ -27,4 +25,3 @@ alias gp='gitPush'
 
 alias lpd="lp -o sides=two-sided-long-edge"
 alias ser="ssh pi@192.168.1.2"
-
