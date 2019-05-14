@@ -13,6 +13,7 @@ alias s="source"
 alias e='emacsclient -c -a "" $* &'
 alias v="vim"
 alias n="nvim"
+alias z="zotero &"
 
 alias tma="tmux attach-session -t"
 alias tmn="tmux new-session -s"
