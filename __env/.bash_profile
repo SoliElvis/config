@@ -6,7 +6,7 @@
 
 # Shell variables
 export OOO_FORCE_DESKTOP=gnome soffice
-export BROWSER='chromium'
+export BROWSER='google-chrome-stable'
 export PAGER=less
 export EDITOR=vim
 export PATH=$PATH:$HOME/bin:/usr/local/bin:$HOME/.emacs.d/bin:$HOME/apps/myScripts
