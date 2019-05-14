@@ -2,3 +2,5 @@
 Devel/
 .config/nvim/.netrwhist
 apps/myScripts/
+.xmonad/xmonad.errors
+
