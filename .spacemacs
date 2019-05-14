@@ -13,7 +13,7 @@
     dotspacemacs-configuration-layers
     '(
 
-        (latex :variables latex-enable-folding t latex-build-command "LatexMk")
+        (latex :variables latex-enable-folding t )
         (shell :variables shell-default-height 30 shell-default-position 'bottom)
         auto-completion
         bibtex
@@ -61,6 +61,7 @@
         org-noter
         org-ref
         origami
+        org-bibtex
         persp-mode
         powerline
         rainbow-delimiters
@@ -146,6 +147,13 @@
 (defun dotspacemacs/user-init ())
 
 (defun dotspacemacs/user-config ()
+  ;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "bibtex %b"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  (setq bibtex-dialect 'biblatex)
   (global-unset-key (kbd "C-x C-c"))
   (global-unset-key (kbd "C-x C-z"))
   (setq auth-source-debug t)
@@ -229,7 +237,6 @@
       (progn (add-to-invisibility-spec '(org-link))
              (org-restart-font-lock)
              (setq org-descriptive-links t))))
-
   (require 'doom-themes)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled

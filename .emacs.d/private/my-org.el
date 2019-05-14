@@ -21,6 +21,7 @@
         bibtex-completion-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
         bibtex-completion-library-path '("~/Nextcloud2/zotf_ile")))
 
+(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 ;; (add-hook 'org-mode-hook 'yas-minor-mode-on)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (define-key mode-specific-map [?a] 'org-agenda)
