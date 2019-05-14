@@ -19,22 +19,22 @@
         org-ref-pdf-directory '("~/Nextcloud2/zotf_ile")
 
         bibtex-completion-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
-        bibtex-completion-library-path '("~/Nextcloud2/zotf_ile")
+        bibtex-completion-library-path '("~/Nextcloud2/zotf_ile")))
 
-  ;; (add-hook 'org-mode-hook 'yas-minor-mode-on)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  (define-key mode-specific-map [?a] 'org-agenda)
+;; (add-hook 'org-mode-hook 'yas-minor-mode-on)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(define-key mode-specific-map [?a] 'org-agenda)
 
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-  (defun org-archive-done-tasks ()
-    (interactive)
-    (org-map-entries
-     (lambda ()
-       (org-archive-subtree)
-       (setq org-map-continue-from (outline-previous-heading)))
-     "/DONE" 'agenda))))
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+(defun org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries
+    (lambda ()
+      (org-archive-subtree)
+      (setq org-map-continue-from (outline-previous-heading)))
+    "/DONE" 'agenda))
 
 ;; Activate org-zotxt-mode in org-mode buffers
 (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
