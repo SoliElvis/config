@@ -61,7 +61,6 @@
         org-noter
         org-ref
         origami
-        org-bibtex
         persp-mode
         powerline
         rainbow-delimiters
