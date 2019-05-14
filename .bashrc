@@ -41,10 +41,6 @@ shopt -s dotglob # files beginning with . to be returned in the results of path-
 set -o noclobber # prevent overwriting files with cat
 set -o ignoreeof # stops ctrl+d from logging me out
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Devel
 source /usr/bin/virtualenvwrapper.sh
 
 

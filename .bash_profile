@@ -20,3 +20,5 @@ LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
 export PYSPARK_SUBMIT_ARGS="--master local[2] pyspark-shell"
 export JAVA_HOME="/usr/bin/java"
 export PROJECT_HOME="/home/sole/apps/"
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
