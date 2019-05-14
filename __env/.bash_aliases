@@ -3,8 +3,10 @@ alias cp='cp -i'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
+alias g="git status"
 alias o="xdg-open"
 alias r="ranger"
+alias rr="source ~/.bashrc"
 alias j="jobs"
 alias s="source"
 alias e='emacsclient -c -a "" $*'

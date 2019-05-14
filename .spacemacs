@@ -146,7 +146,8 @@
 (defun dotspacemacs/user-init ())
 
 (defun dotspacemacs/user-config ()
-
+  (global-unset-key (kbd "C-x C-c"))
+  (global-unset-key (kbd "C-x C-z"))
   (setq auth-source-debug t)
   (setq auth-sources
         '((:source "~/.authinfo.gpg")))
