@@ -18,6 +18,9 @@
         org-ref-default-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
         org-ref-pdf-directory '("~/Nextcloud2/zotf_ile")
 
+        helm-bibtex-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
+        helm-bibtex-library-path '("~/Nextcloud2/zotf_ile")
+
         bibtex-completion-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
         bibtex-completion-library-path '("~/Nextcloud2/zotf_ile")))
 
@@ -46,6 +49,25 @@
   "http://localhost:23119/zotxt")
 (eval-after-load "zotxt"
   '(setq zotxt-default-bibliography-style "mkbehr-short"))
+
+(setq reftex-default-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib"))
+
+(setq org-ref-open-bibtex-pdf-function 'my/org-ref-open-pdf-at-point)
+(defun my/org-ref-open-pdf-at-point ()
+  "Open the pdf for bibtex key under point if it exists."
+  (interactive)
+  (let* ((results (org-ref-get-bibtex-key-and-file))
+         (key (car results))
+         (pdf-file (car (bibtex-completion-find-pdf key))))
+    (if (file-exists-p pdf-file)
+        (org-open-file pdf-file)
+      (message "No PDF found for %s" key))))
+
+(setq bibtex-completion-format-citation-functions
+      '((org-mode      . bibtex-completion-format-citation-org-link-to-PDF)
+        (latex-mode    . bibtex-completion-format-citation-cite)
+        (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
+        (default       . bibtex-completion-format-citation-default)))
 
 (defun meeting-notes ()
   "Call this after creating an org-mode heading for where the notes for the
@@ -123,6 +145,3 @@
   ;; (add-hook 'kill-emacs-hook 'org-caldav-sync-at-close)
   )
 ;; (use-package org-mime :ensure t)
-
-
-
