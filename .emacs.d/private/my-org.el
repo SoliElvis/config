@@ -61,13 +61,15 @@
   :init
   (setq org-caldav-url
   "https://free01.thegood.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
+  ;;let filenames =
   (setq org-caldav-calendars
-        '((:calendar-id "versa"
-              :files ("~/org/life.org" "~/org/appointments.org" "~/org/life.org")
-              :inbox "~/org/inbox-text.org")
-          (:calendar-id "next"
-              :files ("~/Nextcloud2/org/next.org")
-              :inbox "~/Nextcloud2/org-next/next-test.org")))
+  '(
+;;  (:calendar-id "org-test"
+;;    :files ("~/org/life.org" "~/org/appointments.org")
+;;    :inbox "~/org/inbox-text.org")
+    (:calendar-id "next"
+      :files ("~/Nextcloud2/org-next/life.org" "~/Nextcloud2/org-next/school.org")
+      :inbox "~/Nextcloud2/org-next/org-caldav/next-test.org")))
 
   ;; (setq org-caldav-backup-file '("/home/sole/org/org-caldav-backup.org"))
   ;; (setq org-caldav-save-directory '("/home/sole/org/org-caldav/"))
