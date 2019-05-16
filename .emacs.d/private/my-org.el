@@ -1,5 +1,4 @@
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-
 (use-package org
   :init
   (setq org-use-speed-commands t
@@ -23,24 +22,16 @@
 
         bibtex-completion-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
         bibtex-completion-library-path '("~/Nextcloud2/zotf_ile")))
-
-(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-;; (add-hook 'org-mode-hook 'yas-minor-mode-on)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-(define-key mode-specific-map [?a] 'org-agenda)
-
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([-]\\) "
                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-(defun org-archive-done-tasks ()
-  (interactive)
-  (org-map-entries
-    (lambda ()
-      (org-archive-subtree)
-      (setq org-map-continue-from (outline-previous-heading)))
-    "/DONE" 'agenda))
 
-;; Activate org-zotxt-mode in org-mode buffers
+;;agenda stuff
+(define-key mode-specific-map [?a] 'org-agenda)
+
+;;Latex and zot stuff
+(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
 (define-key org-mode-map
   (kbd "C-c \" \"") (lambda () (interactive)
@@ -49,9 +40,7 @@
   "http://localhost:23119/zotxt")
 (eval-after-load "zotxt"
   '(setq zotxt-default-bibliography-style "mkbehr-short"))
-
 (setq reftex-default-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib"))
-
 (setq org-ref-open-bibtex-pdf-function 'my/org-ref-open-pdf-at-point)
 (defun my/org-ref-open-pdf-at-point ()
   "Open the pdf for bibtex key under point if it exists."
@@ -62,13 +51,31 @@
     (if (file-exists-p pdf-file)
         (org-open-file pdf-file)
       (message "No PDF found for %s" key))))
-
 (setq bibtex-completion-format-citation-functions
       '((org-mode      . bibtex-completion-format-citation-org-link-to-PDF)
         (latex-mode    . bibtex-completion-format-citation-cite)
         (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
         (default       . bibtex-completion-format-citation-default)))
+;;calendar stuff
+(use-package org-caldav
+  :init
+  (setq org-caldav-url
+  "https://free01.thegood.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
+  (setq org-caldav-calendars
+        '((:calendar-id "versa"
+              :files ("~/org/life.org" "~/org/appointments.org" "~/org/life.org")
+              :inbox "~/org/inbox-text.org")
+          (:calendar-id "next"
+              :files ("~/Nextcloud2/org/next.org")
+              :inbox "~/Nextcloud2/org-next/next-test.org")))
 
+  ;; (setq org-caldav-backup-file '("/home/sole/org/org-caldav-backup.org"))
+  ;; (setq org-caldav-save-directory '("/home/sole/org/org-caldav/"))
+  (setq org-icalendar-alarm-time 1)
+  (setq org-icalendar-include-todo t)
+  (setq org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due))
+  (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo)))
+;; custom functions
 (defun meeting-notes ()
   "Call this after creating an org-mode heading for where the notes for the
   meeting should be. After calling this function, call 'meeting-done' to reset the
@@ -81,7 +88,6 @@
   (text-scale-set 2)                                  ;; Text is now readable by others
   (fringe-mode 0)
   (message "When finished taking your notes, run meeting-done."))
-
 (defun meeting-done ()
   "Attempt to 'undo' the effects of taking meeting notes."
   (interactive)
@@ -89,59 +95,10 @@
   (text-scale-set 0)                            ;; Reset the font size increase
   (fringe-mode 1)
   (winner-undo))
-
-
-(use-package org-caldav
-  :init
-  ;; This is the sync on close function; it also prompts for save after syncing so
-  ;; no late changes get lost
-  (defun org-caldav-sync-at-close ()
-    (org-caldav-sync)
-    (save-some-buffers))
-
-  ;; This is the delayed sync function; it waits until emacs has been idle for
-  ;; "secs" seconds before syncing.  The delay is important because the caldav-sync
-  ;; can take five or ten seconds, which would be painful if it did that right at save.
-  ;; This way it just waits until you've been idle for a while to avoid disturbing
-  ;; the user.
-  (defvar org-caldav-sync-timer nil
-     "Timer that `org-caldav-push-timer' used to reschedule itself, or nil.")
-  (defun org-caldav-sync-with-delay (secs)
-    (when org-caldav-sync-timer
-      (cancel-timer org-caldav-sync-timer))
-    (setq org-caldav-sync-timer
-	  (run-with-idle-timer
-	   (* 1 secs) nil 'org-caldav-sync)))
-
-  ;; Actual calendar configuration edit this to meet your specific needs
-  (setq org-caldav-url "https://free01.thegood.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
-  (setq org-caldav-calendars
-        '((:calendar-id "versa" :files ("~/org/tasks.org"
-                                           "~/org/school.org"
-                                           "~/org/life.org"
-                                           "~/org/geek.org")
-       :inbox "/home/sole/org/calendars/org-caldav-inbox.org")))
-
-  (setq org-caldav-backup-file "~/org/org-caldav-backup.org")
-  (setq org-caldav-save-directory "~/org/org-caldav/")
-
-  :config
-  (setq org-icalendar-alarm-time 1)
-  ;; This makes sure to-do items as a category can show up on the calendar
-  (setq org-icalendar-include-todo t)
-  ;; This ensures all org "deadlines" show up, and show up as due dates
-  (setq org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due))
-  ;; This ensures "scheduled" org items show up, and show up as start times
-  (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
-
-  ;;sync triggers scanning home TODO
-
-  ;; Add the delayed save hook with a five minute idle timer
-  ;; (add-hook 'after-save-hook
-	;;     (lambda ()
-	;;       (when (eq major-mode 'org-mode)
-	;; 	(org-caldav-sync-with-delay 300))))
-  ;; ;; Add the close emacs hook
-  ;; (add-hook 'kill-emacs-hook 'org-caldav-sync-at-close)
-  )
-;; (use-package org-mime :ensure t)
+(defun org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-archive-subtree)
+     (setq org-map-continue-from (outline-previous-heading)))
+   "/DONE" 'agenda))
