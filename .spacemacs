@@ -152,6 +152,11 @@
           "bibtex %b"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  (setq bibtex-completion-pdf-field "file")
+  (setq bibtex-completion-pdf-open-function
+        (lambda (fpath)
+          (start-process "evince" "*helm-bibtex-evince*" "/usr/bin/evince"
+                         fpath)))
   (setq bibtex-dialect 'biblatex)
   (global-unset-key (kbd "C-x C-c"))
   (global-unset-key (kbd "C-x C-z"))
@@ -165,7 +170,6 @@
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 2)
   (setq c-basic-indent 2)
-  (setq-default tab-width 2)
   (setq-default dotspacemacs-lines-numbers '(:relative t :size-limit-kb 1000))
   (set-frame-parameter (selected-frame) 'alpha '(100 . 90))
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -234,21 +238,11 @@
       (progn (add-to-invisibility-spec '(org-link))
              (org-restart-font-lock)
              (setq org-descriptive-links t))))
-  (require 'doom-themes)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'nord t)
-
-  (set-frame-font "Source Code Pro 12"  nil t)
-  (setq bibtex-completion-pdf-field "file")
-  (setq bibtex-completion-pdf-open-function
-        (lambda (fpath)
-          (start-process "evince" "*helm-bibtex-evince*" "/usr/bin/evince"
-          fpath)))
 
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
-                      :weight 'normal
+                      :weight 'bold
                       :width 'normal)
 
 
