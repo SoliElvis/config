@@ -1,11 +1,2 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =9
-let g:netrw_dirhist_1='/home/sole/UdeM/dynamicProgramming'
-let g:netrw_dirhist_2='/home/sole/UdeM/dynamicProgramming/projet1'
-let g:netrw_dirhist_3='/home/sole/UdeM/aux/solution1'
-let g:netrw_dirhist_4='/home/sole/UdeM/aux'
-let g:netrw_dirhist_5='/home/sole/UdeM'
-let g:netrw_dirhist_6='/home/sole'
-let g:netrw_dirhist_7='/home/sole/UdeM/mrSimon/project/texStuff/rapport'
-let g:netrw_dirhist_8='/home/sole/__env'
-let g:netrw_dirhist_9='/home/sole'
+let g:netrw_dirhist_cnt =0

@@ -11,7 +11,7 @@
         org-confirm-babel-evaluate nil
 
         org-agenda-files '("~/org")
-        org-books-file "~/org/my-list.org"
+        org-books-file "~/Nextcloud2/org-next/my-list.org"
         org-hide-emphasis-markers t
 
         org-ref-default-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
