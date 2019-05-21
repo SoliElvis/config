@@ -75,7 +75,7 @@ alias grep='grep --color=auto'
 export BASH_IT="/home/fredoboileau/.bash_it" # Lock and Load a custom theme file.
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
-source /usr/bin/virtualenvwrapper.sh
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
 
 # Path to the bash it configuration
