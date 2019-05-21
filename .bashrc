@@ -79,11 +79,11 @@ source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
 
 # Path to the bash it configuration
-export BASH_IT="/home/sole/.bash_it"
+export BASH_IT=$HOME/.bash_it
 # Lock and Load a custom theme file.
 # Leave empty to disable theming.
 # location /.bash_it/themes/
-export BASH_IT_THEME='powerline-multiline'
+export BASH_IT_THEME='clean'
 
 # (Advanced): Change this to the name of your remote repo if you
 # cloned bash-it with a remote other than origin such as `bash-it`.
