@@ -1,0 +1,26 @@
+
+xmonad.hs:62:30: error:
+    • Variable not in scope: myNormalBorderColor :: String
+    • Perhaps you meant ‘normalBorderColor’ (imported from XMonad)
+   |
+62 |         normalBorderColor  = myNormalBorderColor,
+   |                              ^^^^^^^^^^^^^^^^^^^
+
+xmonad.hs:63:30: error:
+    • Variable not in scope: myFocusedBorderColor :: String
+    • Perhaps you meant ‘focusedBorderColor’ (imported from XMonad)
+   |
+63 |         focusedBorderColor = myFocusedBorderColor,
+   |                              ^^^^^^^^^^^^^^^^^^^^
+
+xmonad.hs:164:53: error:
+    Variable not in scope: minimizeWindow :: Window -> X ()
+    |
+164 |     , ((modm,               xK_m     ), withFocused minimizeWindow)
+    |                                                     ^^^^^^^^^^^^^^
+
+xmonad.hs:167:53: error:
+    Data constructor not in scope: RestoreNextMinimizedWin
+    |
+167 |     , ((modm .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
+    |                                                     ^^^^^^^^^^^^^^^^^^^^^^^

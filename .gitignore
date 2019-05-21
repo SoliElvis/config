@@ -1,7 +1,15 @@
 *
+<<<<<<< HEAD
 !.spacemacs
 !.bashrc
 !.bash_profile
 !.emacs.d/private/*
 !.gitignore
 !.tmux.conf
+=======
+Devel/
+.config/nvim/.netrwhist
+apps/myScripts/
+.xmonad/xmonad.errors
+
+>>>>>>> 732e6146668cc9835b0eab4e871a1227bf1d05c7
