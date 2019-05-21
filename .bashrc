@@ -33,7 +33,6 @@ export OOO_FORCE_DESKTOP=gnome soffice
 export BROWSER='chromium'
 export PAGER=less
 export EDITOR=vim
-export PATH=$PATH:$HOME/bin:/usr/local/bin:/home/sole/.emacs.d/bin:$HOME/myScripts
 export LESS='-R'
 export HISTCONTROL=ignoredups
 export HISTSIZE=5000
