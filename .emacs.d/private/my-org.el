@@ -11,17 +11,17 @@
         org-confirm-babel-evaluate nil
 
         org-agenda-files '("~/org")
-        org-books-file "~/Nextcloud2/org-next/my-list.org"
+        org-books-file "~/Nextcloud/org-next/my-list.org"
         org-hide-emphasis-markers t
 
-        org-ref-default-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
-        org-ref-pdf-directory '("~/Nextcloud2/zotf_ile")
+        org-ref-default-bibliography '("~/Nextcloud/bibstuff/bib-next.bib")
+        org-ref-pdf-directory '("~/Nextcloud/zotf_ile")
 
-        helm-bibtex-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
-        helm-bibtex-library-path '("~/Nextcloud2/zotf_ile")
+        helm-bibtex-bibliography '("~/Nextcloud/bibstuff/bib-next.bib")
+        helm-bibtex-library-path '("~/Nextcloud/zotf_ile")
 
-        bibtex-completion-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib")
-        bibtex-completion-library-path '("~/Nextcloud2/zotf_ile")))
+        bibtex-completion-bibliography '("~/Nextcloud/bibstuff/bib-next.bib")
+        bibtex-completion-library-path '("~/Nextcloud/zotf_ile")))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([-]\\) "
@@ -68,8 +68,8 @@
 ;;    :files ("~/org/life.org" "~/org/appointments.org")
 ;;    :inbox "~/org/inbox-text.org")
     (:calendar-id "next"
-      :files ("~/Nextcloud2/org-next/life.org" "~/Nextcloud2/org-next/school.org")
-      :inbox "~/Nextcloud2/org-next/org-caldav/next-test.org")))
+      :files ("~/Nextcloud/org-next/life.org" "~/Nextcloud2/org-next/school.org")
+      :inbox "~/Nextcloud/org-next/org-caldav/next-test.org")))
 
   ;; (setq org-caldav-backup-file '("/home/sole/org/org-caldav-backup.org"))
   ;; (setq org-caldav-save-directory '("/home/sole/org/org-caldav/"))
