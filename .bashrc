@@ -43,6 +43,7 @@ LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
 export PYSPARK_SUBMIT_ARGS="--master local[2] pyspark-shell"
 export JAVA_HOME="/usr/bin/java"
 export PROJECT_HOME="/home/sole/apps/"
+export TERMINAL=termite
 
 alias tma="tmux attach -t"
 alias apts="apt-cache search"
@@ -67,14 +68,14 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 #export WORKON_HOME=$HOME/.virtualenvs
 #export PROJECT_HOME=$HOME/Devel
-#source /usr/bin/virtualenvwrapper.sh
+source /usr/bin/virtualenvwrapper.sh
 
 
 # Path to the bash it configuration
 export BASH_IT="/home/fredoboileau/.bash_it" # Lock and Load a custom theme file.
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
-source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+#source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
 
 # Path to the bash it configuration
