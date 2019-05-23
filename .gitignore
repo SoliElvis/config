@@ -5,7 +5,7 @@
 !.emacs.d/private/*
 !.gitignore
 !.tmux.conf
-!__env/
+!__env/*
 Devel/
 .config/nvim/.netrwhist
 apps/myScripts/
