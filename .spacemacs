@@ -156,6 +156,10 @@
 (defun dotspacemacs/user-init ())
 (defun dotspacemacs/user-config ()
   ;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+  (defun occur-non-ascii ()
+    "Find any non-ascii characters in the current buffer."
+    (interactive)
+    (occur "[^[:ascii:]]"))
   (load-theme 'nord t)
   (global-set-key (kbd "C-x p i") 'org-cliplink)
   (setq org-latex-pdf-process
@@ -224,6 +228,21 @@
 
 ;;------------------------------------------------
   ;; private interactive functions
+  (defun find-first-non-ascii-char ()
+    "Find the first non-ascii character from point onwards."
+    (interactive)
+    (let (point)
+      (save-excursion
+        (setq point
+              (catch 'non-ascii
+                (while (not (eobp))
+                  (or (eq (char-charset (following-char))
+                          'ascii)
+                      (throw 'non-ascii (point)))
+                  (forward-char 1)))))
+      (if point
+          (goto-char point)
+        (message "No non-ascii characters."))))
   (defun toggle-maximize-buffer () "Maximize buffer"
          (interactive)
          (if (= 1 (length (window-list)))
