@@ -1,11 +1,11 @@
 *
+!*/\_\_env/**
 !.spacemacs
 !.bashrc
 !.bash_profile
 !.emacs.d/private/*
 !.gitignore
 !.tmux.conf
-!__env/*
 Devel/
 .config/nvim/.netrwhist
 apps/myScripts/
