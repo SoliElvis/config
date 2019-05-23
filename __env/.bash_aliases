@@ -1,19 +1,20 @@
-alias mv='mv -i'
-alias cp='cp -i'
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
 alias b="brave &"
-alias g="git status"
-alias o="xdg-open &"
 alias c="clear"
+alias cp='cp -i'
+alias e='emacsclient -c -a "" $* &'
+alias g="git status"
+alias grep='grep --color=auto'
+alias j="jobs"
+alias ls='ls --color=auto'
+alias mv='mv -i'
+alias n="nvim"
+alias o="xdg-open &"
+alias p='gitPush'
 alias r="ranger"
 alias rr="source ~/.bashrc"
-alias j="jobs"
-alias p='gitPush'
 alias s="source"
-alias e='emacsclient -c -a "" $* &'
 alias v="vim"
-alias n="nvim"
+alias igv="vim .gitignore"
 alias z="zotero &"
 
 alias tma="tmux attach-session -t"
