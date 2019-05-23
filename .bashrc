@@ -1,3 +1,4 @@
+#https://github.com/adi1090x/termite-style
 if [[ $- != *i* ]] ; then
 # Shell is non-interactive. Be done now!
 return 
@@ -22,6 +23,7 @@ export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
 
 function _update_ps1() {
     PS1=$(powerline-shell $?)
@@ -68,6 +70,7 @@ export PROJECT_HOME=$HOME/Devel
 #source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.bashrc.aliases ] && source ~/.bashrc.aliases
 
 # HSTR configuration - add this to ~/.bashrc
 alias hh=hstr                    # hh to be alias for hstr
@@ -82,4 +85,3 @@ export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
 # if this is interactive shell, then bind 'kill last command' to Ctrl-x k
 if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
-
