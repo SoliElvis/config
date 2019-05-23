@@ -2,9 +2,9 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-
+alias b="brave &"
 alias g="git status"
-alias o="xdg-open"
+alias o="xdg-open &"
 alias c="clear"
 alias r="ranger"
 alias rr="source ~/.bashrc"
