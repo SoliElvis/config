@@ -25,8 +25,20 @@ Plug 'junegunn/limelight.vim'
 "tmux"
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'kovisoft/slimv'
+
+
+"New"
+Plug 'dracula/vim', {'as': 'dracula'}
+Plug 'mboughaba/i3config.vim'
+Plug 'termhn/i3-vim-nav'
+
 call plug#end()            
 
+"i3 integration
+nnoremap <silent> <c-l> :call Focus('right', 'l')<CR>
+nnoremap <silent> <c-h> :call Focus('left', 'h')<CR>
+nnoremap <silent> <c-k> :call Focus('up', 'k')<CR>
+nnoremap <silent> <c-j> :call Focus('down', 'j')<CR>
 
 set background=dark
 set t_Co=255
