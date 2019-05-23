@@ -32,7 +32,7 @@ if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
 fi
 # Shell variables
 export OOO_FORCE_DESKTOP=gnome soffice
-export BROWSER='chromium'
+export BROWSER='brave'
 export PAGER=less
 export EDITOR=vim
 export LESS='-R'
