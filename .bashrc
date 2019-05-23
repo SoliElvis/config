@@ -14,13 +14,11 @@ fi
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
-
 # Colors
 if [ -f ~/.dir_colors ]; then
 eval `dircolors ~/.dir_colors`
 fi
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
