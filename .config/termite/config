@@ -25,10 +25,9 @@ urgent_on_bell = true
 highlight = #30343e
 
 [colors]
-
 # https://git.io/nord
 foreground=#d8dee9
-background=#2e3440
+background = rgba(63, 63, 63, 0.8)
 cursor=#d8dee9
 
 color0=#3b4252
