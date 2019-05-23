@@ -2,7 +2,6 @@ if [[ $- != *i* ]] ; then
 # Shell is non-interactive. Be done now!
 return 
 fi
-source ~/liquidprompt/liquidprompt
 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -26,6 +25,13 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+function _update_ps1() {
+    PS1=$(powerline-shell $?)
+}
+
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+fi
 # Shell variables
 export OOO_FORCE_DESKTOP=gnome soffice
 export BROWSER='chromium'
@@ -42,6 +48,7 @@ export PYSPARK_SUBMIT_ARGS="--master local[2] pyspark-shell"
 export JAVA_HOME="/usr/bin/java"
 export PROJECT_HOME="/home/sole/apps/"
 export TERMINAL=termite
+export TERM=xterm-256color
 
 complete -cf sudo # Tab complete for sudo
 
