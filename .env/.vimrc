@@ -31,6 +31,7 @@ Plug 'kovisoft/slimv'
 Plug 'dracula/vim', {'as': 'dracula'}
 Plug 'mboughaba/i3config.vim'
 Plug 'termhn/i3-vim-nav'
+Plug 'masukomi/vim-markdown-folding'
 
 call plug#end()            
 
@@ -38,7 +39,11 @@ call plug#end()
 nnoremap <silent> <c-l> :call Focus('right', 'l')<CR>
 nnoremap <silent> <c-h> :call Focus('left', 'h')<CR>
 nnoremap <silent> <c-k> :call Focus('up', 'k')<CR>
-nnoremap <silent> <c-j> :call Focus('down', 'j')<CR>
+
+aug i3config_ft_detection
+  au!
+  au BufNewFile,BufRead ~/.config/i3/config set filetype=i3config
+aug endnoremap <silent> <c-j> :call Focus('down', 'j')<CR>
 
 set background=dark
 set t_Co=255

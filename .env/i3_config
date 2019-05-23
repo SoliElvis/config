@@ -1,3 +1,4 @@
+ "# -*- mode: i3wm-config -*-"
 # i3 config file for frederic boileau
 #
 
@@ -8,8 +9,22 @@ font pango:DejaVu Sans Mono 8
 exec --no-startup-id feh --bg-scale "~/Pictures/rain.jpg"
 gaps inner 15
 gaps outer 15
+set $term termite
+set $browser brave
+
+#startup scripts
+exec --no-startup-id source bash_profile
+##exec --no-startup-id mpd
+exec --no-startup-id deluged
+exec --no-startup-id deluge-web
+exec --no-startup-id compton
+exec --no-startup-id xmodmap ~/.xmodmap
+exec --no-startup-id unclutter
+exec --no-startup-id adjustScreen
+
 ###---Basic definitions---###
 # Use Mouse+$mod to drag floating windows to their wanted position
+
 floating_modifier $mod
 bindsym $mod+Return exec termite
 bindsym $mod+Shift+q kill
@@ -97,10 +112,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
