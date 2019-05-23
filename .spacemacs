@@ -155,11 +155,6 @@
    dotspacemacs-whitespace-cleanup t))
 (defun dotspacemacs/user-init ())
 (defun dotspacemacs/user-config ()
-  ;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-  (defun occur-non-ascii ()
-    "Find any non-ascii characters in the current buffer."
-    (interactive)
-    (occur "[^[:ascii:]]"))
   (load-theme 'nord t)
   (global-set-key (kbd "C-x p i") 'org-cliplink)
   (setq org-latex-pdf-process
@@ -226,8 +221,14 @@
   (load-file "~/.emacs.d/private/my-flyspell.el")
 
 
+;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 ;;------------------------------------------------
+
   ;; private interactive functions
+  (defun occur-non-ascii ()
+    "Find any non-ascii characters in the current buffer."
+    (interactive)
+    (occur "[^[:ascii:]]"))
   (defun find-first-non-ascii-char ()
     "Find the first non-ascii character from point onwards."
     (interactive)
