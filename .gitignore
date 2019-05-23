@@ -1,13 +1,3 @@
 *
 !.env/*
-!.spacemacs
-!.bashrc
-!.bash_profile
-!.emacs.d/private/*
-!.gitignore
-!.tmux.conf
-Devel/
-.config/nvim/.netrwhist
-apps/myScripts/
-.xmonad/xmonad.errors
 
