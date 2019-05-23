@@ -1,5 +1,5 @@
 *
-!*/\_\_env/**
+!.env/*
 !.spacemacs
 !.bashrc
 !.bash_profile
