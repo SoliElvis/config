@@ -21,6 +21,7 @@ fi
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f ~/.bashrc.aliases ] && source ~/.bashrc.aliases
+[ -f ~/.profile ] && source ~/.profile
 
 
 function _update_ps1() {
@@ -30,23 +31,6 @@ function _update_ps1() {
 if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
     PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
-# Shell variables
-export OOO_FORCE_DESKTOP=gnome soffice
-export BROWSER='brave'
-export PAGER=less
-export EDITOR=vim
-export LESS='-R'
-export HISTCONTROL=ignoredups
-export HISTSIZE=5000
-export HISTFILESIZE=1000
-export HISTIGNORE="&:ls:ll:la:l.:pwd:exit:clear"
-export SANE_DEFAULT_DEVICE="brother4:bus4;dev3"
-LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
-export PYSPARK_SUBMIT_ARGS="--master local[2] pyspark-shell"
-export JAVA_HOME="/usr/bin/java"
-export PROJECT_HOME="/home/sole/apps/"
-export TERMINAL=termite
-export TERM=xterm-256color
 
 complete -cf sudo # Tab complete for sudo
 
@@ -54,11 +38,8 @@ complete -cf sudo # Tab complete for sudo
 shopt -s cdspell # This will correct minor spelling errors in a cd command.
 shopt -s histappend # Append to history rather than overwrite
 shopt -s checkwinsize # Check window after each command
-# set options
 set -o noclobber # prevent overwriting files with cat
 set -o ignoreeof # stops ctrl+d from logging me out
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
 source /usr/bin/virtualenvwrapper.sh
