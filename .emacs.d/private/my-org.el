@@ -63,14 +63,10 @@
   "https://free01.thegood.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
   ;;let filenames =
   (setq org-caldav-calendars
-  '(
-;;  (:calendar-id "org-test"
-;;    :files ("~/org/life.org" "~/org/appointments.org")
-;;    :inbox "~/org/inbox-text.org")
-    (:calendar-id "cloud"
-      :files ("~/cloud/org-next/life.org"
-              "~/cloud/org-next/school.org")
-      :inbox "~/cloud/org-next/org-caldav/next-test.org")))
+  '((:calendar-id "cloud"
+     :files ("~/cloud/org-next/life.org"
+             "~/cloud/org-next/school.org")
+     :inbox  "~/cloud/org-next/org-caldav/next-test.org")))
 
   ;; (setq org-caldav-backup-file '("/home/sole/org/org-caldav-backup.org"))
   ;; (setq org-caldav-save-directory '("/home/sole/org/org-caldav/"))
@@ -80,9 +76,6 @@
   (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo)))
 ;; custom functions
 (defun meeting-notes ()
-  "Call this after creating an org-mode heading for where the notes for the
-  meeting should be. After calling this function, call 'meeting-done' to reset the
-  environment."
   (interactive)
   (outline-mark-subtree)                              ;; Select org-mode section
   (narrow-to-region (region-beginning) (region-end))  ;; Only show that region
@@ -92,7 +85,6 @@
   (fringe-mode 0)
   (message "When finished taking your notes, run meeting-done."))
 (defun meeting-done ()
-  "Attempt to 'undo' the effects of taking meeting notes."
   (interactive)
   (widen)                                       ;; Opposite of narrow-to-region
   (text-scale-set 0)                            ;; Reset the font size increase
