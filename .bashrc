@@ -3,7 +3,6 @@ if [[ $- != *i* ]] ; then
 # Shell is non-interactive. Be done now!
 return 
 fi
-
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -20,9 +19,8 @@ if [ -f ~/.dir_colors ]; then
 eval `dircolors ~/.dir_colors`
 fi
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
-if [ -f ~/.bashrc.aliases ]; then
-    . ~/.bashrc.aliases
-fi
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.bashrc.aliases ] && source ~/.bashrc.aliases
 
 
 function _update_ps1() {
@@ -69,8 +67,6 @@ export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
 #source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -f ~/.bashrc.aliases ] && source ~/.bashrc.aliases
 
 # HSTR configuration - add this to ~/.bashrc
 alias hh=hstr                    # hh to be alias for hstr
