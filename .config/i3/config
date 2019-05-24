@@ -47,12 +47,12 @@ bindsym $mod+O split vertical
 bindsym $mod+P split horizontal
 bindsym $mod+f fullscreen toggle
 bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
-bindsym $mod+a focus parent
-#bindsym $mod+D focus child
+bindsym $mod+u focus parent
+bindsym $mod+semicolon focus child
 
 set $ws1 "1"
 set $ws2 "2"
