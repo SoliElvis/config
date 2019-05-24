@@ -23,6 +23,7 @@ alias g="git status"
 alias grep='grep --color=auto'
 alias j="jobs"
 alias ls='ls --color=auto'
+alias linkhere='ln -s $(pwd)'
 alias mv='mv -i'
 alias n="nvim"
 alias o="xdg-open &"
