@@ -59,14 +59,12 @@ set -o noclobber # prevent overwriting files with cat
 set -o ignoreeof # stops ctrl+d from logging me out
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-#export WORKON_HOME=$HOME/.virtualenvs
-#export PROJECT_HOME=$HOME/Devel
-source /usr/bin/virtualenvwrapper.sh
-# Path to the bash it configuration
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
+source /usr/bin/virtualenvwrapper.sh
+#if ubuntu swap this line
 #source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-
+source ~/apps/liquidprompt/liquidprompt
 
 # HSTR configuration - add this to ~/.bashrc
 alias hh=hstr                    # hh to be alias for hstr
