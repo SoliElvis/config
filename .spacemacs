@@ -59,7 +59,6 @@
         helm-bibtex
         ibuffer
         interleave
-        universal-ctags
         linum-relative
         lispy
         nlinum
