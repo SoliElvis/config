@@ -20,8 +20,8 @@ if [ -f ~/.dir_colors ]; then
 eval `dircolors ~/.dir_colors`
 fi
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f ~/.bashrc.aliases ]; then
+    . ~/.bashrc.aliases
 fi
 
 
