@@ -278,6 +278,7 @@
                       :weight 'bold
                       :width 'normal)
 
+  (setq x-select-enable-clipboard t)
 
   );;end config shibaa
 
