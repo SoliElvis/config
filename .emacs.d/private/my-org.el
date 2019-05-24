@@ -67,8 +67,9 @@
 ;;  (:calendar-id "org-test"
 ;;    :files ("~/org/life.org" "~/org/appointments.org")
 ;;    :inbox "~/org/inbox-text.org")
-    (:calendar-id "next"
-      :files ("~/cloud/org-next/life.org" "~/cloud/org-next/school.org")
+    (:calendar-id "cloud"
+      :files ("~/cloud/org-next/life.org"
+              "~/cloud/org-next/school.org")
       :inbox "~/cloud/org-next/org-caldav/next-test.org")))
 
   ;; (setq org-caldav-backup-file '("/home/sole/org/org-caldav-backup.org"))
@@ -104,3 +105,4 @@
      (org-archive-subtree)
      (setq org-map-continue-from (outline-previous-heading)))
    "/DONE" 'agenda))
+

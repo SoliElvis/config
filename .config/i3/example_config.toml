@@ -39,7 +39,7 @@ device = "wlp2s0"
 #ssid = true
 #ip = true
 speed_up = true
-graph_up = true
+#graph_up = true
 interval = 5
 
 [[block]]
