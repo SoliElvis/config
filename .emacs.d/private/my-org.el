@@ -11,17 +11,17 @@
         org-confirm-babel-evaluate nil
 
         org-agenda-files '("~/org")
-        org-books-file "~/Nextcloud/org-next/my-list.org"
+        org-books-file "~/cloud/org-next/my-list.org"
         org-hide-emphasis-markers t
 
-        org-ref-default-bibliography '("~/Nextcloud/bibstuff/bib-next.bib")
-        org-ref-pdf-directory '("~/Nextcloud/zotf_ile")
+        org-ref-default-bibliography '("~/cloud/bibstuff/bib-next.bib")
+        org-ref-pdf-directory '("~/cloud/zotf_ile")
 
-        helm-bibtex-bibliography '("~/Nextcloud/bibstuff/bib-next.bib")
-        helm-bibtex-library-path '("~/Nextcloud/zotf_ile")
+        helm-bibtex-bibliography '("~/cloud/bibstuff/bib-next.bib")
+        helm-bibtex-library-path '("~/cloud/zotf_ile")
 
-        bibtex-completion-bibliography '("~/Nextcloud/bibstuff/bib-next.bib")
-        bibtex-completion-library-path '("~/Nextcloud/zotf_ile")))
+        bibtex-completion-bibliography '("~/cloud/bibstuff/bib-next.bib")
+        bibtex-completion-library-path '("~/cloud/zotf_ile")))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([-]\\) "
@@ -40,7 +40,7 @@
   "http://localhost:23119/zotxt")
 (eval-after-load "zotxt"
   '(setq zotxt-default-bibliography-style "mkbehr-short"))
-(setq reftex-default-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib"))
+(setq reftex-default-bibliography '("~/cloud/bibstuff/bib-next.bib"))
 (setq org-ref-open-bibtex-pdf-function 'my/org-ref-open-pdf-at-point)
 (defun my/org-ref-open-pdf-at-point ()
   "Open the pdf for bibtex key under point if it exists."
@@ -68,8 +68,8 @@
 ;;    :files ("~/org/life.org" "~/org/appointments.org")
 ;;    :inbox "~/org/inbox-text.org")
     (:calendar-id "next"
-      :files ("~/Nextcloud/org-next/life.org" "~/Nextcloud2/org-next/school.org")
-      :inbox "~/Nextcloud/org-next/org-caldav/next-test.org")))
+      :files ("~/cloud/org-next/life.org" "~/cloud/org-next/school.org")
+      :inbox "~/cloud/org-next/org-caldav/next-test.org")))
 
   ;; (setq org-caldav-backup-file '("/home/sole/org/org-caldav-backup.org"))
   ;; (setq org-caldav-save-directory '("/home/sole/org/org-caldav/"))
