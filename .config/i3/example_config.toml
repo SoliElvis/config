@@ -34,3 +34,17 @@ block = "time"
 interval = 60
 format = "%a %d/%m %R"
 
+[[block]]
+block = "weather"
+format = "{weather} ({location}) {temp}°, {wind} m/s {direction}"
+service = { name = "openweathermap", api_key = "07b31b26d5c719f1d52388fdd706ac26", city_id = "5398563", units = "metric" }
+
+[[block]]
+block = "pacman"
+interval = 10
+
+[[block]]
+block = "xrandr"
+icons = true
+resolution = true
+interval = 2
