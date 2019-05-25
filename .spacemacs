@@ -156,20 +156,22 @@
    dotspacemacs-whitespace-cleanup t))
 (defun dotspacemacs/user-init ())
 (defun dotspacemacs/user-config ()
+
   (load-theme 'nord t)
-  (global-set-key (kbd "C-x p i") 'org-cliplink)
-  (setq org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "bibtex %b"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-  (setq bibtex-completion-pdf-field "file")
-  (setq bibtex-completion-pdf-open-function
-        (lambda (fpath)
-          (start-process "evince" "*helm-bibtex-evince*" "/usr/bin/evince"
-                         fpath)))
-  (setq bibtex-dialect 'biblatex)
-  (global-unset-key (kbd "C-x C-c"))
+  (require 'doom-themes)
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-nord t)
+  (doom-themes-visual-bell-config)
+  (doom-themes-treemacs-config)
+  (doom-themes-org-config)
+  (set-face-attribute 'default nil
+                      :family "Source Code Pro"
+                      :weight 'bold
+                      :width 'normal)
+
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (bind-key* "C-c y" 'clipboard-yank)
   (global-unset-key (kbd "C-x C-z"))
   (setq auth-source-debug t)
   (setq auth-sources '((:source "~/.authinfo.gpg")))
@@ -188,15 +190,7 @@
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 1)
 
-  (doom-themes-visual-bell-config)
-  (doom-themes-neotree-config)
-  (doom-themes-treemacs-config)
-  (doom-themes-org-config)
-
   ;; basic config and bindings
-  (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (bind-key* "C-c y" 'clipboard-yank)
   (autoload 'ibuffer "ibuffer" "List buffers." t)
   (custom-set-variables '(zoom-window-mode-line-color "DarkGreen"))
   (setq pdf-annot-activate-created-annotations t)
@@ -219,7 +213,7 @@
   (load-file "~/.emacs.d/private/my-python.el")
   (load-file "~/.emacs.d/private/my-tex.el")
   (load-file "~/.emacs.d/private/my-engine.el")
-  (load-file "~/.emacs.d/private/my-flyspell.el")
+  ;; (load-file "~/.emacs.d/private/my-flyspell.el")
 
 
 ;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
@@ -252,7 +246,6 @@
            (progn
              (window-configuration-to-register '_)
              (delete-other-windows))))
-
   (defun my-expand-file-name-at-point ()
     "Use hippie-expand to expand the filename"
     (interactive)
@@ -260,9 +253,7 @@
            '(try-complete-file-name-partially
              try-complete-file-name)))
       (call-interactively 'hippie-expand)))
-
   (global-set-key (kbd "C-M-/") 'my-expand-file-name-at-point)
-
   (defun org-toggle-link-display ()
     "Toggle the literal or descriptive display of links."
     (interactive)
@@ -273,15 +264,7 @@
       (progn (add-to-invisibility-spec '(org-link))
              (org-restart-font-lock)
              (setq org-descriptive-links t))))
-
-  (set-face-attribute 'default nil
-                      :family "Source Code Pro"
-                      :weight 'bold
-                      :width 'normal)
-
-  (setq x-select-enable-clipboard t)
-
-  );;end config shibaa
+  (setq x-select-enable-clipboard t));;end config shibaa
 
 
 (custom-set-variables
@@ -291,7 +274,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("14de8f58ad656af5be374086ae7ab663811633fc1483a02add92f7a1ff1a8455" default)))
+    ("89f545ddc104836b27167696db89b371f23893d5b2f038d43383d877ee678d3d" "6d589ac0e52375d311afaa745205abb6ccb3b21f6ba037104d71111e7e76a3fc" "a8c210aa94c4eae642a34aaf1c5c0552855dfca2153fa6dd23f3031ce19453d4" "14de8f58ad656af5be374086ae7ab663811633fc1483a02add92f7a1ff1a8455" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote

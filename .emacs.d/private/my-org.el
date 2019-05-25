@@ -31,6 +31,17 @@
 (define-key mode-specific-map [?a] 'org-agenda)
 
 ;;Latex and zot stuff
+(setq org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "bibtex %b"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+(setq bibtex-completion-pdf-field "file")
+(setq bibtex-completion-pdf-open-function
+      (lambda (fpath)
+        (start-process "evince" "*helm-bibtex-evince*" "/usr/bin/evince"
+                       fpath)))
+(setq bibtex-dialect 'biblatex)
 (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
 (define-key org-mode-map
@@ -97,4 +108,4 @@
      (org-archive-subtree)
      (setq org-map-continue-from (outline-previous-heading)))
    "/DONE" 'agenda))
-
+(global-set-key (kbd "C-x p i") 'org-cliplink)
