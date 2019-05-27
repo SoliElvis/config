@@ -8,19 +8,19 @@
     'unused dotspacemacs-ask-for-lazy-installation t
      dotspacemacs-configuration-layer-path '()
 
-    ;; List of configuration layers to load.
-    dotspacemacs-configuration-layers
-    '(
+      ;; List of configuration layers to load.
+      dotspacemacs-configuration-layers
+      '(
 
-        (latex :variables latex-enable-folding t )
-        (shell :variables shell-default-height 30 shell-default-position 'bottom)
-        auto-completion
-        bibtex
-        clojure
-        common-lisp
-        csv
-        dash
-        emacs-lisp
+          (latex :variables latex-enable-folding t )
+          (shell :variables shell-default-height 30 shell-default-position 'bottom)
+          auto-completion
+          bibtex
+          clojure
+          common-lisp
+          csv
+          dash
+          emacs-lisp
         git
         haskell
         html
