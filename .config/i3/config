@@ -1,10 +1,7 @@
 # i3 config file for frederic boileau
 #
-
 for_window [class=".*"] border pixel 4
-
-font pango:monospace 8
-
+font pango:monospace 10
 exec --no-startup-id feh --bg-scale "~/Pictures/rain.jpg"
 gaps inner 15
 gaps outer 15
@@ -13,9 +10,7 @@ set $browser brave
 set $mod Mod4
 #startup scripts
 exec --no-startup-id source bash_profile
-exec --no-startup-id source .bashrc.aliases
-
-##exec --no-startup-id mpd
+#exec --no-startup-id mpd
 exec --no-startup-id deluged
 exec --no-startup-id deluge-web
 exec --no-startup-id compton
@@ -25,15 +20,12 @@ exec --no-startup-id adjustScreen
 
 ###---Basic definitions---###
 # Use Mouse+$mod to drag floating windows to their wanted position
-
 bindsym $mod+Return exec termite
 bindsym $mod+Shift+q kill
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+#bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec --no-startup-id rofi -show run
+bindsym $mod+w exec --no-startup-id rofi -show window
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -55,12 +47,12 @@ bindsym $mod+O split vertical
 bindsym $mod+P split horizontal
 bindsym $mod+f fullscreen toggle
 bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
-bindsym $mod+a focus parent
-#bindsym $mod+D focus child
+bindsym $mod+u focus parent
+bindsym $mod+semicolon focus child
 
 set $ws1 "1"
 set $ws2 "2"
@@ -251,4 +243,20 @@ mode "$mode_gaps_left" {
 
         bindsym Return mode "$mode_gaps"
         bindsym Escape mode "default"
+}
+
+bar {
+    font pango:DejaVu Sans Mono, FontAwesome 12
+    position top
+    status_command i3status-rs ~/.config/i3/example_config.toml
+    tray_output VGA1
+    colors {
+        separator #666666
+        background #222222
+        statusline #dddddd
+        focused_workspace #0088CC #0088CC #ffffff
+        active_workspace #333333 #333333 #ffffff
+        inactive_workspace #333333 #333333 #888888
+        urgent_workspace #2f343a #900000 #ffffff
+    }
 }

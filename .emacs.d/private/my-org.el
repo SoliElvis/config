@@ -11,17 +11,17 @@
         org-confirm-babel-evaluate nil
 
         org-agenda-files '("~/org")
-        org-books-file "~/Nextcloud/org-next/my-list.org"
+        org-books-file "~/cloud/org-next/my-list.org"
         org-hide-emphasis-markers t
 
-        org-ref-default-bibliography '("~/Nextcloud/bibstuff/bib-next.bib")
-        org-ref-pdf-directory '("~/Nextcloud/zotf_ile")
+        org-ref-default-bibliography '("~/cloud/bibstuff/bib-next.bib")
+        org-ref-pdf-directory '("~/cloud/zotf_ile")
 
-        helm-bibtex-bibliography '("~/Nextcloud/bibstuff/bib-next.bib")
-        helm-bibtex-library-path '("~/Nextcloud/zotf_ile")
+        helm-bibtex-bibliography '("~/cloud/bibstuff/bib-next.bib")
+        helm-bibtex-library-path '("~/cloud/zotf_ile")
 
-        bibtex-completion-bibliography '("~/Nextcloud/bibstuff/bib-next.bib")
-        bibtex-completion-library-path '("~/Nextcloud/zotf_ile")))
+        bibtex-completion-bibliography '("~/cloud/bibstuff/bib-next.bib")
+        bibtex-completion-library-path '("~/cloud/zotf_ile")))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([-]\\) "
@@ -31,6 +31,17 @@
 (define-key mode-specific-map [?a] 'org-agenda)
 
 ;;Latex and zot stuff
+(setq org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "bibtex %b"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+(setq bibtex-completion-pdf-field "file")
+(setq bibtex-completion-pdf-open-function
+      (lambda (fpath)
+        (start-process "evince" "*helm-bibtex-evince*" "/usr/bin/evince"
+                       fpath)))
+(setq bibtex-dialect 'biblatex)
 (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
 (define-key org-mode-map
@@ -40,7 +51,7 @@
   "http://localhost:23119/zotxt")
 (eval-after-load "zotxt"
   '(setq zotxt-default-bibliography-style "mkbehr-short"))
-(setq reftex-default-bibliography '("~/Nextcloud2/bibstuff/bib-next.bib"))
+(setq reftex-default-bibliography '("~/cloud/bibstuff/bib-next.bib"))
 (setq org-ref-open-bibtex-pdf-function 'my/org-ref-open-pdf-at-point)
 (defun my/org-ref-open-pdf-at-point ()
   "Open the pdf for bibtex key under point if it exists."
@@ -63,13 +74,10 @@
   "https://free01.thegood.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
   ;;let filenames =
   (setq org-caldav-calendars
-  '(
-;;  (:calendar-id "org-test"
-;;    :files ("~/org/life.org" "~/org/appointments.org")
-;;    :inbox "~/org/inbox-text.org")
-    (:calendar-id "next"
-      :files ("~/Nextcloud/org-next/life.org" "~/Nextcloud2/org-next/school.org")
-      :inbox "~/Nextcloud/org-next/org-caldav/next-test.org")))
+  '((:calendar-id "cloud"
+     :files ("~/cloud/org-next/life.org"
+             "~/cloud/org-next/school.org")
+     :inbox  "~/cloud/org-next/org-caldav/next-test.org")))
 
   ;; (setq org-caldav-backup-file '("/home/sole/org/org-caldav-backup.org"))
   ;; (setq org-caldav-save-directory '("/home/sole/org/org-caldav/"))
@@ -79,9 +87,6 @@
   (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo)))
 ;; custom functions
 (defun meeting-notes ()
-  "Call this after creating an org-mode heading for where the notes for the
-  meeting should be. After calling this function, call 'meeting-done' to reset the
-  environment."
   (interactive)
   (outline-mark-subtree)                              ;; Select org-mode section
   (narrow-to-region (region-beginning) (region-end))  ;; Only show that region
@@ -91,7 +96,6 @@
   (fringe-mode 0)
   (message "When finished taking your notes, run meeting-done."))
 (defun meeting-done ()
-  "Attempt to 'undo' the effects of taking meeting notes."
   (interactive)
   (widen)                                       ;; Opposite of narrow-to-region
   (text-scale-set 0)                            ;; Reset the font size increase
@@ -104,3 +108,4 @@
      (org-archive-subtree)
      (setq org-map-continue-from (outline-previous-heading)))
    "/DONE" 'agenda))
+(global-set-key (kbd "C-x p i") 'org-cliplink)

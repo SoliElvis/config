@@ -8,19 +8,19 @@
     'unused dotspacemacs-ask-for-lazy-installation t
      dotspacemacs-configuration-layer-path '()
 
-    ;; List of configuration layers to load.
-    dotspacemacs-configuration-layers
-    '(
+      ;; List of configuration layers to load.
+      dotspacemacs-configuration-layers
+      '(
 
-        (latex :variables latex-enable-folding t )
-        (shell :variables shell-default-height 30 shell-default-position 'bottom)
-        auto-completion
-        bibtex
-        clojure
-        common-lisp
-        csv
-        dash
-        emacs-lisp
+          (latex :variables latex-enable-folding t )
+          (shell :variables shell-default-height 30 shell-default-position 'bottom)
+          auto-completion
+          bibtex
+          clojure
+          common-lisp
+          csv
+          dash
+          emacs-lisp
         git
         haskell
         html
@@ -44,11 +44,13 @@
       '(
         (org-books :location (recipe :fetcher github :repo "lepisma/org-books"))
         avy
+        sudo-edit
         dash
         auth-source-pass
         creamsody-theme
         magit
         auth-source-pass
+        mpdel
         creamsody-theme
         nord-theme
         epa
@@ -79,6 +81,7 @@
         smooth-scrolling
         spaceline
         visual-line-mode
+        yafolding
         zoom-window
         zotxt
         )
@@ -155,20 +158,23 @@
    dotspacemacs-whitespace-cleanup t))
 (defun dotspacemacs/user-init ())
 (defun dotspacemacs/user-config ()
+  (require 'mpdel)
+  (mpdel-mode)
   (load-theme 'nord t)
-  (global-set-key (kbd "C-x p i") 'org-cliplink)
-  (setq org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "bibtex %b"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-  (setq bibtex-completion-pdf-field "file")
-  (setq bibtex-completion-pdf-open-function
-        (lambda (fpath)
-          (start-process "evince" "*helm-bibtex-evince*" "/usr/bin/evince"
-                         fpath)))
-  (setq bibtex-dialect 'biblatex)
-  (global-unset-key (kbd "C-x C-c"))
+  (require 'doom-themes)
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-nord t)
+  (doom-themes-visual-bell-config)
+  (doom-themes-treemacs-config)
+  (doom-themes-org-config)
+  (set-face-attribute 'default nil
+                      :family "Source Code Pro"
+                      :weight 'bold
+                      :width 'normal)
+
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (bind-key* "C-c y" 'clipboard-yank)
   (global-unset-key (kbd "C-x C-z"))
   (setq auth-source-debug t)
   (setq auth-sources '((:source "~/.authinfo.gpg")))
@@ -187,15 +193,7 @@
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 1)
 
-  (doom-themes-visual-bell-config)
-  (doom-themes-neotree-config)
-  (doom-themes-treemacs-config)
-  (doom-themes-org-config)
-
   ;; basic config and bindings
-  (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (bind-key* "C-c y" 'clipboard-yank)
   (autoload 'ibuffer "ibuffer" "List buffers." t)
   (custom-set-variables '(zoom-window-mode-line-color "DarkGreen"))
   (setq pdf-annot-activate-created-annotations t)
@@ -218,7 +216,7 @@
   (load-file "~/.emacs.d/private/my-python.el")
   (load-file "~/.emacs.d/private/my-tex.el")
   (load-file "~/.emacs.d/private/my-engine.el")
-  (load-file "~/.emacs.d/private/my-flyspell.el")
+  ;; (load-file "~/.emacs.d/private/my-flyspell.el")
 
 
 ;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
@@ -251,7 +249,6 @@
            (progn
              (window-configuration-to-register '_)
              (delete-other-windows))))
-
   (defun my-expand-file-name-at-point ()
     "Use hippie-expand to expand the filename"
     (interactive)
@@ -259,9 +256,7 @@
            '(try-complete-file-name-partially
              try-complete-file-name)))
       (call-interactively 'hippie-expand)))
-
   (global-set-key (kbd "C-M-/") 'my-expand-file-name-at-point)
-
   (defun org-toggle-link-display ()
     "Toggle the literal or descriptive display of links."
     (interactive)
@@ -272,27 +267,6 @@
       (progn (add-to-invisibility-spec '(org-link))
              (org-restart-font-lock)
              (setq org-descriptive-links t))))
+  (setq x-select-enable-clipboard t));;end config shibaa
+  (require 'org-tempo)
 
-  (set-face-attribute 'default nil
-                      :family "Source Code Pro"
-                      :weight 'bold
-                      :width 'normal)
-
-
-  );;end config shibaa
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (rust-mode ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org restart-emacs popwin paradox open-junk-file neotree move-text lorem-ipsum link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu anzu dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line zotxt zoom-window zenburn-theme zen-and-art-theme zeal-at-point yapfify yaml-mode xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit swift-mode sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode racer pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el origami orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-gcal org-download org-cliplink org-caldav org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme nord-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero interleave inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-rust flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme doom-themes django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile counsel-dash company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme cargo busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:background nil)))))

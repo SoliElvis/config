@@ -1,24 +1,19 @@
-#
-# ~/.bashrc.aliases
-#
-
+if [[ $LANG = '' ]]; then
+	export LANG=en_US.UTF-8
+fi
 alias ls='ls --color=auto'
-
+alias psg='ps -aux | grep --color=auto'
+alias grep='grep --color=auto'
 alias pacrepo='sudo reflector -l 20 -f 10 --save /etc/pacman.d/mirrorlist'
 alias pacman='sudo pacman'
 alias journalctl='sudo journalctl'
 alias pacu='sudo pacman -Syu --noconfirm'
-alias auru='yaourt -Syua --noconfirm'
+alias yayu='yay -Syua --noconfirm'
 alias systemctl='sudo systemctl'
 alias se='ls /usr/bin | grep'
 
-export QT_STYLE_OVERRIDE=gtk
-export QT_SELECT=qt5
 
-if [[ $LANG = '' ]]; then
-	export LANG=en_US.UTF-8
-fi
-
+alias aj="autojump"
 alias b="brave &"
 alias c="clear"
 alias cp='cp -i'
@@ -27,12 +22,13 @@ alias g="git status"
 alias grep='grep --color=auto'
 alias j="jobs"
 alias ls='ls --color=auto'
+alias linkhere='ln -s $(pwd)'
 alias mv='mv -i'
 alias n="nvim"
 alias o="xdg-open &"
 alias p='gitPush'
+alias m='pulsemixer'
 alias r="ranger"
-alias rr="source ~/.bashrc"
 alias s="source"
 alias v="vim"
 alias igv="vim .gitignore"
