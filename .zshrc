@@ -9,6 +9,12 @@ ZSH_CUSTOM=$HOME/.config/zsh/
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
 source $HOME/.bashrc.aliases
+source $HOME/.profile
+
+if [ -f ~/.dir_colors ]; then
+eval `dircolors ~/.dir_colors`
+fi
+export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
 if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='vim'
