@@ -1,5 +1,9 @@
 export ZSH="/home/sole/.oh-my-zsh"
 export LANG=en_US.UTF-8
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+source /usr/bin/virtualenvwrapper.sh
+
 ZSH_THEME="robbyrussell"
 ZSH_CUSTOM=$HOME/.config/zsh/
 plugins=(git)
