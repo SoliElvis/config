@@ -14,6 +14,7 @@ fi
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
+alias rr="source ~/.bashrc"
 # Colors
 if [ -f ~/.dir_colors ]; then
 eval `dircolors ~/.dir_colors`

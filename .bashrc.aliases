@@ -12,6 +12,7 @@ alias yayu='yay -Syua --noconfirm'
 alias systemctl='sudo systemctl'
 alias se='ls /usr/bin | grep'
 
+
 alias aj="autojump"
 alias b="brave &"
 alias c="clear"
@@ -26,8 +27,8 @@ alias mv='mv -i'
 alias n="nvim"
 alias o="xdg-open &"
 alias p='gitPush'
+alias m='pulsemixer'
 alias r="ranger"
-alias rr="source ~/.bashrc"
 alias s="source"
 alias v="vim"
 alias igv="vim .gitignore"

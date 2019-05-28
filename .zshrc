@@ -12,6 +12,7 @@ if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='mvim'
 fi
 export ARCHFLAGS="-arch x86_64"
+alias rr='source ~/.zshrc'
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 # CASE_SENSITIVE="true"
 # Uncomment the following line to use hyphen-insensitive completion.
