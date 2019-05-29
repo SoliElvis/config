@@ -10,9 +10,10 @@ ZSH_CUSTOM=$HOME/.config/zsh/
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
 source $HOME/.bashrc.aliases
+source $HOME/.profile
 
 if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
+   export EDITOR= 'vim'
  else
    export EDITOR='mvim'
 fi
