@@ -2,8 +2,8 @@ export ZSH=$HOME/.oh-my-zsh
 export LANG=en_US.UTF-8
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
-#source /usr/bin/virtualenvwrapper.sh
-source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+source /usr/bin/virtualenvwrapper.sh
+#source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
 ZSH_THEME="robbyrussell"
 ZSH_CUSTOM=$HOME/.config/zsh/

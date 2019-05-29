@@ -2,22 +2,20 @@
 #
 for_window [class=".*"] border pixel 4
 font pango:monospace 10
-exec --no-startup-id feh --bg-scale "~/Pictures/rain.jpg"
+exec_always feh --bg-scale "/home/sole/Pictures/rain.jpg"
+exec mpd
+exec deluged
+exec unclutter
+exec xmodmap ~/.Xmodmap
+exec compton
+exec source ~/.profile
+exec source ~/.bashrc
 gaps inner 15
 gaps outer 15
 set $term termite
 set $browser brave
 set $mod Mod4
-#startup scripts
-#exec --no-startup-id source bash_profile
-#exec --no-startup-id mpd
-#exec --no-startup-id deluged
-#exec --no-startup-id deluge-web
-#exec --no-startup-id compton
-#exec --no-startup-id xmodmap ~/.xmodmap
-#exec --no-startup-id unclutter
-#exec --no-startup-id adjustScreen
-
+bindsym $mod+Tab workspace next
 ###---Basic definitions---###
 # Use Mouse+$mod to drag floating windows to their wanted position
 bindsym $mod+Return exec termite
@@ -66,16 +64,16 @@ set $ws9 "9"
 set $ws10 "10"
 
 # switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1
