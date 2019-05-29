@@ -158,20 +158,10 @@
    dotspacemacs-whitespace-cleanup t))
 (defun dotspacemacs/user-init ())
 (defun dotspacemacs/user-config ()
-  (require 'mpdel)
-  (mpdel-mode)
-  (load-theme 'nord t)
-  (require 'doom-themes)
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t)
-  (load-theme 'doom-nord t)
-  (doom-themes-visual-bell-config)
-  (doom-themes-treemacs-config)
-  (doom-themes-org-config)
-  (set-face-attribute 'default nil
-                      :family "Source Code Pro"
-                      :weight 'bold
-                      :width 'normal)
+  ;; (set-face-attribute 'default nil
+  ;;                     :family "Source Code Pro"
+  ;;                     :weight 'bold
+  ;;                     :width 'normal)
 
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (bind-key* "C-c y" 'clipboard-yank)
@@ -211,8 +201,7 @@
 
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 
-  (with-eval-after-load 'org
-    (load-file "~/.emacs.d/private/my-org.el") )
+  (load-file "~/.emacs.d/private/my-org.el")
   (load-file "~/.emacs.d/private/my-python.el")
   (load-file "~/.emacs.d/private/my-tex.el")
   (load-file "~/.emacs.d/private/my-engine.el")
@@ -242,9 +231,7 @@
       (if point
           (goto-char point)
         (message "No non-ascii characters."))))
-  (defun toggle-maximize-buffer () "Maximize buffer"
-         (interactive)
-         (if (= 1 (length (window-list)))
+  (defun toggle-maximize-buffer () "Maximize buffer" (interactive) (if (= 1 (length (window-list)))
              (jump-to-register '_)
            (progn
              (window-configuration-to-register '_)
@@ -268,55 +255,31 @@
              (org-restart-font-lock)
              (setq org-descriptive-links t))))
   (setq x-select-enable-clipboard t)
-  (require 'org-tempo))
+  (require 'doom-themes)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-city-lights t)
+  (load-theme 'nord t)
+  (doom-themes-org-config)
+  (doom-themes-visual-bell-config)
+(let* ((variable-tuple
+        (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
+              ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
+              ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
+              ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
+              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+      (base-font-color (face-foreground 'default nil 'default))
+      (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])
- '(custom-safe-themes
-   (quote
-    ("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
- '(evil-want-Y-yank-to-eol nil)
- '(fci-rule-color "#5B6268")
- '(jdee-db-active-breakpoint-face-colors (cons "#1B2229" "#51afef"))
- '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
- '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
- '(objed-cursor-color "#ff6c6b")
- '(package-selected-packages
-   (quote
-    (babel zeal-at-point yafolding toml-mode swift-mode sudo-edit racer org-cliplink nord-theme mpdel libmpdel flycheck-rust counsel-dash dash-docs cargo rust-mode slime faceup powerline pdf-tools key-chord tablist org-category-capture alert request-deferred request deferred log4e gntp org-plus-contrib enlive markdown-mode magit-popup macrostep skewer-mode simple-httpd zoutline iedit json-snatcher json-reformat js2-mode htmlize helm-bibtex parsebib helm-core haml-mode fringe-helper git-gutter+ git-gutter flyspell-correct pos-tip flycheck magit transient git-commit async with-editor dash evil goto-chg undo-tree pyvenv highlight-indentation find-file-in-project autothemer projectile counsel swiper ivy web-completion-data dash-functional tern ghc haskell-mode company hydra inflections edn multiple-cursors paredit peg lv eval-sexp-fu cider sesman seq spinner queue pkg-info parseedn clojure-mode parseclj a epl bind-key biblio biblio-core yasnippet packed auctex anaconda-mode pythonic f ace-window avy auto-complete zotxt zoom-window zenburn-theme zen-and-art-theme yapfify yaml-mode xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el origami orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-gcal org-download org-caldav org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme less-css-mode julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero interleave inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme doom-themes django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auth-source-pass auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
- '(python-indent-guess-indent-offset nil)
- '(python-indent-offset 2)
- '(vc-annotate-background "#282c34")
- '(vc-annotate-color-map
-   (list
-    (cons 20 "#98be65")
-    (cons 40 "#b4be6c")
-    (cons 60 "#d0be73")
-    (cons 80 "#ECBE7B")
-    (cons 100 "#e6ab6a")
-    (cons 120 "#e09859")
-    (cons 140 "#da8548")
-    (cons 160 "#d38079")
-    (cons 180 "#cc7cab")
-    (cons 200 "#c678dd")
-    (cons 220 "#d974b7")
-    (cons 240 "#ec7091")
-    (cons 260 "#ff6c6b")
-    (cons 280 "#cf6162")
-    (cons 300 "#9f585a")
-    (cons 320 "#6f4e52")
-    (cons 340 "#5B6268")
-    (cons 360 "#5B6268")))
- '(vc-annotate-very-old-color nil)
- '(zoom-window-mode-line-color "DarkGreen"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:background nil)))))
+  (custom-theme-set-faces
+    'user
+      `(org-level-8        ((t (,@headline ,@variable-tuple))))
+      `(org-level-7        ((t (,@headline ,@variable-tuple))))
+      `(org-level-6        ((t (,@headline ,@variable-tuple))))
+      `(org-level-5        ((t (,@headline ,@variable-tuple))))
+      `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
+      `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
+      `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
+      `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.70))))
+      `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))))
+
