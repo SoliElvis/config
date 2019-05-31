@@ -2,20 +2,22 @@
 #
 for_window [class=".*"] border pixel 4
 font pango:monospace 10
-exec_always feh --bg-scale "/home/sole/Pictures/rain.jpg"
-exec mpd
-exec deluged
-exec unclutter
-exec xmodmap ~/.Xmodmap
-exec compton
-exec source ~/.profile
-exec source ~/.bashrc
 gaps inner 15
 gaps outer 15
 set $term termite
 set $browser brave
 set $mod Mod4
-bindsym $mod+Tab workspace next
+exec_always feh --bg-scale "/home/sole/Pictures/rain.jpg"
+exec_always xmodmap ~/.Xmodmap
+
+exec nextcloud
+exec source ~/.profile
+exec source ~/.bashrc
+
+exec mpd
+exec deluged
+exec unclutter
+exec compton
 ###---Basic definitions---###
 # Use Mouse+$mod to drag floating windows to their wanted position
 bindsym $mod+Return exec termite
@@ -58,11 +60,13 @@ set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+set $ws7 "7:config"
+set $ws8 "8:background"
+set $ws9 "9:main"
+set $ws10 "10:prog"
 
+bindsym $mod+b workspace back_and_forth
+bindsym $mod+Shift+b move container to workspace back_and_forth
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
@@ -87,11 +91,9 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-# reload the configuration file
+bindsym $mod+Tab workspace next
 bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
@@ -258,3 +260,21 @@ bar {
         urgent_workspace #2f343a #900000 #ffffff
     }
 }
+set $Locker i3lock && sleep 1
+
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+s mode "$mode_system"
+xautolock -time 20 -locker "i3lock -i '~/Pictures/rain2.jpg'" &
