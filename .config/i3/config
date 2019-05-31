@@ -8,7 +8,6 @@ set $term termite
 set $browser brave
 set $mod Mod4
 exec_always feh --bg-scale "/home/sole/Pictures/rain.jpg"
-exec_always xmodmap ~/.Xmodmap
 
 exec nextcloud
 exec source ~/.profile
@@ -59,7 +58,7 @@ set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
-set $ws6 "6"
+set $ws6 "6:media-proc"
 set $ws7 "7:config"
 set $ws8 "8:background"
 set $ws9 "9:main"
@@ -263,7 +262,7 @@ bar {
 set $Locker i3lock && sleep 1
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
-mode "$mode_system" {
+    mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
@@ -277,4 +276,4 @@ mode "$mode_system" {
 }
 
 bindsym $mod+Shift+s mode "$mode_system"
-xautolock -time 20 -locker "i3lock -i '~/Pictures/rain2.jpg'" &
+exec xautolock -time 20 -locker "i3lock -i '~/Pictures/rain2.jpg' &" 
