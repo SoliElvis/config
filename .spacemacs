@@ -263,8 +263,12 @@
   (load-theme 'nord t)
   (doom-themes-org-config)
   (doom-themes-visual-bell-config)
-  
-(let* ((variable-tuple
+
+  (require 'virtualenvwrapper)
+  (venv-initialize-interactive-shells)
+  (setq venv-location "home/sole/.virtualenvs")
+
+  (let* ((variable-tuple
         (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
               ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
               ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
@@ -292,7 +296,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("d2e9c7e31e574bf38f4b0fb927aaff20c1e5f92f72001102758005e53d77b8c9" default)))
+    ("a8c210aa94c4eae642a34aaf1c5c0552855dfca2153fa6dd23f3031ce19453d4" "6d589ac0e52375d311afaa745205abb6ccb3b21f6ba037104d71111e7e76a3fc" "d2e9c7e31e574bf38f4b0fb927aaff20c1e5f92f72001102758005e53d77b8c9" default)))
  '(doom-modeline-mode t)
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
@@ -306,6 +310,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:background nil))))
  '(org-document-title ((t (:inherit default :weight bold :foreground "#D8DEE9" :family "Sans Serif" :height 2.0 :underline nil))))
  '(org-level-1 ((t (:inherit default :weight bold :foreground "#D8DEE9" :family "Sans Serif" :height 1.7))))
  '(org-level-2 ((t (:inherit default :weight bold :foreground "#D8DEE9" :family "Sans Serif" :height 1.5))))
