@@ -95,7 +95,9 @@
    dotspacemacs-elpa-timeout 5
    dotspacemacs-check-for-update nil
    dotspacemacs-elpa-subdirectory nil
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'hybrid
+
+
    dotspacemacs-verbose-loading nil
    dotspacemacs-startup-banner 'official
    dotspacemacs-startup-lists '((recents . 5)
@@ -158,16 +160,13 @@
    dotspacemacs-whitespace-cleanup t))
 (defun dotspacemacs/user-init ())
 (defun dotspacemacs/user-config ()
-  ;; (set-face-attribute 'default nil
-  ;;                     :family "Source Code Pro"
-  ;;                     :weight 'bold
-  ;;                     :width 'normal)
 
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (bind-key* "C-c y" 'clipboard-yank)
   (global-unset-key (kbd "C-x C-z"))
   (setq auth-source-debug t)
   (setq auth-sources '((:source "~/.authinfo.gpg")))
+
 
   (setq-default dotspacemacs-editing-style '(hybrid :variables
                                                     hybrid-mode-enable-evilified-state t
@@ -201,93 +200,27 @@
 
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 
-  (load-file "~/.emacs.d/private/my-org.el")
-  (load-file "~/.emacs.d/private/my-python.el")
-  (load-file "~/.emacs.d/private/my-tex.el")
-  (load-file "~/.emacs.d/private/my-engine.el")
-  ;; (load-file "~/.emacs.d/private/my-flyspell.el")
 
 
 ;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-;;------------------------------------------------
-
-  ;; private interactive functions
-  (defun occur-non-ascii ()
-    "Find any non-ascii characters in the current buffer."
-    (interactive)
-    (occur "[^[:ascii:]]"))
-  (defun find-first-non-ascii-char ()
-    "Find the first non-ascii character from point onwards."
-    (interactive)
-    (let (point)
-      (save-excursion
-        (setq point
-              (catch 'non-ascii
-                (while (not (eobp))
-                  (or (eq (char-charset (following-char))
-                          'ascii)
-                      (throw 'non-ascii (point)))
-                  (forward-char 1)))))
-      (if point
-          (goto-char point)
-        (message "No non-ascii characters."))))
-  (defun toggle-maximize-buffer () "Maximize buffer" (interactive) (if (= 1 (length (window-list)))
-             (jump-to-register '_)
-           (progn
-             (window-configuration-to-register '_)
-             (delete-other-windows))))
-  (defun my-expand-file-name-at-point ()
-    "Use hippie-expand to expand the filename"
-    (interactive)
-    (let ((hippie-expand-try-functions-list
-           '(try-complete-file-name-partially
-             try-complete-file-name)))
-      (call-interactively 'hippie-expand)))
-  (global-set-key (kbd "C-M-/") 'my-expand-file-name-at-point)
-  (defun org-toggle-link-display ()
-    "Toggle the literal or descriptive display of links."
-    (interactive)
-    (if org-descriptive-links
-        (progn (org-remove-from-invisibility-spec '(org-link))
-               (org-restart-font-lock)
-               (setq org-descriptive-links nil))
-      (progn (add-to-invisibility-spec '(org-link))
-             (org-restart-font-lock)
-             (setq org-descriptive-links t))))
   (require 'org-tempo)
   (setq x-select-enable-clipboard t)
   (require 'doom-themes)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-city-lights t)
-  (load-theme 'nord t)
+  (load-theme 'doom-molokai t)
   (doom-themes-org-config)
   (doom-themes-visual-bell-config)
-
   (require 'virtualenvwrapper)
   (venv-initialize-interactive-shells)
   (setq venv-location "home/sole/.virtualenvs")
+  (load-file "~/.emacs.d/private/my-org.el")
+  (load-file "~/.emacs.d/private/my-python.el")
+  (load-file "~/.emacs.d/private/my-tex.el")
+  (load-file "~/.emacs.d/private/my-engine.el")
+  ;; (load-file "~/.emacs.d/private/my-flyspell.el")
+  (load-file "~/.emacs.d/private/my-functions.el"))
 
-  (let* ((variable-tuple
-        (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
-              ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
-              ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
-              ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
-              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-      (base-font-color (face-foreground 'default nil 'default))
-      (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
-
-  (custom-theme-set-faces
-    'user
-      `(org-level-8        ((t (,@headline ,@variable-tuple))))
-      `(org-level-7        ((t (,@headline ,@variable-tuple))))
-      `(org-level-6        ((t (,@headline ,@variable-tuple))))
-      `(org-level-5        ((t (,@headline ,@variable-tuple))))
-      `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
-      `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
-      `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
-      `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.70))))
-      `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -301,7 +234,7 @@
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (doom-modeline doom zotxt zoom-window zenburn-theme zen-and-art-theme zeal-at-point yapfify yaml-mode yafolding xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit swift-mode sunny-day-theme sudo-edit sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode racer pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el origami orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-gcal org-download org-cliplink org-caldav org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme nord-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term mpdel monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero interleave inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-rust flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme doom-themes django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile counsel-dash company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme cargo busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
+    (parseclj projectile helm-core slime ivy doom-modeline doom zotxt zoom-window zenburn-theme zen-and-art-theme zeal-at-point yapfify yaml-mode yafolding xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit swift-mode sunny-day-theme sudo-edit sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode racer pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el origami orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-gcal org-download org-cliplink org-caldav org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme nord-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term mpdel monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero interleave inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-rust flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme doom-themes django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile counsel-dash company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme cargo busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
  '(python-indent-guess-indent-offset nil)
  '(python-indent-offset 2)
  '(zoom-window-mode-line-color "DarkGreen"))
