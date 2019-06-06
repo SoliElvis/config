@@ -1,3 +1,4 @@
+(setq org-element-use-cache nil)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (use-package org
   :init
@@ -9,7 +10,7 @@
         org-src-fontify-natively t   ;; Pretty code blocks
         org-src-tab-acts-natively t
         org-confirm-babel-evaluate nil
-        org-books-file "~/cloud/org-next/my-list.org"
+        org-books-file "~/cloud/.personal/my-list.org"
         org-hide-emphasis-markers t
         org-ref-default-bibliography '("~/cloud/bibstuff/bib-next.bib")
         org-ref-pdf-directory '("~/cloud/zotf_ile")
@@ -24,7 +25,6 @@
                         '(("^ *\\([-]\\) "
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
 
 
 ;;Latex and zot stuff
@@ -65,6 +65,7 @@
         (latex-mode    . bibtex-completion-format-citation-cite)
         (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
         (default       . bibtex-completion-format-citation-default)))
+
 ;;calendar stuff
 (use-package org-caldav
   :init
@@ -72,20 +73,35 @@
   "https://free01.thegood.cloud/remote.php/dav/calendars/frederic.boileau@protonmail.com")
   ;;let filenames =
   (setq org-caldav-calendars
-  '((:calendar-id "life-school"
-     :files ("~/cloud/.personal/agenda/life.org"
-             "~/cloud/.personal/agenda/school.org")
-     :inbox  "~/cloud/.personal/org-caldav/life-school.org")))
+        '((:calendar-id "life-school"
+                        :files ("~/cloud/.personal/agenda/life.org"
+                                "~/cloud/.personal/agenda/school.org"
+                                "~/cloud/.personal/agenda/shortTerm.org")
+                        :inbox  "~/cloud/.personal/org-caldav/cal-life-school.org")
+
+        (:calendar-id "appointments"
+                        :files ("~/cloud/.personal/agenda/appointments.org")
+                        :inbox "~/cloud/.personal/org-caldav/cal-appointments.org")
+        (:calendar-id "geek"
+                        :files ("~/cloud/.personal/agenda/geek.org")
+                        :inbox "~/cloud/.personal/org-caldav/cal-geek.org")
+
+        (:calendar-id "koios"
+                        :files ("~/cloud/.personal/agenda/koios-repeat.org"
+                                "~/cloud/.personal/agenda/koios.org")
+                        :inbox "~/cloud/.personal/org-caldav/cal-koios-repeat.org")
+        (:calendar-id "repeat"
+                        :files ("~/cloud/.personal/agenda/repeat.org")
+                        :inbox "~/cloud/.personal/org-caldav/cal-repeat.org")))
 
   (setq org-caldav-backup-file '("~/cloud/.personal/org-caldav/.caldav.bak"))
-  (setq org-caldav-save-directory '("~/cloud/.personal/org-caldav/"))
+  (setq org-caldav-save-directory "~/.cal")
   (setq org-icalendar-alarm-time 1)
   (setq org-icalendar-include-todo t)
   (setq org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due))
   (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo)))
 ;; custom functions
 (global-set-key (kbd "C-x p i") 'org-cliplink)
-
 (use-package org-journal
   :after org
   :bind (("C-c T" . org-journal-new-entry)
@@ -121,8 +137,6 @@
   :after org
   :custom (org-contacts-files '("~/cloud/.personal/agenda/contacts.org")))
 (use-package org-clock
-  :ensure nil
-  :after org
   :preface
   (defun my/org-mode-ask-effort ()
     "Ask for an effort estimate when clocking in."
@@ -143,10 +157,17 @@
   (org-clock-in-switch-to-state "STARTED")
   (org-clock-out-remove-zero-time-clocks t)
   (org-clock-persist t)
-  (org-clock-persist-file (expand-file-name (format "%s/emacs/org-clock-save.el" xdg-cache)))
+  (org-clock-persist-file "~/cloud/.personal/agenda/.clock")
   (org-clock-persist-query-resume nil)
   (org-clock-report-include-clocking-task t)
   (org-show-notification-handler (lambda (msg) (alert msg))))
+;; global Effort estimate values
+(setq org-global-properties
+      '(("Effort_ALL" .
+         "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")))
+;; Set default column view headings: Task Priority Effort Clock_Summary
+(setq org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
+
 (use-package org-agenda
   :ensure nil
   :after org
@@ -190,10 +211,6 @@
   (org-habit-graph-column 80)
   (org-habit-show-habits-only-for-today nil)
   (org-track-ordered-property-with-tag t))
-(use-package org-bullets
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("●" "►" "▸")))
 (use-package org-capture
   :ensure nil
   :after org
@@ -268,7 +285,23 @@ Captured %<%Y-%m-%d %H:%M>" "Template for basic task.")
      ("t" "Task" entry (file+headline "~/.personal/agenda/organizer.org" "Tasks"),
       my/org-basic-task-template
       :empty-lines 1))))
-
+(use-package org-mru-clock
+  :ensure t
+  :bind* (("C-c C-x i" . org-mru-clock-in)
+          ("C-c C-x C-j" . org-mru-clock-select-recent-task))
+  :init
+  (setq org-mru-clock-how-many 100
+        org-mru-clock-completing-read #'ivy-completing-read))
+(setq org-clock-history-length 23)
+(defun eos/org-clock-in ()
+  (interactive)
+  (org-clock-in '(4)))
+(global-set-key (kbd "C-c I") #'eos/org-clock-in)
+(global-set-key (kbd "C-c O") #'org-clock-out)
+(org-clock-persistence-insinuate)
+(setq org-clock-persist t)
+(setq org-clock-in-resume t)
+(setq org-clock-persist-query-resume nil)
 (defun meeting-notes ()
   (interactive)
   (outline-mark-subtree)                              ;; Select org-mode section
@@ -312,3 +345,18 @@ Captured %<%Y-%m-%d %H:%M>" "Template for basic task.")
     `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
     `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.70))))
     `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+(defun custom-org-cliplink ()
+  (interactive)
+  (org-cliplink-insert-transformed-title
+   (org-cliplink-clipboard-content)     ;take the URL from the CLIPBOARD
+   (lambda (url title)
+     (let* ((parsed-url (url-generic-parse-url url)) ;parse the url
+            (clean-title
+             (cond
+              ;; if the host is github.com, cleanup the title
+              ((string= (url-host parsed-url) "github.com")
+               (replace-regexp-in-string "GitHub - .*: \\(.*\\)" "\\1" title))
+              ;; otherwise keep the original title
+              (t title))))
+       ;; forward the title to the default org-cliplink transformer
+       (org-cliplink-org-mode-link-transformer url clean-title)))))

@@ -21,4 +21,5 @@ export TERMINAL=termite
 export TERM=xterm-256color
 export QT_STYLE_OVERRIDE=gtk
 export QT_SELECT=qt5
+export XDG_CACHE_HOME=$HOME/.cache
 

@@ -11,6 +11,7 @@
       ;; List of configuration layers to load.
       dotspacemacs-configuration-layers
       '(
+        ruby
 
           (latex :variables latex-enable-folding t )
           (shell :variables shell-default-height 30 shell-default-position 'bottom)
@@ -45,7 +46,9 @@
         (org-books :location (recipe :fetcher github :repo "lepisma/org-books"))
         avy
         org-journal
+        org-mru-clock
         sudo-edit
+        helm-spotify
         dash
         auth-source-pass
         creamsody-theme
@@ -163,12 +166,9 @@
    dotspacemacs-whitespace-cleanup t))
 (defun dotspacemacs/user-init ())
 (defun dotspacemacs/user-config ()
+  (setq inferior-lisp-program "ros -Q run")
   (add-to-list 'load-path "~/.emacs.d/private/julia-emacs/")
   (require 'julia-mode)
-  (bind-key "C-j" 'evil-window-down)
-  (bind-key "C-h" 'evil-window-left)
-  (bind-key "C-k" 'evil-window-up)
-  (bind-key "C-l" 'evil-window-right)
   (bind-key* "C-c y" 'clipboard-yank)
   (global-unset-key (kbd "C-x C-z"))
   (setq auth-source-debug t)
@@ -218,9 +218,9 @@
   (load-theme 'doom-molokai t)
   (doom-themes-org-config)
   (doom-themes-visual-bell-config)
-  ;; (require 'virtualenvwrapper)
-  ;; (venv-initialize-interactive-shells)
-  ;; (setq venv-location "home/sole/.virtualenvs")
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
   (load-file "~/.emacs.d/private/my-org.el")
   (load-file "~/.emacs.d/private/my-python.el")
   (load-file "~/.emacs.d/private/my-tex.el")
@@ -237,16 +237,120 @@
  '(custom-safe-themes
    (quote
     ("a8c210aa94c4eae642a34aaf1c5c0552855dfca2153fa6dd23f3031ce19453d4" "6d589ac0e52375d311afaa745205abb6ccb3b21f6ba037104d71111e7e76a3fc" "d2e9c7e31e574bf38f4b0fb927aaff20c1e5f92f72001102758005e53d77b8c9" default)))
+ '(debug-on-error t)
  '(doom-modeline-mode t)
  '(evil-want-Y-yank-to-eol nil)
- '(org-journal-date-format "%e %b %Y (%A)" t)
- '(org-journal-dir "~/.personal/journal/" t)
- '(org-journal-enable-encryption t t)
- '(org-journal-file-format "%Y%m%d" t)
- '(org-journal-time-format "" t)
+ '(org-agenda-dim-blocked-tasks t)
+ '(org-agenda-files
+   (quote
+    ("/home/sole/cloud/.personal/agenda/shortTerm.org" "/home/sole/cloud/.personal/agenda/appointments.org" "/home/sole/cloud/.personal/agenda/geek.org" "/home/sole/cloud/.personal/agenda/life.org" "/home/sole/cloud/.personal/agenda/school.org" "/home/sole/cloud/.personal/agenda/tasks.org")))
+ '(org-agenda-inhibit-startup t)
+ '(org-agenda-show-log t t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-span 2)
+ '(org-agenda-start-on-weekday 6)
+ '(org-agenda-sticky nil)
+ '(org-agenda-tags-column -100)
+ '(org-agenda-time-grid (quote ((daily today require-timed))))
+ '(org-agenda-use-tag-inheritance t)
+ '(org-capture-templates
+   (quote
+    (("B" "Book" checkitem
+      (file+headline "~/.personal/other/books.org" "Books")
+      "- [ ] %^{Book}" :immediate-finish t)
+     ("L" "Learning" checkitem
+      (file+headline "~/.personal/other/learning.org" "Things")
+      "- [ ] %^{Thing}" :immediate-finish t)
+     ("M" "Movie" checkitem
+      (file+headline "~/.personal/other/movies.org" "Movies")
+      "- [ ] %^{Movie}" :immediate-finish t)
+     ("P" "Purchase" checkitem
+      (file+headline "~/.personal/other/purchases.org" "Purchases")
+      "- [ ] %^{Item}" :immediate-finish t)
+     ("c" "Contact" entry
+      (file+headline "~/.personal/agenda/contacts.org" "Friends")
+      "* %(org-contacts-template-name)
+:PROPERTIES:
+:ADDRESS: %^{289 Cleveland St. Brooklyn, 11206 NY, USA}
+:BIRTHDAY: %^{yyyy-mm-dd}
+:EMAIL: %(org-contacts-template-email)
+:NOTE: %^{NOTE}
+:END:" :empty-lines 1)
+     ("l" "Ledger")
+     ("lb" "Bank" plain
+      (file "~/.personal/ledger/ledger-2019.dat")
+      "%(org-read-date) %^{Payee}
+  Expenses:%^{Account}  €%^{Amount}
+  Liabilities:CreditsCards:Belfius" :empty-lines 1 :immediate-finish t)
+     ("lc" "Cash" plain
+      (file "~/.personal/ledger/ledger-2019.dat")
+      "%(org-read-date) * %^{Payee}
+  Expenses:%^{Account}  €%^{Amount}
+  Assets:Cash:Wallet" :empty-lines 1 :immediate-finish t)
+     ("f" "FindMyCat" entry
+      (file+headline "~/.personal/agenda/findmycat.org" "Tasks")
+      "* TODO %^{Task}
+:PROPERTIES:
+:Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
+:END:
+Captured %<%Y-%m-%d %H:%M>" :empty-lines 1)
+     ("p" "People" entry
+      (file+headline "~/.personal/agenda/people.org" "Tasks")
+      "* TODO %^{Task}
+:PROPERTIES:
+:Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
+:END:
+Captured %<%Y-%m-%d %H:%M>" :empty-lines 1)
+     ("s" "School" entry
+      (file+headline "~/.personal/agenda/school.org" "Tasks")
+      "* TODO %^{Task}
+:PROPERTIES:
+:Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
+:END:
+Captured %<%Y-%m-%d %H:%M>" :empty-lines 1)
+     ("t" "Task" entry
+      (file+headline "~/.personal/agenda/organizer.org" "Tasks")
+      "* TODO %^{Task}
+:PROPERTIES:
+:Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
+:END:
+Captured %<%Y-%m-%d %H:%M>" :empty-lines 1))))
+ '(org-clock-clocktable-default-properties
+   (quote
+    (:block day :maxlevel 2 :scope agenda :link t :compact t :formula % :step day :fileskip0 t :stepskip0 t :narrow 80 :properties
+            ("Effort" "CLOCKSUM" "CLOCKSUM_T" "TODO"))))
+ '(org-clock-continuously nil)
+ '(org-clock-in-switch-to-state "STARTED")
+ '(org-clock-out-remove-zero-time-clocks t)
+ '(org-clock-persist t)
+ '(org-clock-persist-file "~/cloud/.personal/agenda/.clock")
+ '(org-clock-persist-query-resume nil)
+ '(org-clock-report-include-clocking-task t)
+ '(org-columns-default-format "%14SCHEDULED %Effort{:} %1PRIORITY %TODO %50ITEM %TAGS")
+ '(org-contacts-files (quote ("~/cloud/.personal/agenda/contacts.org")))
+ '(org-default-notes-file "~/cloud/.personal/agenda/organizer.org")
+ '(org-directory "~/cloud/.personal")
+ '(org-enforce-todo-dependencies t)
+ '(org-habit-graph-column 80 t)
+ '(org-habit-show-habits-only-for-today nil t)
+ '(org-journal-date-format "%e %b %Y (%A)")
+ '(org-journal-dir "~/cloud/.personal/journal/")
+ '(org-journal-enable-encryption t)
+ '(org-journal-file-format "%Y%m%d")
+ '(org-journal-time-format "")
+ '(org-show-notification-handler (lambda (msg) (alert msg)))
+ '(org-todo-keyword-faces
+   (quote
+    (("DONE" :foreground "cyan" :weight bold)
+     ("SOMEDAY" :foreground "gray" :weight bold)
+     ("TODO" :foreground "green" :weight bold)
+     ("WAITING" :foreground "red" :weight bold))))
+ '(org-track-ordered-property-with-tag t)
  '(package-selected-packages
    (quote
-    (org-journal parseclj projectile helm-core slime ivy doom-modeline doom zotxt zoom-window zenburn-theme zen-and-art-theme zeal-at-point yapfify yaml-mode yafolding xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit swift-mode sunny-day-theme sudo-edit sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode racer pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el origami orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-gcal org-download org-cliplink org-caldav org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme nord-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term mpdel monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero interleave inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-rust flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme doom-themes django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile counsel-dash company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme cargo busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
+    (rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby helm helm-spotify multi org-mru-clock cider counsel find-file-in-project swiper org-plus-contrib org-journal parseclj projectile helm-core slime ivy doom-modeline doom zotxt zoom-window zenburn-theme zen-and-art-theme zeal-at-point yapfify yaml-mode yafolding xterm-color white-sand-theme which-key wgrep web-mode web-beautify vimrc-mode use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit swift-mode sunny-day-theme sudo-edit sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smooth-scroll smex smeargle slime-company slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme rebecca-theme rainbow-delimiters railscasts-theme racket-mode racer pytest pyenv-mode py-isort py-autopep8 purple-haze-theme pug-mode professional-theme planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el origami orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-noter org-mime org-gcal org-download org-cliplink org-caldav org-bullets org-books org-agenda-property openwith omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme nord-theme noctilux-theme nlinum naquadah-theme mustang-theme multi-term mpdel monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme livid-mode live-py-mode lispy linum-relative light-soap-theme julia-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme intero interleave inkpot-theme hy-mode hlint-refactor hindent heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-correct-ivy flycheck-rust flycheck-pos-tip flycheck-haskell flx flatui-theme flatland-theme farmhouse-theme exotica-theme exec-path-from-shell evil-visualstar evil-magit evil-escape espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elpy elisp-slime-nav drag-stuff dracula-theme doom-themes django-theme diminish diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode creamsody-theme counsel-projectile counsel-dash company-web company-tern company-statistics company-ghci company-ghc company-cabal company-auctex company-anaconda common-lisp-snippets color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clojure-snippets clj-refactor cider-eval-sexp-fu cherry-blossom-theme cargo busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map badwolf-theme auto-yasnippet auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ac-ispell)))
  '(python-indent-guess-indent-offset nil)
  '(python-indent-offset 2)
  '(zoom-window-mode-line-color "DarkGreen"))

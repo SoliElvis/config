@@ -28,7 +28,6 @@ format = "{1m}"
 
 [[block]]
 block = "music"
-player = "cantata"
 buttons = ["play", "next"]
 marquee_interval = 10
 marquee_speed = 0.4
